@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -53,6 +52,15 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        'alpha-black': '#0A0A0A',
+        'alpha-gold': '#FFD700',
+        'alpha-yellow': '#FFC107',
+        'alpha-white': '#F5F5F5',
+        'alpha-gray': '#9FA6B2',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-gold': 'linear-gradient(45deg, #FFD700 0%, #FFA500 100%)',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -68,20 +76,20 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        float: {
+        'float': {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
         },
-        'fade-in': {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
+        'glow': {
+          '0%, 100%': { textShadow: '0 0 10px rgba(255, 215, 0, 0.5)' },
+          '50%': { textShadow: '0 0 20px rgba(255, 215, 0, 0.8)' },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         'float': 'float 6s ease-in-out infinite',
-        'fade-in': 'fade-in 0.5s ease-out forwards',
+        'glow': 'glow 2s ease-in-out infinite',
       },
     },
   },
