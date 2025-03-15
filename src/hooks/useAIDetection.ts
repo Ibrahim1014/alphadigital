@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { pipeline } from '@huggingface/transformers';
 
 export const useAIDetection = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -12,7 +13,6 @@ export const useAIDetection = () => {
   const analyzeText = async (text: string) => {
     setIsAnalyzing(true);
     try {
-      // Simuler une analyse IA avec un délai
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       const score = Math.random();
@@ -32,5 +32,31 @@ export const useAIDetection = () => {
     }
   };
 
-  return { analyzeText, isAnalyzing, result };
+  const analyzeImage = async (imageFile: File) => {
+    setIsAnalyzing(true);
+    try {
+      const classifier = await pipeline(
+        'image-classification',
+        'Xenova/vit-base-patch16-224',
+        { quantized: true }
+      );
+
+      const result = await classifier(imageFile);
+      const aiScore = result[0].score;
+
+      setResult({
+        score: aiScore,
+        confidence: aiScore > 0.7 ? "Forte" : aiScore > 0.4 ? "Moyenne" : "Faible",
+        details: aiScore > 0.7 
+          ? "Cette image présente des caractéristiques typiques d'une image générée par IA" 
+          : "Cette image semble avoir été créée par un humain"
+      });
+    } catch (error) {
+      console.error("Erreur lors de l'analyse de l'image:", error);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  return { analyzeText, analyzeImage, isAnalyzing, result };
 };
