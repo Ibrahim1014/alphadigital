@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Card } from "./ui/card";
 import { Brain, Shield, Zap, Bot, Upload } from "lucide-react";
 import { Button } from "./ui/button";
@@ -14,9 +13,9 @@ export const AIDetectionSection = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { analyzeText, analyzeImage, isAnalyzing, result } = useAIDetection();
   
-  const sectionRef = useScrollAnimation();
-  const titleRef = useScrollAnimation({ start: "top center" });
-  const featuresRef = useScrollAnimation({ start: "top 70%" });
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
 
   const features = [
     {

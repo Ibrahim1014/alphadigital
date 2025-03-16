@@ -37,12 +37,16 @@ export const useAIDetection = () => {
     try {
       const classifier = await pipeline(
         'image-classification',
-        'Xenova/vit-base-patch16-224',
-        { quantized: true }
+        'Xenova/vit-base-patch16-224'
       );
 
-      const result = await classifier(imageFile);
-      const aiScore = result[0].score;
+      // Convertir le File en URL pour l'API
+      const imageUrl = URL.createObjectURL(imageFile);
+      const results = await classifier(imageUrl);
+      
+      // Prendre le premier résultat
+      const firstResult = Array.isArray(results) ? results[0] : results;
+      const aiScore = firstResult?.label?.includes('artificial') ? 0.8 : 0.2;
 
       setResult({
         score: aiScore,
@@ -51,6 +55,9 @@ export const useAIDetection = () => {
           ? "Cette image présente des caractéristiques typiques d'une image générée par IA" 
           : "Cette image semble avoir été créée par un humain"
       });
+
+      // Nettoyer l'URL créée
+      URL.revokeObjectURL(imageUrl);
     } catch (error) {
       console.error("Erreur lors de l'analyse de l'image:", error);
     } finally {
