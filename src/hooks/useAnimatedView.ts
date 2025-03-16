@@ -1,10 +1,10 @@
 
-import { useInView, type MarginType } from 'framer-motion';
+import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 interface AnimatedViewOptions {
   once?: boolean;
-  margin?: MarginType;
+  margin?: string;
 }
 
 export const useAnimatedView = (options: AnimatedViewOptions = { once: true, margin: "-10px 0px -10px 0px" }) => {
