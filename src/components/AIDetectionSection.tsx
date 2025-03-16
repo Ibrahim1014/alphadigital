@@ -16,6 +16,7 @@ export const AIDetectionSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
+  const animationRef = useScrollAnimation({ start: "top 80%" });
 
   const features = [
     {
@@ -92,7 +93,7 @@ export const AIDetectionSection = () => {
 
         <motion.div
           className="max-w-2xl mx-auto opacity-0"
-          ref={useScrollAnimation({ start: "top 80%" }).current}
+          ref={animationRef}
         >
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex flex-col gap-4">
