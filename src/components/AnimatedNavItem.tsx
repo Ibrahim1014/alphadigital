@@ -17,11 +17,14 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ scale: 1.05 }}
     >
       <Link
         to={href}
         className={`relative group flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-          isActive ? "text-alpha-gold bg-alpha-gold/10" : "text-white/80 hover:text-alpha-gold"
+          isActive 
+            ? "text-alpha-gold bg-alpha-gold/10" 
+            : "text-white/80 hover:text-alpha-gold"
         }`}
       >
         <motion.span
@@ -33,7 +36,13 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
           }}
           transition={{ duration: 0.3 }}
         />
-        <span className="relative">{name}</span>
+        <motion.span 
+          className="relative"
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.2 }}
+        >
+          {name}
+        </motion.span>
         {isActive && (
           <motion.div
             className="absolute bottom-0 left-0 h-0.5 bg-alpha-gold"
