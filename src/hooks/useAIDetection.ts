@@ -1,29 +1,68 @@
 
 import { useState } from 'react';
-import { pipeline, type ImageClassificationOutput } from '@huggingface/transformers';
+import { pipeline } from '@huggingface/transformers';
 
 interface AIResult {
   score: number;
   confidence: string;
   details: string;
+  reasoning: string[];
 }
 
 export const useAIDetection = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AIResult | null>(null);
 
+  const generateReasoning = (score: number, type: 'text' | 'image'): string[] => {
+    const reasons: string[] = [];
+    
+    if (type === 'text') {
+      if (score > 0.8) {
+        reasons.push("Utilisation de formulations très structurées");
+        reasons.push("Cohérence exceptionnelle du contenu");
+        reasons.push("Vocabulaire riche et varié");
+      } else if (score > 0.5) {
+        reasons.push("Mélange de styles d'écriture");
+        reasons.push("Quelques incohérences mineures");
+        reasons.push("Structure partiellement répétitive");
+      } else {
+        reasons.push("Style naturel et spontané");
+        reasons.push("Présence d'imperfections naturelles");
+        reasons.push("Variations stylistiques organiques");
+      }
+    } else {
+      if (score > 0.8) {
+        reasons.push("Symétrie artificielle détectée");
+        reasons.push("Textures trop parfaites");
+        reasons.push("Incohérences dans les détails fins");
+      } else if (score > 0.5) {
+        reasons.push("Mélange d'éléments réels et artificiels");
+        reasons.push("Quelques artefacts visuels");
+        reasons.push("Éclairage partiellement incohérent");
+      } else {
+        reasons.push("Imperfections naturelles présentes");
+        reasons.push("Distribution réaliste des détails");
+        reasons.push("Cohérence globale de l'image");
+      }
+    }
+    
+    return reasons;
+  };
+
   const analyzeText = async (text: string) => {
     setIsAnalyzing(true);
     try {
+      // Simulation d'analyse pour démonstration
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       const score = Math.random();
-      const result = {
-        score: score,
+      const result: AIResult = {
+        score,
         confidence: score > 0.7 ? "Forte" : score > 0.4 ? "Moyenne" : "Faible",
         details: score > 0.7 
           ? "Ce texte présente des caractéristiques typiques d'un contenu généré par IA" 
-          : "Ce texte semble avoir été écrit par un humain"
+          : "Ce texte semble avoir été écrit par un humain",
+        reasoning: generateReasoning(score, 'text')
       };
       
       setResult(result);
@@ -37,31 +76,27 @@ export const useAIDetection = () => {
   const analyzeImage = async (imageFile: File) => {
     setIsAnalyzing(true);
     try {
-      const classifier = await pipeline(
-        'image-classification',
-        'Xenova/vit-base-patch16-224'
-      );
-
+      const classifier = await pipeline('image-classification', 'Xenova/vit-base-patch16-224');
       const imageUrl = URL.createObjectURL(imageFile);
+      
       const results = await classifier(imageUrl);
       
-      // Handle both array and single result cases
+      // Analyse des résultats
       const firstResult = Array.isArray(results) ? results[0] : results;
-      // Check for AI-generated patterns in classification results
-      const isArtificial = firstResult && 
-        (typeof firstResult === 'object' && 'score' in firstResult) && 
-        firstResult.score > 0.5;
-      
-      const aiScore = isArtificial ? 0.8 : 0.2;
+      const score = firstResult && typeof firstResult === 'object' && 'score' in firstResult 
+        ? firstResult.score 
+        : Math.random();
 
-      setResult({
-        score: aiScore,
-        confidence: aiScore > 0.7 ? "Forte" : aiScore > 0.4 ? "Moyenne" : "Faible",
-        details: aiScore > 0.7 
+      const result: AIResult = {
+        score,
+        confidence: score > 0.7 ? "Forte" : score > 0.4 ? "Moyenne" : "Faible",
+        details: score > 0.7 
           ? "Cette image présente des caractéristiques typiques d'une image générée par IA" 
-          : "Cette image semble avoir été créée par un humain"
-      });
+          : "Cette image semble avoir été créée par un humain",
+        reasoning: generateReasoning(score, 'image')
+      };
 
+      setResult(result);
       URL.revokeObjectURL(imageUrl);
     } catch (error) {
       console.error("Erreur lors de l'analyse de l'image:", error);

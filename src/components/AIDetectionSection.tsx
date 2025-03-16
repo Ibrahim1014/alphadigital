@@ -7,6 +7,7 @@ import { useAIDetection } from "@/hooks/useAIDetection";
 import { motion } from "framer-motion";
 import { Textarea } from "./ui/textarea";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const AIDetectionSection = () => {
   const [text, setText] = useState("");
@@ -74,7 +75,9 @@ export const AIDetectionSection = () => {
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              className="opacity-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2 }}
             >
               <Card className="glass hover:glass-gold transition-all duration-300 group">
                 <div className="p-6 text-center">
@@ -92,65 +95,103 @@ export const AIDetectionSection = () => {
         </div>
 
         <motion.div
-          className="max-w-2xl mx-auto opacity-0"
           ref={animationRef}
+          className="max-w-2xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex flex-col gap-4">
-              <Textarea
-                value={text}
-                onChange={(e) => {
-                  setText(e.target.value);
-                  setSelectedFile(null);
-                }}
-                placeholder="Collez votre texte ici pour l'analyser..."
-                className="min-h-[150px] glass"
-                disabled={isAnalyzing}
-              />
+          <Tabs defaultValue="text" className="w-full">
+            <TabsList className="w-full mb-6 bg-alpha-black/20">
+              <TabsTrigger value="text" className="flex-1">Texte</TabsTrigger>
+              <TabsTrigger value="image" className="flex-1">Image</TabsTrigger>
+            </TabsList>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <TabsContent value="text">
+                <Textarea
+                  value={text}
+                  onChange={(e) => {
+                    setText(e.target.value);
+                    setSelectedFile(null);
+                  }}
+                  placeholder="Collez votre texte ici pour l'analyser..."
+                  className="min-h-[150px] glass"
+                  disabled={isAnalyzing}
+                />
+              </TabsContent>
               
-              <div className="flex items-center gap-4">
-                <span className="text-alpha-gray">OU</span>
-                <div className="flex-1">
-                  <label className="block">
-                    <div className="glass hover:glass-gold transition-all duration-300 p-4 text-center cursor-pointer rounded-lg">
-                      <Upload className="h-6 w-6 text-alpha-gold mx-auto mb-2" />
-                      <span className="text-alpha-white">
-                        {selectedFile ? selectedFile.name : "Choisir une image"}
-                      </span>
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        disabled={isAnalyzing}
-                      />
-                    </div>
-                  </label>
+              <TabsContent value="image">
+                <div className="glass hover:glass-gold transition-all duration-300 p-4 text-center cursor-pointer rounded-lg">
+                  <Upload className="h-6 w-6 text-alpha-gold mx-auto mb-2" />
+                  <span className="text-alpha-white">
+                    {selectedFile ? selectedFile.name : "Choisir une image"}
+                  </span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    disabled={isAnalyzing}
+                  />
                 </div>
-              </div>
-            </div>
+              </TabsContent>
 
-            <Button
-              type="submit"
-              className="w-full bg-gradient-gold text-alpha-black hover:opacity-90 hover:scale-105 transition-all duration-300"
-              disabled={isAnalyzing || (!text.trim() && !selectedFile)}
-            >
-              {isAnalyzing ? "Analyse en cours..." : "Analyser"}
-            </Button>
-          </form>
+              <Button
+                type="submit"
+                className="w-full bg-gradient-gold text-alpha-black hover:opacity-90 hover:scale-105 transition-all duration-300"
+                disabled={isAnalyzing || (!text.trim() && !selectedFile)}
+              >
+                {isAnalyzing ? "Analyse en cours..." : "Analyser"}
+              </Button>
+            </form>
+          </Tabs>
 
           {result && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 p-6 glass rounded-lg"
+              className="mt-8 space-y-6"
             >
-              <h3 className="text-xl font-semibold mb-4">Résultats de l'analyse</h3>
-              <div className="space-y-2">
-                <p>Probabilité IA : {(result.score * 100).toFixed(1)}%</p>
-                <p>Niveau de confiance : {result.confidence}</p>
-                <p className="text-alpha-gray">{result.details}</p>
-              </div>
+              <Card className="p-6 glass">
+                <h3 className="text-xl font-semibold mb-4">Résultats de l'analyse</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span>Probabilité IA</span>
+                    <span className="text-gradient-gold font-semibold">
+                      {(result.score * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Niveau de confiance</span>
+                    <span className={`font-semibold ${
+                      result.confidence === "Forte" ? "text-green-500" :
+                      result.confidence === "Moyenne" ? "text-yellow-500" :
+                      "text-red-500"
+                    }`}>
+                      {result.confidence}
+                    </span>
+                  </div>
+                  <p className="text-alpha-gray">{result.details}</p>
+                </div>
+              </Card>
+
+              <Card className="p-6 glass">
+                <h3 className="text-xl font-semibold mb-4">Raisonnement</h3>
+                <ul className="space-y-2">
+                  {result.reasoning.map((reason, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <div className="h-2 w-2 rounded-full bg-alpha-gold" />
+                      <span>{reason}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </Card>
             </motion.div>
           )}
         </motion.div>
