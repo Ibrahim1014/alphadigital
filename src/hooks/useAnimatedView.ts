@@ -4,12 +4,13 @@ import { useRef } from 'react';
 
 interface AnimatedViewOptions {
   once?: boolean;
-  margin?: string;
+  // Remove margin from our interface since we'll pass it directly
 }
 
-export const useAnimatedView = (options: AnimatedViewOptions = { once: true, margin: "-10px 0px -10px 0px" }) => {
+export const useAnimatedView = (options: AnimatedViewOptions = { once: true }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, options);
+  // Pass margin directly as a number array which matches framer-motion's expected type
+  const isInView = useInView(ref, { ...options, margin: [-10, 0, -10, 0] });
   return { ref, isInView };
 };
 
