@@ -12,8 +12,8 @@ interface ScrollAnimationOptions {
   stagger?: number;
 }
 
-export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
-  const elementRef = useRef<HTMLElement>(null);
+export const useScrollAnimation = <T extends HTMLElement>(options: ScrollAnimationOptions = {}) => {
+  const elementRef = useRef<T>(null);
 
   useEffect(() => {
     const element = elementRef.current;

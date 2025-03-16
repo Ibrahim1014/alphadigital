@@ -16,7 +16,7 @@ export const AIDetectionSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
-  const animationRef = useScrollAnimation({ start: "top 80%" });
+  const animationRef = useScrollAnimation<HTMLDivElement>({ start: "top 80%" });
 
   const features = [
     {
