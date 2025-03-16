@@ -58,41 +58,77 @@ export const AIDetectionSection = () => {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
   return (
     <section ref={sectionRef} id="detection" className="py-20 px-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-radial from-alpha-gold/5 to-transparent" />
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
           <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-4">
             Détection <span className="text-gradient-gold">IA</span>
           </h2>
           <p className="text-alpha-gray text-lg max-w-2xl mx-auto">
             Notre technologie de pointe pour identifier et analyser les contenus générés par l'intelligence artificielle
           </p>
-        </div>
+        </motion.div>
 
-        <div ref={featuresRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          ref={featuresRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+        >
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             >
               <Card className="glass hover:glass-gold transition-all duration-300 group">
                 <div className="p-6 text-center">
-                  <div className="mb-4 flex justify-center">
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-4 flex justify-center"
+                  >
                     <div className="glass-gold rounded-full p-3 group-hover:scale-110 transition-transform duration-300">
-                      <AnimatedIcon Icon={feature.icon} />
+                      <feature.icon className="h-6 w-6 text-alpha-gold" />
                     </div>
-                  </div>
+                  </motion.div>
                   <h3 className="text-lg font-semibold mb-2 text-alpha-white">{feature.title}</h3>
                   <p className="text-alpha-gray">{feature.description}</p>
                 </div>
               </Card>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <motion.div
           ref={animationRef}
