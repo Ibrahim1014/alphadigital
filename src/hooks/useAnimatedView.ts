@@ -1,9 +1,15 @@
 
-import { useInView } from 'framer-motion';
+import { useInView, type MarginType } from 'framer-motion';
 import { useRef } from 'react';
 
-export const useAnimatedView = (options = { once: true, margin: "-10%" }) => {
+interface AnimatedViewOptions {
+  once?: boolean;
+  margin?: MarginType;
+}
+
+export const useAnimatedView = (options: AnimatedViewOptions = { once: true, margin: "-10px 0px -10px 0px" }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, options);
   return { ref, isInView };
 };
+
