@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { pipeline } from '@huggingface/transformers';
+import { pipeline, TextClassificationOutput, TextClassificationSingle } from '@huggingface/transformers';
 
 interface AIResult {
   score: number;
@@ -72,11 +72,24 @@ export const useAIDetection = () => {
         );
         
         const results = await classifier(text);
-        const aiGenerated = results?.[0]?.label === 'AI-generated' 
-          ? results[0].score
-          : 1 - results?.[0]?.score;
-          
-        score = aiGenerated;
+        
+        // Fix: Safely access properties by checking the result type
+        if (Array.isArray(results) && results.length > 0) {
+          const firstResult = results[0] as TextClassificationSingle;
+          if ('label' in firstResult && 'score' in firstResult) {
+            const aiGenerated = firstResult.label === 'AI-generated' 
+              ? firstResult.score
+              : 1 - firstResult.score;
+            score = aiGenerated;
+          }
+        } else if (results && 'label' in results && 'score' in results) {
+          // Handle single result case
+          const singleResult = results as TextClassificationSingle;
+          const aiGenerated = singleResult.label === 'AI-generated' 
+            ? singleResult.score
+            : 1 - singleResult.score;
+          score = aiGenerated;
+        }
       } catch (error) {
         console.error("Erreur avec le modèle :", error);
         
@@ -122,19 +135,30 @@ export const useAIDetection = () => {
         
         const results = await classifier(imageUrl);
         
-        // Analyse des résultats avec heuristiques améliorées
-        const firstResult = Array.isArray(results) ? results[0] : results;
+        // Fix: Safely access properties by checking the result type
         let score = 0.5; // Score par défaut
         
-        if (firstResult && typeof firstResult === 'object' && 'score' in firstResult) {
-          // Les images générées par IA ont souvent des caractéristiques spécifiques
+        if (Array.isArray(results) && results.length > 0) {
+          const firstResult = results[0];
+          if (firstResult && typeof firstResult === 'object' && 'label' in firstResult && 'score' in firstResult) {
+            // Les images générées par IA ont souvent des caractéristiques spécifiques
+            const artificialPatterns = ['artificial', 'generated', 'synthetic', 'digital art'];
+            const caption = firstResult.label?.toLowerCase() || '';
+            
+            // Vérifier si la légende contient des indications d'image artificielle
+            const hasArtificialTerms = artificialPatterns.some(pattern => caption.includes(pattern));
+            
+            score = hasArtificialTerms ? 0.8 : firstResult.score > 0.9 ? 0.7 : 0.4;
+          }
+        } else if (results && typeof results === 'object' && 'label' in results && 'score' in results) {
+          // Handle single result case
           const artificialPatterns = ['artificial', 'generated', 'synthetic', 'digital art'];
-          const caption = firstResult.label?.toLowerCase() || '';
+          const caption = results.label?.toLowerCase() || '';
           
           // Vérifier si la légende contient des indications d'image artificielle
           const hasArtificialTerms = artificialPatterns.some(pattern => caption.includes(pattern));
           
-          score = hasArtificialTerms ? 0.8 : firstResult.score > 0.9 ? 0.7 : 0.4;
+          score = hasArtificialTerms ? 0.8 : results.score > 0.9 ? 0.7 : 0.4;
         }
 
         const result: AIResult = {

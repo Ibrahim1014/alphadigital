@@ -229,7 +229,7 @@ export const AIDetectionSection = () => {
                   {isAnalyzing ? (
                     <>
                       <AnimatedIcon 
-                        icon={Brain} 
+                        Icon={Brain} 
                         className="mr-2 animate-pulse" 
                       />
                       Analyse en cours...
