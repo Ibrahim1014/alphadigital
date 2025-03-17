@@ -1,59 +1,45 @@
 
-import { useEffect, useRef } from "react";
-
-// Define the Botpress window interface
-declare global {
-  interface Window {
-    botpressWebChat: {
-      init: (config: any) => void;
-      onEvent: (event: string, handler: Function) => void;
-      sendEvent: (payload: any) => void;
-    };
-  }
-}
+import React from "react";
+import {
+  Webchat,
+  WebchatProvider,
+  getClient
+} from '@botpress/webchat';
 
 export const ChatbotSection = () => {
-  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const clientId = "ca828dc5-427b-4fd9-8106-d244cfe7c85a";
+  const botId = "c10be2e2-f274-46aa-b715-f57aee5a0d11";
   
-  useEffect(() => {
-    // Initialize Botpress Web Chat
-    if (window.botpressWebChat) {
-      window.botpressWebChat.init({
-        containerEl: chatContainerRef.current,
-        hideWidget: true,
-        showConversationButtons: true,
-        enableTranscriptDownload: false,
-        composerPlaceholder: "Posez votre question ici...",
-        stylesheet: 'https://webchat-styler-css.botpress.app/prod/code/54639cce-52d1-44e0-9d2d-60967a100d01/v19044/style.css'
-      });
-      
-      // Open the chat once it's ready
-      window.botpressWebChat.onEvent('LIFECYCLE.LOADED', () => {
-        console.log('Botpress chat loaded successfully');
-      });
-    } else {
-      console.error('Botpress Web Chat is not available');
-      
-      // Try to initialize again if scripts load later
-      const checkInterval = setInterval(() => {
-        if (window.botpressWebChat) {
-          clearInterval(checkInterval);
-          window.botpressWebChat.init({
-            containerEl: chatContainerRef.current,
-            hideWidget: true,
-            enableTranscriptDownload: false,
-            showConversationButtons: true,
-            composerPlaceholder: "Posez votre question ici...",
-            stylesheet: 'https://webchat-styler-css.botpress.app/prod/code/54639cce-52d1-44e0-9d2d-60967a100d01/v19044/style.css'
-          });
-        }
-      }, 1000);
-      
-      // Clean up interval if component unmounts
-      return () => clearInterval(checkInterval);
-    }
-  }, []);
-  
+  // Initialize the Botpress client
+  const client = getClient({
+    clientId,
+    botId
+  });
+
+  // Configuration matching your provided setup
+  const configuration = {
+    composerPlaceholder: "Que puis-je faire pour vous aujourd'hui ? (Ex: Demander des informations sur nos services)",
+    botName: "Alpha Digital IA",
+    botAvatar: "https://files.bpcontent.cloud/2025/03/02/13/20250302130214-H9CZJBY6.jpeg",
+    botDescription: "Alpha Digital IA est un assistant virtuel polyvalent conçu pour répondre à toutes vos questions",
+    website: {},
+    email: {
+      title: "www.alphadigital8;wordpress.com",
+      link: "www.alphadigital8;wordpress.com"
+    },
+    phone: {
+      title: "+227 90307168",
+      link: "+227 90307168"
+    },
+    termsOfService: {},
+    privacyPolicy: {},
+    color: "#3B82F6",
+    variant: "solid",
+    themeMode: "light",
+    fontFamily: "inter",
+    radius: 1
+  };
+
   return (
     <section id="chatbot" className="py-20 px-4 relative overflow-hidden bg-gradient-to-b from-alpha-black to-[#0f0f1a]">
       <div className="max-w-7xl mx-auto relative z-10">
@@ -73,11 +59,11 @@ export const ChatbotSection = () => {
           className="relative rounded-lg overflow-hidden shadow-xl border-2 border-alpha-gold/20 mx-auto bg-black/30 backdrop-blur-sm"
           style={{ width: "100%", maxWidth: "800px", height: "500px" }}
         >
-          <div 
-            ref={chatContainerRef}
-            className="w-full h-full"
-            style={{ overflowY: "auto" }}
-          ></div>
+          <WebchatProvider client={client} configuration={configuration}>
+            <div className="w-full h-full">
+              <Webchat className="w-full h-full" />
+            </div>
+          </WebchatProvider>
         </div>
       </div>
     </section>
