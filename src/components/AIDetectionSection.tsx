@@ -1,6 +1,7 @@
+
 import { useEffect, useState, useRef } from "react";
 import { Card } from "./ui/card";
-import { Brain, Shield, Zap, Bot, Upload } from "lucide-react";
+import { Brain, Shield, Zap, Bot, Upload, FileType, FileImage } from "lucide-react";
 import { Button } from "./ui/button";
 import { AnimatedIcon } from "./AnimatedIcon";
 import { useAIDetection } from "@/hooks/useAIDetection";
@@ -13,6 +14,7 @@ export const AIDetectionSection = () => {
   const [text, setText] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { analyzeText, analyzeImage, isAnalyzing, result } = useAIDetection();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -57,6 +59,18 @@ export const AIDetectionSection = () => {
       setText("");
     }
   };
+  
+  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setSelectedFile(e.dataTransfer.files[0]);
+      setText("");
+    }
+  };
+  
+  const openFileDialog = () => {
+    fileInputRef.current?.click();
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -80,8 +94,12 @@ export const AIDetectionSection = () => {
   };
 
   return (
-    <section ref={sectionRef} id="detection" className="py-20 px-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-radial from-alpha-gold/5 to-transparent" />
+    <section 
+      ref={sectionRef} 
+      id="detection" 
+      className="py-20 px-4 relative overflow-hidden bg-gradient-to-b from-alpha-black to-[#101020]"
+    >
+      <div className="absolute inset-0 bg-gradient-radial from-purple-900/10 via-alpha-gold/5 to-transparent" />
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -136,51 +154,93 @@ export const AIDetectionSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <Tabs defaultValue="text" className="w-full">
-            <TabsList className="w-full mb-6 bg-alpha-black/20">
-              <TabsTrigger value="text" className="flex-1">Texte</TabsTrigger>
-              <TabsTrigger value="image" className="flex-1">Image</TabsTrigger>
-            </TabsList>
-            
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <TabsContent value="text">
-                <Textarea
-                  value={text}
-                  onChange={(e) => {
-                    setText(e.target.value);
-                    setSelectedFile(null);
-                  }}
-                  placeholder="Collez votre texte ici pour l'analyser..."
-                  className="min-h-[150px] glass"
-                  disabled={isAnalyzing}
-                />
-              </TabsContent>
+          <Card className="glass border border-purple-500/20 shadow-lg shadow-purple-500/10 p-6">
+            <Tabs defaultValue="text" className="w-full">
+              <TabsList className="w-full mb-6 bg-alpha-black/20 border border-purple-500/30">
+                <TabsTrigger value="text" className="flex-1 data-[state=active]:bg-purple-500/20">
+                  <FileType className="mr-2 h-4 w-4" />
+                  Texte
+                </TabsTrigger>
+                <TabsTrigger value="image" className="flex-1 data-[state=active]:bg-purple-500/20">
+                  <FileImage className="mr-2 h-4 w-4" />
+                  Image
+                </TabsTrigger>
+              </TabsList>
               
-              <TabsContent value="image">
-                <div className="glass hover:glass-gold transition-all duration-300 p-4 text-center cursor-pointer rounded-lg">
-                  <Upload className="h-6 w-6 text-alpha-gold mx-auto mb-2" />
-                  <span className="text-alpha-white">
-                    {selectedFile ? selectedFile.name : "Choisir une image"}
-                  </span>
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleFileChange}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <TabsContent value="text">
+                  <Textarea
+                    value={text}
+                    onChange={(e) => {
+                      setText(e.target.value);
+                      setSelectedFile(null);
+                    }}
+                    placeholder="Collez votre texte ici pour l'analyser..."
+                    className="min-h-[150px] glass border-purple-500/30 focus:border-alpha-gold/50"
                     disabled={isAnalyzing}
                   />
-                </div>
-              </TabsContent>
+                </TabsContent>
+                
+                <TabsContent value="image">
+                  <div 
+                    className="glass hover:glass-gold transition-all duration-300 p-8 text-center cursor-pointer rounded-lg border-2 border-dashed border-purple-500/30 hover:border-alpha-gold/50"
+                    onClick={openFileDialog}
+                    onDrop={handleFileDrop}
+                    onDragOver={(e) => e.preventDefault()}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      disabled={isAnalyzing}
+                    />
+                    {selectedFile ? (
+                      <div className="space-y-2">
+                        <div className="w-full max-h-48 overflow-hidden rounded-md">
+                          <img 
+                            src={URL.createObjectURL(selectedFile)} 
+                            alt="Image sélectionnée" 
+                            className="w-full h-auto object-cover"
+                          />
+                        </div>
+                        <p className="text-alpha-white text-sm">{selectedFile.name}</p>
+                      </div>
+                    ) : (
+                      <>
+                        <Upload className="h-12 w-12 text-alpha-gold mx-auto mb-4 animate-bounce" />
+                        <p className="text-alpha-white font-medium">
+                          Glissez une image ou cliquez pour la sélectionner
+                        </p>
+                        <p className="text-alpha-gray text-sm mt-2">
+                          Formats acceptés: JPG, PNG, GIF, WEBP
+                        </p>
+                      </>
+                    )}
+                  </div>
+                </TabsContent>
 
-              <Button
-                type="submit"
-                className="w-full bg-gradient-gold text-alpha-black hover:opacity-90 hover:scale-105 transition-all duration-300"
-                disabled={isAnalyzing || (!text.trim() && !selectedFile)}
-              >
-                {isAnalyzing ? "Analyse en cours..." : "Analyser"}
-              </Button>
-            </form>
-          </Tabs>
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-purple-500 to-alpha-gold text-alpha-black hover:opacity-90 hover:scale-105 transition-all duration-300"
+                  disabled={isAnalyzing || (!text.trim() && !selectedFile)}
+                >
+                  {isAnalyzing ? (
+                    <>
+                      <AnimatedIcon 
+                        icon={Brain} 
+                        className="mr-2 animate-pulse" 
+                      />
+                      Analyse en cours...
+                    </>
+                  ) : (
+                    <>Analyser</>
+                  )}
+                </Button>
+              </form>
+            </Tabs>
+          </Card>
 
           {result && (
             <motion.div
@@ -188,11 +248,17 @@ export const AIDetectionSection = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mt-8 space-y-6"
             >
-              <Card className="p-6 glass">
-                <h3 className="text-xl font-semibold mb-4">Résultats de l'analyse</h3>
+              <Card className="p-6 glass border border-purple-500/20 shadow-lg shadow-purple-500/10">
+                <h3 className="text-xl font-semibold mb-4 text-gradient-gold">Résultats de l'analyse</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span>Probabilité IA</span>
+                    <div className="relative w-48 h-3 bg-gray-700 rounded-full overflow-hidden">
+                      <div 
+                        className="absolute h-full bg-gradient-to-r from-green-500 to-red-500 transition-all duration-1000"
+                        style={{ width: `${(result.score * 100)}%` }}
+                      />
+                    </div>
                     <span className="text-gradient-gold font-semibold">
                       {(result.score * 100).toFixed(1)}%
                     </span>
@@ -200,9 +266,9 @@ export const AIDetectionSection = () => {
                   <div className="flex items-center justify-between">
                     <span>Niveau de confiance</span>
                     <span className={`font-semibold ${
-                      result.confidence === "Forte" ? "text-green-500" :
+                      result.confidence === "Forte" ? "text-red-500" :
                       result.confidence === "Moyenne" ? "text-yellow-500" :
-                      "text-red-500"
+                      "text-green-500"
                     }`}>
                       {result.confidence}
                     </span>
@@ -211,8 +277,8 @@ export const AIDetectionSection = () => {
                 </div>
               </Card>
 
-              <Card className="p-6 glass">
-                <h3 className="text-xl font-semibold mb-4">Raisonnement</h3>
+              <Card className="p-6 glass border border-purple-500/20 shadow-lg shadow-purple-500/10">
+                <h3 className="text-xl font-semibold mb-4 text-gradient-gold">Raisonnement</h3>
                 <ul className="space-y-2">
                   {result.reasoning.map((reason, index) => (
                     <motion.li
