@@ -11,34 +11,6 @@ export const ChatbotSection = () => {
         window.botpress.on("webchat:ready", () => {
           window.botpress.open();
         });
-        
-        window.botpress.init({
-          "botId": "c10be2e2-f274-46aa-b715-f57aee5a0d11",
-          "configuration": {
-            "composerPlaceholder": "Que puis-je faire pour vous aujourd'hui ? (Ex:Demander des informations sur nos services)",
-            "botName": "Alpha Digital IA",
-            "botAvatar": "https://files.bpcontent.cloud/2025/03/02/13/20250302132142-H9CZJBY6.jpeg",
-            "botDescription": "Alpha Digital IA est un assistant virtuel polyvalent conçu pour répondre à toutes vos questions",
-            "website": {},
-            "email": {
-              "title": "www.alphadigital8.wordpress.com",
-              "link": "www.alphadigital8.wordpress.com"
-            },
-            "phone": {
-              "title": "+227 90307168",
-              "link": "+227 90307168"
-            },
-            "termsOfService": {},
-            "privacyPolicy": {},
-            "color": "#3B82F6",
-            "variant": "solid",
-            "themeMode": "light",
-            "fontFamily": "inter",
-            "radius": 1
-          },
-          "clientId": "ca828dc5-427b-4fd9-8106-d244cfe7c85a",
-          "selector": "#webchat"
-        });
       }
     };
     

@@ -1,37 +1,46 @@
 
+import { useState } from "react";
 import { MessageSquare, Paintbrush, Code, Music } from "lucide-react";
 import { AnimatedSection } from "./AnimatedSection";
 import { Card } from "./ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
+import { ServiceDetail } from "./ServiceDetail";
 
 export const ServicesSection = () => {
+  const [activeTab, setActiveTab] = useState<'marketing' | 'design' | 'development' | 'music'>('marketing');
+  
   const services = [
     {
       icon: MessageSquare,
       title: "Marketing Digital",
       description: "Stratégies innovantes pour accroître votre visibilité en ligne",
       imagePath: "/lovable-uploads/marketing.jpg",
-      direction: "left" as const
+      direction: "left" as const,
+      value: "marketing"
     },
     {
       icon: Paintbrush,
       title: "Conception Graphique",
       description: "Designs créatifs et professionnels qui captivent votre audience",
       imagePath: "/lovable-uploads/design.jpg",
-      direction: "up" as const
+      direction: "up" as const,
+      value: "design"
     },
     {
       icon: Code,
       title: "Développement Web & Mobile",
       description: "Solutions techniques sur mesure et performantes",
       imagePath: "/lovable-uploads/development.jpg",
-      direction: "down" as const
+      direction: "down" as const,
+      value: "development"
     },
     {
       icon: Music,
       title: "Production Musicale",
       description: "Création sonore unique pour vos projets multimédia",
       imagePath: "/lovable-uploads/music.jpg",
-      direction: "right" as const
+      direction: "right" as const,
+      value: "music"
     }
   ];
 
@@ -47,38 +56,67 @@ export const ServicesSection = () => {
           </p>
         </AnimatedSection>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service, index) => (
-            <AnimatedSection
-              key={index}
-              delay={index * 0.2}
-              direction={service.direction}
-            >
-              <Card className="glass hover:glass-gold transition-all duration-500 overflow-hidden group">
-                <div className="relative p-6">
-                  <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
-                    <img
-                      src={service.imagePath}
-                      alt={service.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="relative z-10">
-                    <div className="glass-gold rounded-full w-12 h-12 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                      <service.icon className="h-6 w-6 text-alpha-gold" />
+        <Tabs 
+          defaultValue="marketing" 
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as 'marketing' | 'design' | 'development' | 'music')}
+          className="w-full"
+        >
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-transparent mb-8">
+            {services.map((service, index) => (
+              <TabsTrigger 
+                key={index}
+                value={service.value}
+                className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300"
+              >
+                <service.icon className="mr-2 h-4 w-4" />
+                {service.title}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6 mb-12">
+            {services.map((service, index) => (
+              <TabsContent key={index} value={service.value} className="m-0">
+                <AnimatedSection
+                  delay={0.1}
+                  direction={service.direction}
+                >
+                  <Card 
+                    className="glass hover:glass-gold transition-all duration-500 overflow-hidden group cursor-pointer"
+                    onClick={() => setActiveTab(service.value as 'marketing' | 'design' | 'development' | 'music')}
+                  >
+                    <div className="relative p-6">
+                      <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
+                        <img
+                          src={service.imagePath}
+                          alt={service.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="relative z-10">
+                        <div className="glass-gold rounded-full w-12 h-12 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
+                          <service.icon className="h-6 w-6 text-alpha-gold" />
+                        </div>
+                        <h3 className="text-lg font-semibold mb-2 text-alpha-white text-center">
+                          {service.title}
+                        </h3>
+                        <p className="text-alpha-gray text-center">
+                          {service.description}
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-lg font-semibold mb-2 text-alpha-white text-center">
-                      {service.title}
-                    </h3>
-                    <p className="text-alpha-gray text-center">
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </AnimatedSection>
-          ))}
-        </div>
+                  </Card>
+                </AnimatedSection>
+              </TabsContent>
+            ))}
+          </div>
+          
+          {/* Détail du service sélectionné */}
+          <TabsContent value={activeTab} className="m-0">
+            <ServiceDetail serviceType={activeTab} />
+          </TabsContent>
+        </Tabs>
       </div>
     </section>
   );
