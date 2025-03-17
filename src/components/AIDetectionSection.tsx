@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { Card } from "./ui/card";
 import { Brain, Shield, Zap, Bot, Upload, FileType, FileImage } from "lucide-react";
@@ -20,6 +19,29 @@ export const AIDetectionSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const featuresRef = useRef<HTMLDivElement>(null);
   const animationRef = useScrollAnimation<HTMLDivElement>({ start: "top 80%" });
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsActive(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          window.history.replaceState(null, "", "#detection");
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   const features = [
     {
@@ -97,18 +119,26 @@ export const AIDetectionSection = () => {
     <section 
       ref={sectionRef} 
       id="detection" 
-      className="py-20 px-4 relative overflow-hidden bg-gradient-to-b from-alpha-black to-[#101020]"
+      className={`py-20 px-4 relative overflow-hidden ${
+        isActive 
+          ? "bg-gradient-to-b from-alpha-black to-[#201040] transition-colors duration-1000" 
+          : "bg-gradient-to-b from-alpha-black to-[#101020]"
+      }`}
     >
-      <div className="absolute inset-0 bg-gradient-radial from-purple-900/10 via-alpha-gold/5 to-transparent" />
+      <div className={`absolute inset-0 bg-gradient-radial ${
+        isActive 
+          ? "from-purple-900/30 via-alpha-gold/10 to-transparent transition-all duration-1000" 
+          : "from-purple-900/10 via-alpha-gold/5 to-transparent"
+      }`} />
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className={`text-center mb-12 ${isActive ? "text-glow" : ""}`}
         >
           <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-4">
-            Détection <span className="text-gradient-gold">IA</span>
+            Détection <span className={`${isActive ? "text-gradient-gold animate-pulse" : "text-gradient-gold"}`}>IA</span>
           </h2>
           <p className="text-alpha-gray text-lg max-w-2xl mx-auto">
             Notre technologie de pointe pour identifier et analyser les contenus générés par l'intelligence artificielle
@@ -301,3 +331,4 @@ export const AIDetectionSection = () => {
     </section>
   );
 };
+

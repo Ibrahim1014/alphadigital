@@ -5,7 +5,7 @@ export const ChatbotSection = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // Attendre que window.botpress soit disponible
+    // S'assurer que le script Botpress est chargé et initialisé
     const initializeBot = () => {
       if (window.botpress) {
         window.botpress.on("webchat:ready", () => {
@@ -14,22 +14,21 @@ export const ChatbotSection = () => {
       }
     };
     
-    // S'assurer que le script est chargé
+    // Si le script est déjà chargé, initialiser le bot
     if (window.botpress) {
       initializeBot();
     } else {
-      // Si le script n'est pas encore chargé, attendre un peu
+      // Si le script n'est pas encore chargé, attendre et vérifier régulièrement
       const checkInterval = setInterval(() => {
         if (window.botpress) {
           clearInterval(checkInterval);
           initializeBot();
         }
       }, 500);
+
+      // Nettoyer l'intervalle si le composant est démonté
+      return () => clearInterval(checkInterval);
     }
-    
-    return () => {
-      // Cleanup si nécessaire
-    };
   }, []);
   
   return (
@@ -44,15 +43,22 @@ export const ChatbotSection = () => {
           </p>
         </div>
         
-        <div className="relative rounded-lg overflow-hidden shadow-xl border-2 border-alpha-gold/20 mx-auto" style={{ width: "100%", maxWidth: "800px", height: "500px" }}>
-          <div id="webchat" style={{ width: "100%", height: "100%" }}></div>
+        <div 
+          className="relative rounded-lg overflow-hidden shadow-xl border-2 border-alpha-gold/20 mx-auto" 
+          style={{ width: "100%", maxWidth: "800px", height: "500px" }}
+        >
+          <div 
+            id="webchat" 
+            ref={chatContainerRef}
+            className="w-full h-full"
+          ></div>
         </div>
       </div>
     </section>
   );
 };
 
-// Ajout de la déclaration pour TypeScript
+// Déclaration pour TypeScript
 declare global {
   interface Window {
     botpress: any;

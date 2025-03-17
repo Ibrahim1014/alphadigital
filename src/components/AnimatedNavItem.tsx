@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface AnimatedNavItemProps {
   href: string;
@@ -12,6 +12,22 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
   const location = useLocation();
   const isActive = location.hash === href;
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const targetId = href.substring(1);
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 80, // 80px pour compenser la hauteur de la navbar
+        behavior: "smooth"
+      });
+      
+      // Mettre à jour l'URL avec le hash sans déclencher de rechargement
+      window.history.pushState(null, "", href);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -50 }}
@@ -19,8 +35,9 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{ scale: 1.05 }}
     >
-      <Link
-        to={href}
+      <a
+        href={href}
+        onClick={handleClick}
         className={`relative group flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
           isActive 
             ? "text-alpha-gold bg-alpha-gold/10" 
@@ -52,7 +69,7 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
             transition={{ duration: 0.3 }}
           />
         )}
-      </Link>
+      </a>
     </motion.div>
   );
 };

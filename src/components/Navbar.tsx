@@ -13,6 +13,7 @@ export const Navbar = () => {
     { name: "Services", href: "#services" },
     { name: "Portfolio", href: "#portfolio" },
     { name: "Détection IA", href: "#detection" },
+    { name: "Assistant IA", href: "#chatbot" },
     { name: "Contact", href: "#contact" },
   ];
 
