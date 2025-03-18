@@ -6,6 +6,7 @@ import { Card } from "./ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import { ServiceDetail } from "./ServiceDetail";
 import { motion } from "framer-motion";
+import { FloatingParticles } from "./FloatingParticles";
 
 export const ServicesSection = () => {
   const [activeTab, setActiveTab] = useState<'marketing' | 'design' | 'development' | 'music'>('marketing');
@@ -46,18 +47,27 @@ export const ServicesSection = () => {
   ];
 
   return (
-    <section id="services" className="py-20 px-4 relative">
-      {/* Ajout d'orbes lumineux animés en arrière-plan */}
+    <section id="services" className="py-32 px-4 relative overflow-hidden">
+      {/* Ajout des particules flottantes dorées */}
+      <FloatingParticles 
+        count={25} 
+        color="rgba(255, 215, 0, 0.15)" 
+        maxSize={120} 
+        minSize={40} 
+        blurAmount="50px" 
+      />
+      
+      {/* Orbes lumineux animés en arrière plan */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-alpha-gold/20 blur-3xl"
+            className="absolute rounded-full bg-alpha-gold/10 blur-3xl"
             style={{
               width: `${Math.random() * 300 + 100}px`,
               height: `${Math.random() * 300 + 100}px`,
-              left: `${Math.random() * 90}%`,
-              top: `${Math.random() * 90}%`,
+              left: `${Math.random() * 80}%`,
+              top: `${Math.random() * 80}%`,
             }}
             animate={{
               x: [0, Math.random() * 100 - 50, 0],
@@ -75,9 +85,9 @@ export const ServicesSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <AnimatedSection className="text-center mb-12">
+        <AnimatedSection className="text-center mb-16">
           <motion.h2 
-            className="text-3xl md:text-4xl font-bold mb-4"
+            className="text-3xl md:text-5xl font-bold mb-6"
             animate={{ 
               textShadow: ["0px 0px 15px rgba(255,215,0,0.3)", "0px 0px 30px rgba(255,215,0,0.7)", "0px 0px 15px rgba(255,215,0,0.3)"]
             }}
@@ -96,28 +106,31 @@ export const ServicesSection = () => {
           onValueChange={(value) => setActiveTab(value as 'marketing' | 'design' | 'development' | 'music')}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-transparent mb-12">
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-transparent mb-28">
             {services.map((service, index) => (
               <motion.div 
                 key={index} 
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <TabsTrigger 
                   value={service.value}
-                  className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300 overflow-hidden relative group"
+                  className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300 overflow-hidden relative group h-14"
                 >
                   {/* Effet lumineux au hover */}
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-alpha-gold/20 blur-xl transition-transform duration-700 ease-in-out" />
-                  <service.icon className="mr-2 h-4 w-4" />
+                  <motion.div 
+                    className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-alpha-gold/20 blur-xl transition-transform duration-700 ease-in-out" 
+                    transition={{ repeat: Infinity, duration: 2 }}
+                  />
+                  <service.icon className="mr-2 h-5 w-5" />
                   {service.title}
                 </TabsTrigger>
               </motion.div>
             ))}
           </TabsList>
           
-          <div className="mt-12 pt-8">
-            {/* Zone des détails de service avec marge importante pour éviter le chevauchement */}
+          <div className="mt-8">
+            {/* Espace ajouté pour éviter le chevauchement */}
             <TabsContent value={activeTab} className="m-0">
               <ServiceDetail serviceType={activeTab} />
             </TabsContent>

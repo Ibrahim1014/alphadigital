@@ -10,6 +10,8 @@ interface FloatingParticleProps {
   blurAmount?: string;
   opacity?: number;
   className?: string;
+  speed?: number;
+  interactive?: boolean;
 }
 
 export const FloatingParticles = ({
@@ -20,6 +22,8 @@ export const FloatingParticles = ({
   blurAmount = "40px",
   opacity = 0.3,
   className = "",
+  speed = 1,
+  interactive = true,
 }: FloatingParticleProps) => {
   const [particles, setParticles] = useState<Array<{
     id: number;
@@ -28,8 +32,14 @@ export const FloatingParticles = ({
     size: number;
     duration: number;
     delay: number;
+    amplitude: number;
+    rotation: number;
   }>>([]);
+  
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
 
+  // Création des particules
   useEffect(() => {
     const newParticles = Array(count)
       .fill(null)
@@ -38,41 +48,92 @@ export const FloatingParticles = ({
         x: Math.random() * 100,
         y: Math.random() * 100,
         size: Math.random() * (maxSize - minSize) + minSize,
-        duration: Math.random() * 20 + 10,
+        duration: (Math.random() * 20 + 10) / speed,
         delay: Math.random() * 5,
+        amplitude: Math.random() * 60 + 20,
+        rotation: Math.random() * 360,
       }));
 
     setParticles(newParticles);
-  }, [count, maxSize, minSize]);
+  }, [count, maxSize, minSize, speed]);
+  
+  // Gestion de l'interactivité à la souris
+  useEffect(() => {
+    if (!interactive) return;
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      setMousePosition({ x, y });
+      setIsHovering(true);
+    };
+    
+    const handleMouseLeave = () => {
+      setIsHovering(false);
+    };
+    
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseleave", handleMouseLeave);
+    
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [interactive]);
 
   return (
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute rounded-full"
-          style={{
-            width: particle.size,
-            height: particle.size,
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-            backgroundColor: color,
-            filter: `blur(${blurAmount})`,
-            opacity: opacity,
-          }}
-          animate={{
-            x: [0, Math.random() * 100 - 50, 0],
-            y: [0, Math.random() * 100 - 50, 0],
-            scale: [1, Math.random() * 0.4 + 0.8, 1],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
+      {particles.map((particle) => {
+        // Calcul de la distance entre la particule et la souris (pour l'interactivité)
+        const dx = interactive && isHovering ? (particle.x - mousePosition.x) / 10 : 0;
+        const dy = interactive && isHovering ? (particle.y - mousePosition.y) / 10 : 0;
+        
+        return (
+          <motion.div
+            key={particle.id}
+            className="absolute rounded-full"
+            style={{
+              width: particle.size,
+              height: particle.size,
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              backgroundColor: color,
+              filter: `blur(${blurAmount})`,
+              opacity: opacity,
+              zIndex: -1,
+            }}
+            animate={{
+              x: [
+                0, 
+                dx + Math.sin(particle.id) * particle.amplitude * 0.5, 
+                dx - Math.cos(particle.id) * particle.amplitude * 0.3, 
+                0
+              ],
+              y: [
+                0, 
+                dy + Math.cos(particle.id) * particle.amplitude * 0.5, 
+                dy + Math.sin(particle.id) * particle.amplitude * 0.3, 
+                0
+              ],
+              scale: [1, Math.random() * 0.4 + 0.8, Math.random() * 0.3 + 0.9, 1],
+              rotate: [0, particle.rotation * 0.5, particle.rotation, 0],
+              opacity: [opacity, opacity * 1.5, opacity * 0.8, opacity],
+              filter: [
+                `blur(${blurAmount})`,
+                `blur(${parseInt(blurAmount) * 0.8}px)`,
+                `blur(${parseInt(blurAmount) * 1.2}px)`,
+                `blur(${blurAmount})`
+              ],
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: Infinity,
+              delay: particle.delay,
+              ease: "easeInOut",
+            }}
+          />
+        );
+      })}
     </div>
   );
 };

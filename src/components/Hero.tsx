@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TextPlugin } from "gsap/TextPlugin";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { FloatingParticles } from "./FloatingParticles";
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
@@ -16,6 +17,14 @@ export const Hero = () => {
   const ctaRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const y = useTransform(scrollYProgress, [0, 1], [0, 350]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   
   // Suivre la position de la souris pour les effets parallax
   useEffect(() => {
@@ -36,10 +45,10 @@ export const Hero = () => {
       defaults: { ease: "power3.out" }
     });
 
-    // Animation badge
+    // Animation badge - déplacement depuis le haut avec plus d'amplitude
     timeline.fromTo(badgeRef.current,
-      { y: -50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1 }
+      { y: -80, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2 }
     );
 
     // Animation titre avec effet machine à écrire
@@ -82,27 +91,25 @@ export const Hero = () => {
     };
   }, []);
 
-  // Particules flottantes
-  const particles = Array(10).fill(null).map((_, i) => ({
-    id: i,
-    size: Math.random() * 50 + 30,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: Math.random() * 20 + 10,
-    delay: Math.random() * 5
-  }));
-
   return (
-    <div ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      {/* Effet de brume dorée en arrière plan */}
+    <div ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
+      {/* Particules flottantes premium */}
+      <FloatingParticles 
+        count={30}
+        color="rgba(255, 215, 0, 0.2)"
+        maxSize={100}
+        minSize={30}
+      />
+      
+      {/* Effet de brume dorée en arrière plan avec plus d'intensité */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(3)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-alpha-gold/10 blur-[100px]"
+            className="absolute rounded-full bg-alpha-gold/20 blur-[120px]"
             style={{
-              width: `${Math.random() * 50 + 30}vw`,
-              height: `${Math.random() * 50 + 30}vh`,
+              width: `${Math.random() * 70 + 50}vw`,
+              height: `${Math.random() * 70 + 50}vh`,
               left: `${Math.random() * 80}%`,
               top: `${Math.random() * 80}%`,
               zIndex: -1
@@ -111,7 +118,7 @@ export const Hero = () => {
               x: [0, Math.random() * 100 - 50, 0],
               y: [0, Math.random() * 100 - 50, 0],
               scale: [1, 1.3, 1],
-              opacity: [0.3, 0.5, 0.3],
+              opacity: [0.3, 0.6, 0.3],
             }}
             transition={{
               duration: Math.random() * 30 + 20,
@@ -122,50 +129,26 @@ export const Hero = () => {
         ))}
       </div>
       
-      {/* Particules flottantes */}
-      {particles.map((particle) => (
-        <motion.div
-          key={particle.id}
-          className="absolute rounded-full bg-alpha-gold/20 blur-md pointer-events-none"
-          style={{
-            width: particle.size,
-            height: particle.size,
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-            zIndex: -1,
-          }}
-          animate={{
-            x: [0, Math.random() * 100 - 50, 0],
-            y: [0, Math.random() * 100 - 50, 0],
-            opacity: [0.2, 0.5, 0.2],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-      
-      {/* Effet parallax sur la position de la souris */}
+      {/* Effet parallax sur la position de la souris avec plus d'amplitude */}
       <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          x: mousePosition.x * -20,
-          y: mousePosition.y * -20,
+          x: mousePosition.x * -40,
+          y: mousePosition.y * -40,
         }}
       >
-        <div className="absolute top-1/4 right-1/4 w-40 h-40 rounded-full bg-alpha-gold/10 blur-3xl" />
-        <div className="absolute bottom-1/3 left-1/3 w-60 h-60 rounded-full bg-alpha-gold/15 blur-3xl" />
+        <div className="absolute top-1/4 right-1/4 w-60 h-60 rounded-full bg-alpha-gold/15 blur-3xl" />
+        <div className="absolute bottom-1/3 left-1/3 w-80 h-80 rounded-full bg-alpha-gold/20 blur-3xl" />
       </motion.div>
 
-      <div className="container px-4 mx-auto relative z-10">
+      <motion.div 
+        className="container px-4 mx-auto relative z-10"
+        style={{ y, opacity }}
+      >
         <div className="text-center max-w-4xl mx-auto">
           <motion.div 
             ref={badgeRef} 
-            className="inline-flex items-center px-4 py-2 rounded-full glass-gold mb-8"
+            className="inline-flex items-center px-5 py-2.5 rounded-full glass-gold mb-10"
             whileHover={{ scale: 1.05 }}
             animate={{
               y: [0, -10, 0],
@@ -206,8 +189,14 @@ export const Hero = () => {
             Solutions digitales sur mesure et détection avancée des fake news propulsée par l'IA
           </p>
           
-          <div ref={ctaRef} className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+          <div ref={ctaRef} className="flex flex-col sm:flex-row items-center justify-center gap-5 opacity-0">
+            <motion.div 
+              whileHover={{ scale: 1.05 }} 
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
               <Button 
                 size="lg" 
                 className="w-full sm:w-auto bg-gradient-gold hover:opacity-90 text-alpha-black group relative overflow-hidden"
@@ -230,7 +219,13 @@ export const Hero = () => {
               </Button>
             </motion.div>
             
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+            <motion.div 
+              whileHover={{ scale: 1.05 }} 
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
               <Button 
                 variant="outline" 
                 size="lg" 
@@ -241,7 +236,16 @@ export const Hero = () => {
             </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
+      
+      {/* Effet de halo lumineux qui suit le scroll */}
+      <motion.div 
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[120%] h-[30vh]"
+        style={{
+          background: "radial-gradient(ellipse at center, rgba(255,215,0,0.15) 0%, rgba(0,0,0,0) 70%)",
+          opacity: useTransform(scrollYProgress, [0, 0.2], [1, 0])
+        }}
+      />
     </div>
   );
 };
