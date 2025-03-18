@@ -34,7 +34,7 @@ export const ChatbotSection = () => {
     color: "#3B82F6",
     variant: "solid" as const, // Explicitly type as "solid"
     themeMode: "light" as const, // Explicitly type as "light"
-    fontFamily: "inter",
+    fontFamily: "inter" as const, // Explicitly type as "inter" - one of the allowed values
     radius: 1
   };
 
