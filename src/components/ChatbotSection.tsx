@@ -8,15 +8,13 @@ import {
 
 export const ChatbotSection = () => {
   const clientId = "ca828dc5-427b-4fd9-8106-d244cfe7c85a";
-  const botId = "c10be2e2-f274-46aa-b715-f57aee5a0d11";
   
-  // Initialize the Botpress client
+  // Initialize the Botpress client with just the clientId (botId is not a valid property in GetClientOptions)
   const client = getClient({
-    clientId,
-    botId
+    clientId
   });
 
-  // Configuration matching your provided setup
+  // Configuration matching your provided setup, fixing the variant type to be "solid" (a valid enum value)
   const configuration = {
     composerPlaceholder: "Que puis-je faire pour vous aujourd'hui ? (Ex: Demander des informations sur nos services)",
     botName: "Alpha Digital IA",
@@ -34,7 +32,7 @@ export const ChatbotSection = () => {
     termsOfService: {},
     privacyPolicy: {},
     color: "#3B82F6",
-    variant: "solid",
+    variant: "solid" as const, // Explicitly cast as "solid" to match expected type
     themeMode: "light",
     fontFamily: "inter",
     radius: 1
@@ -60,8 +58,9 @@ export const ChatbotSection = () => {
           style={{ width: "100%", maxWidth: "800px", height: "500px" }}
         >
           <WebchatProvider client={client} configuration={configuration}>
+            {/* The Webchat component doesn't accept className directly */}
             <div className="w-full h-full">
-              <Webchat className="w-full h-full" />
+              <Webchat />
             </div>
           </WebchatProvider>
         </div>
