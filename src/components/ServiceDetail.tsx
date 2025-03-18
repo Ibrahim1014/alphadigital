@@ -22,7 +22,7 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
         "Analyse de données et optimisation",
         "Marketing par email"
       ],
-      imagePath: "/lovable-uploads/marketing.jpg"
+      imagePath: "/lovable-uploads/ef069826-012b-44c8-a477-c1c1c9274659.png"
     },
     design: {
       title: "Conception Graphique",
@@ -35,7 +35,7 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
         "Conception de matériel imprimé",
         "Illustrations personnalisées"
       ],
-      imagePath: "/lovable-uploads/design.jpg"
+      imagePath: "/lovable-uploads/5466acc5-b12f-432b-9120-7200f22cb17b.png"
     },
     development: {
       title: "Développement Web & Mobile",
@@ -48,7 +48,7 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
         "Intégration de systèmes et API",
         "Maintenance et support technique"
       ],
-      imagePath: "/lovable-uploads/development.jpg"
+      imagePath: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png"
     },
     music: {
       title: "Production Musicale",
@@ -61,7 +61,7 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
         "Mixage et mastering audio",
         "Licences musicales pour vos projets"
       ],
-      imagePath: "/lovable-uploads/music.jpg"
+      imagePath: "/lovable-uploads/5f324228-39e9-4c4c-ac5d-6a6f8db60f4f.png"
     }
   };
 

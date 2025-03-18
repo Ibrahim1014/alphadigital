@@ -18,7 +18,7 @@ export const ChatbotSection = () => {
   const configuration = {
     composerPlaceholder: "Que puis-je faire pour vous aujourd'hui ? (Ex: Demander des informations sur nos services)",
     botName: "Alpha Digital IA",
-    botAvatar: "https://files.bpcontent.cloud/2025/03/02/13/20250302130214-H9CZJBY6.jpeg",
+    botAvatar: "/lovable-uploads/baffbad0-6e74-4bf2-9f5e-a326a70543b5.png",
     botDescription: "Alpha Digital IA est un assistant virtuel polyvalent conçu pour répondre à toutes vos questions",
     website: {},
     email: {

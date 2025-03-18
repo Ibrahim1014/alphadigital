@@ -14,7 +14,7 @@ export const ServicesSection = () => {
       icon: MessageSquare,
       title: "Marketing Digital",
       description: "Stratégies innovantes pour accroître votre visibilité en ligne",
-      imagePath: "/lovable-uploads/marketing.jpg",
+      imagePath: "/lovable-uploads/ef069826-012b-44c8-a477-c1c1c9274659.png",
       direction: "left" as const,
       value: "marketing"
     },
@@ -22,7 +22,7 @@ export const ServicesSection = () => {
       icon: Paintbrush,
       title: "Conception Graphique",
       description: "Designs créatifs et professionnels qui captivent votre audience",
-      imagePath: "/lovable-uploads/design.jpg",
+      imagePath: "/lovable-uploads/5466acc5-b12f-432b-9120-7200f22cb17b.png",
       direction: "up" as const,
       value: "design"
     },
@@ -30,7 +30,7 @@ export const ServicesSection = () => {
       icon: Code,
       title: "Développement Web & Mobile",
       description: "Solutions techniques sur mesure et performantes",
-      imagePath: "/lovable-uploads/development.jpg",
+      imagePath: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png",
       direction: "down" as const,
       value: "development"
     },
@@ -38,7 +38,7 @@ export const ServicesSection = () => {
       icon: Music,
       title: "Production Musicale",
       description: "Création sonore unique pour vos projets multimédia",
-      imagePath: "/lovable-uploads/music.jpg",
+      imagePath: "/lovable-uploads/5f324228-39e9-4c4c-ac5d-6a6f8db60f4f.png",
       direction: "right" as const,
       value: "music"
     }
