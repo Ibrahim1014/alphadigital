@@ -1,71 +1,174 @@
+
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
+import { useAnimatedView } from '@/hooks/useAnimatedView';
 
-const GalaxyParticles = () => {
-  const particles = useRef<THREE.Points>(null);
-  const count = 5000;
+const GalaxyParticles = ({ count = 10000 }) => {
+  const points = useRef<THREE.Points>(null);
+  const particles = useRef<THREE.BufferAttribute>(null);
   
+  // Création de particules galactiques
   const particlesPosition = useMemo(() => {
     const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+    const colorChoices = [
+      new THREE.Color('#FFD700'), // Gold
+      new THREE.Color('#FFFFFF'), // White
+      new THREE.Color('#FFA500'), // Orange
+      new THREE.Color('#87CEFA'), // Light blue - contraste
+    ];
     
     for(let i = 0; i < count; i++) {
-      const radius = Math.random() * 20;
-      const spinAngle = radius * 5;
-      const branchAngle = ((i % 3) / 3) * Math.PI * 2;
+      // Structure en spirale
+      const radius = Math.random() * 25 + 5;
+      const spinAngle = radius * 0.4;
+      const branchAngle = (i % 5) / 5 * Math.PI * 2;
       
-      const randomX = Math.random() * 2 - 1;
-      const randomY = Math.random() * 2 - 1;
-      const randomZ = Math.random() * 2 - 1;
+      const randomOffset = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1);
+      const randomY = randomOffset * (radius * 0.15);
       
-      positions[i * 3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
-      positions[i * 3 + 1] = randomY;
-      positions[i * 3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+      const x = Math.cos(branchAngle + spinAngle) * radius + (Math.random() - 0.5) * 2;
+      const y = randomY;
+      const z = Math.sin(branchAngle + spinAngle) * radius + (Math.random() - 0.5) * 2;
+      
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+      
+      // Attribution des couleurs
+      const colorIndex = Math.floor(Math.random() * colorChoices.length);
+      const color = colorChoices[colorIndex];
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
     }
     
-    return positions;
-  }, []);
+    return { positions, colors };
+  }, [count]);
 
+  // Animation de rotation de la galaxie
   useFrame(({clock}) => {
-    if (particles.current) {
-      particles.current.rotation.y = clock.getElapsedTime() * 0.05;
-      particles.current.rotation.z = clock.getElapsedTime() * 0.025;
+    if (points.current) {
+      points.current.rotation.y = clock.getElapsedTime() * 0.05;
+      
+      // Animation des particules qui scintillent
+      if(particles.current) {
+        const positions = particles.current.array as Float32Array;
+        for(let i = 0; i < count; i++) {
+          const i3 = i * 3;
+          const x = positions[i3];
+          const z = positions[i3 + 2];
+          
+          // Pulsation subtile
+          const phase = clock.getElapsedTime() + i;
+          const distance = Math.sqrt(x * x + z * z);
+          
+          positions[i3 + 1] += Math.sin(phase * 0.5 + distance * 0.5) * 0.005;
+        }
+        particles.current.needsUpdate = true;
+      }
     }
   });
 
   return (
-    <points ref={particles}>
+    <points ref={points}>
       <bufferGeometry>
         <bufferAttribute
+          ref={particles}
           attach="attributes-position"
           count={count}
           itemSize={3}
-          array={particlesPosition}
+          array={particlesPosition.positions}
+        />
+        <bufferAttribute
+          attach="attributes-color"
+          count={count}
+          itemSize={3}
+          array={particlesPosition.colors}
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.05}
+        size={0.08}
         sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
         vertexColors
         transparent
-        color="#FFD700"
+        opacity={0.8}
       />
     </points>
   );
 };
 
-export const GalaxyBackground = () => {
+// Orbes lumineux flottants
+const LightOrbs = () => {
+  const group = useRef<THREE.Group>(null);
+  const orbs = useRef<THREE.Mesh[]>([]);
+  
+  useFrame(({ clock }) => {
+    if (!group.current) return;
+    
+    group.current.rotation.y = clock.getElapsedTime() * 0.03;
+    
+    orbs.current.forEach((orb, i) => {
+      const t = clock.getElapsedTime() * 0.4 + i * 100;
+      orb.position.y = Math.sin(t * 0.5) * 2;
+      orb.scale.setScalar(0.8 + Math.sin(t * 0.3) * 0.2);
+    });
+  });
+  
+  // Créer des orbes à différentes positions
+  const orbsData = useMemo(() => {
+    return Array.from({ length: 7 }, (_, i) => ({
+      position: [
+        (Math.random() - 0.5) * 30,
+        (Math.random() - 0.5) * 30,
+        (Math.random() - 0.5) * 30,
+      ],
+      scale: 0.5 + Math.random() * 2,
+      color: i % 2 === 0 ? '#FFD700' : '#FFA500',
+    }));
+  }, []);
+  
   return (
-    <div className="fixed inset-0 -z-10">
+    <group ref={group}>
+      {orbsData.map((orb, i) => (
+        <mesh
+          key={i}
+          position={[orb.position[0], orb.position[1], orb.position[2]]}
+          ref={(el) => {
+            if (el) orbs.current[i] = el;
+          }}
+        >
+          <sphereGeometry args={[orb.scale, 16, 16]} />
+          <meshBasicMaterial color={orb.color} transparent opacity={0.4} />
+        </mesh>
+      ))}
+    </group>
+  );
+};
+
+export const GalaxyBackground = () => {
+  // S'assurer que l'animation est visible
+  const { ref, isInView } = useAnimatedView({ once: false });
+  
+  return (
+    <div ref={ref} className="fixed inset-0 -z-10">
       <Canvas
-        camera={{ position: [0, 0, 15], fov: 75 }}
+        camera={{ position: [0, 0, 30], fov: 60 }}
         gl={{ antialias: true }}
       >
-        <fog attach="fog" args={['#000000', 0, 25]} />
+        <fog attach="fog" args={['#000000', 5, 50]} />
         <ambientLight intensity={0.5} />
+        
         <GalaxyParticles />
+        <LightOrbs />
+        
+        <EffectComposer>
+          <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} height={300} />
+        </EffectComposer>
       </Canvas>
     </div>
   );

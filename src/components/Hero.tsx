@@ -1,10 +1,11 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TextPlugin } from "gsap/TextPlugin";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
@@ -14,7 +15,22 @@ export const Hero = () => {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  // Suivre la position de la souris pour les effets parallax
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight,
+      });
+    };
+    
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
+  // Animation principale
   useEffect(() => {
     const timeline = gsap.timeline({
       defaults: { ease: "power3.out" }
@@ -50,7 +66,7 @@ export const Hero = () => {
       "-=0.3"
     );
 
-    // Parallax effect
+    // Effet parallax au scroll
     gsap.to(sectionRef.current, {
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -66,17 +82,124 @@ export const Hero = () => {
     };
   }, []);
 
+  // Particules flottantes
+  const particles = Array(10).fill(null).map((_, i) => ({
+    id: i,
+    size: Math.random() * 50 + 30,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 20 + 10,
+    delay: Math.random() * 5
+  }));
+
   return (
-    <div ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">      
-      <div className="container px-4 mx-auto">
+    <div ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+      {/* Effet de brume dorée en arrière plan */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-alpha-gold/10 blur-[100px]"
+            style={{
+              width: `${Math.random() * 50 + 30}vw`,
+              height: `${Math.random() * 50 + 30}vh`,
+              left: `${Math.random() * 80}%`,
+              top: `${Math.random() * 80}%`,
+              zIndex: -1
+            }}
+            animate={{
+              x: [0, Math.random() * 100 - 50, 0],
+              y: [0, Math.random() * 100 - 50, 0],
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: Math.random() * 30 + 20,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Particules flottantes */}
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute rounded-full bg-alpha-gold/20 blur-md pointer-events-none"
+          style={{
+            width: particle.size,
+            height: particle.size,
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+            zIndex: -1,
+          }}
+          animate={{
+            x: [0, Math.random() * 100 - 50, 0],
+            y: [0, Math.random() * 100 - 50, 0],
+            opacity: [0.2, 0.5, 0.2],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: particle.duration,
+            repeat: Infinity,
+            delay: particle.delay,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+      
+      {/* Effet parallax sur la position de la souris */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          x: mousePosition.x * -20,
+          y: mousePosition.y * -20,
+        }}
+      >
+        <div className="absolute top-1/4 right-1/4 w-40 h-40 rounded-full bg-alpha-gold/10 blur-3xl" />
+        <div className="absolute bottom-1/3 left-1/3 w-60 h-60 rounded-full bg-alpha-gold/15 blur-3xl" />
+      </motion.div>
+
+      <div className="container px-4 mx-auto relative z-10">
         <div className="text-center max-w-4xl mx-auto">
-          <div ref={badgeRef} className="inline-flex items-center px-4 py-2 rounded-full glass-gold mb-8 animate-float">
-            <span className="text-alpha-gold text-sm font-medium">Bienvenue chez Alpha Digital</span>
-          </div>
+          <motion.div 
+            ref={badgeRef} 
+            className="inline-flex items-center px-4 py-2 rounded-full glass-gold mb-8"
+            whileHover={{ scale: 1.05 }}
+            animate={{
+              y: [0, -10, 0],
+              transition: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+            }}
+          >
+            <motion.span 
+              className="text-alpha-gold text-sm font-medium"
+              animate={{
+                textShadow: [
+                  "0px 0px 5px rgba(255, 215, 0, 0.5)",
+                  "0px 0px 15px rgba(255, 215, 0, 0.8)",
+                  "0px 0px 5px rgba(255, 215, 0, 0.5)"
+                ],
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Bienvenue chez Alpha Digital
+            </motion.span>
+          </motion.div>
           
           <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-8 opacity-0">
             Votre Partenaire pour
-            <span className="typing text-gradient-gold block mt-4"></span>
+            <motion.span 
+              className="typing text-gradient-gold block mt-4"
+              animate={{
+                textShadow: [
+                  "0px 0px 10px rgba(255, 215, 0, 0.3)",
+                  "0px 0px 20px rgba(255, 215, 0, 0.6)",
+                  "0px 0px 10px rgba(255, 215, 0, 0.3)"
+                ],
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            ></motion.span>
           </h1>
           
           <p ref={subtitleRef} className="text-alpha-gray text-xl md:text-2xl mb-12 opacity-0 leading-relaxed">
@@ -84,20 +207,38 @@ export const Hero = () => {
           </p>
           
           <div ref={ctaRef} className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0">
-            <Button 
-              size="lg" 
-              className="w-full sm:w-auto bg-gradient-gold hover:opacity-90 text-alpha-black group animate-pulse"
-            >
-              Commencer
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="w-full sm:w-auto glass hover:glass-gold transition-all duration-300"
-            >
-              En Savoir Plus
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto bg-gradient-gold hover:opacity-90 text-alpha-black group relative overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center">
+                  Commencer
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <motion.div 
+                  className="absolute inset-0 bg-alpha-gold"
+                  animate={{
+                    boxShadow: [
+                      "0 0 15px rgba(255, 215, 0, 0.5)",
+                      "0 0 30px rgba(255, 215, 0, 0.8)",
+                      "0 0 15px rgba(255, 215, 0, 0.5)"
+                    ],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </Button>
+            </motion.div>
+            
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="w-full sm:w-auto glass hover:glass-gold transition-all duration-300"
+              >
+                En Savoir Plus
+              </Button>
+            </motion.div>
           </div>
         </div>
       </div>
