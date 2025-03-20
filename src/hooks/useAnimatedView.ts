@@ -1,16 +1,16 @@
 
-import { useInView, InViewOptions } from 'framer-motion';
+import { useInView, UseInViewOptions } from 'framer-motion';
 import { useRef } from 'react';
 
 interface AnimatedViewOptions {
   once?: boolean;
-  margin?: InViewOptions['margin'];
+  margin?: UseInViewOptions['margin'];
 }
 
 export const useAnimatedView = (options: AnimatedViewOptions = { once: true }) => {
   const ref = useRef<HTMLDivElement>(null);
   // Use the margin from options or set a default value with proper typing
-  const inViewOptions: InViewOptions = {
+  const inViewOptions: UseInViewOptions = {
     ...options,
     amount: 0.1  // Only needs a small amount visible to trigger
   };
