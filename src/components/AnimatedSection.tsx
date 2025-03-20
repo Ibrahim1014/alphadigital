@@ -16,8 +16,7 @@ export const AnimatedSection = ({
   direction = 'up' 
 }: AnimatedSectionProps) => {
   const { ref, isInView } = useAnimatedView({
-    once: true,
-    margin: "-100px 0px -100px 0px"
+    once: true
   });
 
   const variants = {
