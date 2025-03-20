@@ -8,7 +8,7 @@ import { GalaxyBackground } from "@/components/GalaxyBackground";
 import { ChatbotSection } from "@/components/ChatbotSection";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -30,14 +30,16 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <GalaxyBackground />
+        <Suspense fallback={<div className="w-full h-screen flex items-center justify-center text-alpha-gold">Chargement...</div>}>
+          <GalaxyBackground />
+        </Suspense>
         
         {/* Particules flottantes globales pour tout le site */}
         <FloatingParticles 
-          count={15} 
+          count={10} 
           color="rgba(255, 215, 0, 0.1)" 
-          maxSize={200} 
-          minSize={100} 
+          maxSize={150} 
+          minSize={80} 
           blurAmount="80px" 
           className="fixed"
           speed={0.5}
@@ -46,7 +48,7 @@ const Index = () => {
         <motion.div 
           className="relative z-10"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           <Navbar />

@@ -41,20 +41,24 @@ export const FloatingParticles = ({
 
   // Création des particules
   useEffect(() => {
-    const newParticles = Array(count)
-      .fill(null)
-      .map((_, index) => ({
-        id: index,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * (maxSize - minSize) + minSize,
-        duration: (Math.random() * 20 + 10) / speed,
-        delay: Math.random() * 5,
-        amplitude: Math.random() * 60 + 20,
-        rotation: Math.random() * 360,
-      }));
+    try {
+      const newParticles = Array(count)
+        .fill(null)
+        .map((_, index) => ({
+          id: index,
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          size: Math.random() * (maxSize - minSize) + minSize,
+          duration: (Math.random() * 20 + 10) / speed,
+          delay: Math.random() * 5,
+          amplitude: Math.random() * 60 + 20,
+          rotation: Math.random() * 360,
+        }));
 
-    setParticles(newParticles);
+      setParticles(newParticles);
+    } catch (error) {
+      console.error("Error creating particles:", error);
+    }
   }, [count, maxSize, minSize, speed]);
   
   // Gestion de l'interactivité à la souris
@@ -62,10 +66,14 @@ export const FloatingParticles = ({
     if (!interactive) return;
     
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      setMousePosition({ x, y });
-      setIsHovering(true);
+      try {
+        const x = (e.clientX / window.innerWidth) * 100;
+        const y = (e.clientY / window.innerHeight) * 100;
+        setMousePosition({ x, y });
+        setIsHovering(true);
+      } catch (error) {
+        console.error("Error handling mouse move:", error);
+      }
     };
     
     const handleMouseLeave = () => {
@@ -118,12 +126,6 @@ export const FloatingParticles = ({
               scale: [1, Math.random() * 0.4 + 0.8, Math.random() * 0.3 + 0.9, 1],
               rotate: [0, particle.rotation * 0.5, particle.rotation, 0],
               opacity: [opacity, opacity * 1.5, opacity * 0.8, opacity],
-              filter: [
-                `blur(${blurAmount})`,
-                `blur(${parseInt(blurAmount) * 0.8}px)`,
-                `blur(${parseInt(blurAmount) * 1.2}px)`,
-                `blur(${blurAmount})`
-              ],
             }}
             transition={{
               duration: particle.duration,

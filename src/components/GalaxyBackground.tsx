@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { useAnimatedView } from '@/hooks/useAnimatedView';
 
-const GalaxyParticles = ({ count = 10000 }) => {
+const GalaxyParticles = ({ count = 5000 }) => {
   const points = useRef<THREE.Points>(null);
   const particles = useRef<THREE.BufferAttribute>(null);
   
@@ -158,16 +158,26 @@ export const GalaxyBackground = () => {
     <div ref={ref} className="fixed inset-0 -z-10">
       <Canvas
         camera={{ position: [0, 0, 30], fov: 60 }}
-        gl={{ antialias: true }}
+        gl={{ 
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance',
+          failIfMajorPerformanceCaveat: false
+        }}
       >
         <fog attach="fog" args={['#000000', 5, 50]} />
         <ambientLight intensity={0.5} />
         
-        <GalaxyParticles />
+        <GalaxyParticles count={5000} />
         <LightOrbs />
         
-        <EffectComposer>
-          <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} height={300} />
+        <EffectComposer enabled={true}>
+          <Bloom 
+            intensity={0.5} 
+            luminanceThreshold={0.2} 
+            luminanceSmoothing={0.9} 
+            mipmapBlur
+          />
         </EffectComposer>
       </Canvas>
     </div>
