@@ -2,27 +2,22 @@
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
-// Définir un type pour les options de marge spécifique à framer-motion
-type MarginType = string | number | { top?: number | string; right?: number | string; bottom?: number | string; left?: number | string };
-
+// Use a different name to avoid collision with framer-motion's internal MarginType
 interface AnimatedViewOptions {
   once?: boolean;
-  margin?: MarginType;
+  margin?: string | number | { top?: number | string; right?: number | string; bottom?: number | string; left?: number | string };
+  amount?: number;
 }
 
 export const useAnimatedView = (options: AnimatedViewOptions = { once: true }) => {
   const ref = useRef<HTMLDivElement>(null);
   
-  // Créer un objet d'options typé correctement pour useInView
+  // Create a properly typed options object for useInView
   const inViewOptions = {
-    ...options,
-    amount: 0.1  // Only needs a small amount visible to trigger
+    once: options.once ?? true,
+    amount: options.amount ?? 0.1,  // Only needs a small amount visible to trigger
+    margin: options.margin ?? "-100px 0px -100px 0px"
   };
-  
-  // Si margin n'est pas fourni, définir une valeur par défaut
-  if (!options.margin) {
-    inViewOptions.margin = "-100px 0px -100px 0px";
-  }
   
   const isInView = useInView(ref, inViewOptions);
   

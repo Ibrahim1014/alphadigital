@@ -15,7 +15,10 @@ export const AnimatedSection = ({
   delay = 0,
   direction = 'up' 
 }: AnimatedSectionProps) => {
-  const { ref, isInView } = useAnimatedView();
+  const { ref, isInView } = useAnimatedView({
+    once: true,
+    margin: "-100px 0px -100px 0px"
+  });
 
   const variants = {
     hidden: {
