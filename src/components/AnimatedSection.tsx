@@ -43,7 +43,7 @@ export const AnimatedSection = ({
       variants={variants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className={className}
+      className={`relative ${className}`} // Ajout de la classe relative pour résoudre l'avertissement
     >
       {children}
     </motion.div>
