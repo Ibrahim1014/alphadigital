@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Stars } from '@react-three/drei';
 import { useRef } from 'react';
 import * as THREE from 'three';
+import { ThreeDErrorBoundary } from './ThreeDErrorBoundary';
 
 const AnimatedStars = () => {
   const starsRef = useRef<THREE.Points>(null);
@@ -20,10 +21,12 @@ const AnimatedStars = () => {
 export const AnimatedBackground = () => {
   return (
     <div className="fixed inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 1] }}>
-        <AnimatedStars />
-        <ambientLight intensity={0.5} />
-      </Canvas>
+      <ThreeDErrorBoundary>
+        <Canvas camera={{ position: [0, 0, 1] }}>
+          <AnimatedStars />
+          <ambientLight intensity={0.5} />
+        </Canvas>
+      </ThreeDErrorBoundary>
     </div>
   );
 };

@@ -1,15 +1,14 @@
-
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { useAnimatedView } from '@/hooks/useAnimatedView';
+import { ThreeDErrorBoundary } from './ThreeDErrorBoundary';
 
 const GalaxyParticles = ({ count = 5000 }) => {
   const points = useRef<THREE.Points>(null);
   const particles = useRef<THREE.BufferAttribute>(null);
   
-  // Création de particules galactiques
   const particlesPosition = useMemo(() => {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
@@ -21,7 +20,6 @@ const GalaxyParticles = ({ count = 5000 }) => {
     ];
     
     for(let i = 0; i < count; i++) {
-      // Structure en spirale
       const radius = Math.random() * 25 + 5;
       const spinAngle = radius * 0.4;
       const branchAngle = (i % 5) / 5 * Math.PI * 2;
@@ -37,7 +35,6 @@ const GalaxyParticles = ({ count = 5000 }) => {
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
       
-      // Attribution des couleurs
       const colorIndex = Math.floor(Math.random() * colorChoices.length);
       const color = colorChoices[colorIndex];
       colors[i * 3] = color.r;
@@ -48,12 +45,10 @@ const GalaxyParticles = ({ count = 5000 }) => {
     return { positions, colors };
   }, [count]);
 
-  // Animation de rotation de la galaxie
   useFrame(({clock}) => {
     if (points.current) {
       points.current.rotation.y = clock.getElapsedTime() * 0.05;
       
-      // Animation des particules qui scintillent
       if(particles.current) {
         const positions = particles.current.array as Float32Array;
         for(let i = 0; i < count; i++) {
@@ -61,7 +56,6 @@ const GalaxyParticles = ({ count = 5000 }) => {
           const x = positions[i3];
           const z = positions[i3 + 2];
           
-          // Pulsation subtile
           const phase = clock.getElapsedTime() + i;
           const distance = Math.sqrt(x * x + z * z);
           
@@ -102,7 +96,6 @@ const GalaxyParticles = ({ count = 5000 }) => {
   );
 };
 
-// Orbes lumineux flottants
 const LightOrbs = () => {
   const group = useRef<THREE.Group>(null);
   const orbs = useRef<THREE.Mesh[]>([]);
@@ -119,7 +112,6 @@ const LightOrbs = () => {
     });
   });
   
-  // Créer des orbes à différentes positions
   const orbsData = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => ({
       position: [
@@ -151,35 +143,36 @@ const LightOrbs = () => {
 };
 
 export const GalaxyBackground = () => {
-  // S'assurer que l'animation est visible
   const { ref, isInView } = useAnimatedView({ once: false });
   
   return (
     <div ref={ref} className="fixed inset-0 -z-10">
-      <Canvas
-        camera={{ position: [0, 0, 30], fov: 60 }}
-        gl={{ 
-          antialias: true,
-          alpha: true,
-          powerPreference: 'high-performance',
-          failIfMajorPerformanceCaveat: false
-        }}
-      >
-        <fog attach="fog" args={['#000000', 5, 50]} />
-        <ambientLight intensity={0.5} />
-        
-        <GalaxyParticles count={5000} />
-        <LightOrbs />
-        
-        <EffectComposer enabled={true}>
-          <Bloom 
-            intensity={0.5} 
-            luminanceThreshold={0.2} 
-            luminanceSmoothing={0.9} 
-            mipmapBlur
-          />
-        </EffectComposer>
-      </Canvas>
+      <ThreeDErrorBoundary>
+        <Canvas
+          camera={{ position: [0, 0, 30], fov: 60 }}
+          gl={{ 
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance',
+            failIfMajorPerformanceCaveat: false
+          }}
+        >
+          <fog attach="fog" args={['#000000', 5, 50]} />
+          <ambientLight intensity={0.5} />
+          
+          <GalaxyParticles count={5000} />
+          <LightOrbs />
+          
+          <EffectComposer enabled={true}>
+            <Bloom 
+              intensity={0.5} 
+              luminanceThreshold={0.2} 
+              luminanceSmoothing={0.9} 
+              mipmapBlur
+            />
+          </EffectComposer>
+        </Canvas>
+      </ThreeDErrorBoundary>
     </div>
   );
 };

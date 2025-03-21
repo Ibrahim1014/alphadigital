@@ -4,8 +4,8 @@ import { ErrorBoundary } from 'react-error-boundary'
 import App from './App.tsx'
 import './index.css'
 
-// Composant de fallback simple pour les erreurs
-const ErrorFallback = () => {
+// Composant de fallback simple pour les erreurs générales
+const GeneralErrorFallback = () => {
   return (
     <div className="min-h-screen bg-alpha-black text-alpha-white flex items-center justify-center">
       <div className="glass p-8 rounded-lg max-w-md">
@@ -25,7 +25,10 @@ const ErrorFallback = () => {
 };
 
 createRoot(document.getElementById("root")!).render(
-  <ErrorBoundary FallbackComponent={ErrorFallback}>
+  <ErrorBoundary 
+    FallbackComponent={GeneralErrorFallback}
+    onError={(error) => console.error("Erreur d'application générale:", error)}
+  >
     <App />
   </ErrorBoundary>
 );
