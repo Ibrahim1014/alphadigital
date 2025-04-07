@@ -13,7 +13,7 @@ export const useAnimatedView = (options: AnimatedViewOptions = { once: true }) =
   // Créer un objet d'options correctement typé pour useInView
   const inViewOptions: UseInViewOptions = {
     once: options.once ?? true,
-    amount: options.amount ?? 0.1
+    amount: options.amount ?? 0.15
   };
   
   const isInView = useInView(ref, inViewOptions);

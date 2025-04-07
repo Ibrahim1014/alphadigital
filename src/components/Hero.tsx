@@ -39,38 +39,40 @@ export const Hero = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Animation principale
+  // Animation principale améliorée
   useEffect(() => {
+    if (!titleRef.current || !subtitleRef.current || !ctaRef.current || !badgeRef.current) return;
+    
     const timeline = gsap.timeline({
       defaults: { ease: "power3.out" }
     });
 
     // Animation badge - déplacement depuis le haut avec plus d'amplitude
     timeline.fromTo(badgeRef.current,
-      { y: -80, opacity: 0 },
+      { y: -100, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.2 }
     );
 
     // Animation titre avec effet machine à écrire
     timeline.fromTo(titleRef.current,
-      { y: 50, opacity: 0 },
+      { y: 60, opacity: 0 },
       { y: 0, opacity: 1, duration: 1 }
     ).to(titleRef.current?.querySelector('.typing'), {
-      duration: 2,
+      duration: 2.5,
       text: "l'Innovation Numérique",
       ease: "none"
     });
 
     // Animation sous-titre
     timeline.fromTo(subtitleRef.current,
-      { y: 30, opacity: 0 },
+      { y: 40, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.8 },
       "-=0.5"
     );
 
     // Animation CTA
     timeline.fromTo(ctaRef.current,
-      { y: 20, opacity: 0 },
+      { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.6 },
       "-=0.3"
     );
@@ -83,7 +85,7 @@ export const Hero = () => {
         end: "bottom top",
         scrub: 1,
       },
-      y: (_, target) => -target.offsetHeight * 0.2,
+      y: (_, target) => -target.offsetHeight * 0.25,
     });
 
     return () => {
@@ -93,35 +95,36 @@ export const Hero = () => {
 
   return (
     <div ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
-      {/* Particules flottantes premium */}
+      {/* Particules flottantes premium améliorées */}
       <FloatingParticles 
-        count={30}
-        color="rgba(255, 215, 0, 0.2)"
-        maxSize={100}
-        minSize={30}
+        count={40}
+        color="rgba(255, 215, 0, 0.25)"
+        maxSize={120}
+        minSize={40}
+        speed={0.7}
       />
       
-      {/* Effet de brume dorée en arrière plan avec plus d'intensité */}
+      {/* Effet de brume dorée en arrière plan avec plus d'intensité et d'animation */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(5)].map((_, i) => (
+        {[...Array(7)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-alpha-gold/20 blur-[120px]"
+            className="absolute rounded-full bg-alpha-gold/20 blur-[150px]"
             style={{
-              width: `${Math.random() * 70 + 50}vw`,
-              height: `${Math.random() * 70 + 50}vh`,
+              width: `${Math.random() * 80 + 60}vw`,
+              height: `${Math.random() * 80 + 60}vh`,
               left: `${Math.random() * 80}%`,
               top: `${Math.random() * 80}%`,
               zIndex: -1
             }}
             animate={{
-              x: [0, Math.random() * 100 - 50, 0],
-              y: [0, Math.random() * 100 - 50, 0],
-              scale: [1, 1.3, 1],
-              opacity: [0.3, 0.6, 0.3],
+              x: [0, Math.random() * 120 - 60, 0],
+              y: [0, Math.random() * 120 - 60, 0],
+              scale: [1, 1.4, 1],
+              opacity: [0.3, 0.7, 0.3],
             }}
             transition={{
-              duration: Math.random() * 30 + 20,
+              duration: Math.random() * 35 + 25,
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -133,12 +136,12 @@ export const Hero = () => {
       <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          x: mousePosition.x * -40,
-          y: mousePosition.y * -40,
+          x: mousePosition.x * -50,
+          y: mousePosition.y * -50,
         }}
       >
-        <div className="absolute top-1/4 right-1/4 w-60 h-60 rounded-full bg-alpha-gold/15 blur-3xl" />
-        <div className="absolute bottom-1/3 left-1/3 w-80 h-80 rounded-full bg-alpha-gold/20 blur-3xl" />
+        <div className="absolute top-1/4 right-1/4 w-80 h-80 rounded-full bg-alpha-gold/15 blur-3xl" />
+        <div className="absolute bottom-1/3 left-1/3 w-96 h-96 rounded-full bg-alpha-gold/20 blur-3xl" />
       </motion.div>
 
       <motion.div 
@@ -240,9 +243,9 @@ export const Hero = () => {
       
       {/* Effet de halo lumineux qui suit le scroll */}
       <motion.div 
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[120%] h-[30vh]"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150%] h-[40vh]"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(255,215,0,0.15) 0%, rgba(0,0,0,0) 70%)",
+          background: "radial-gradient(ellipse at center, rgba(255,215,0,0.2) 0%, rgba(0,0,0,0) 70%)",
           opacity: useTransform(scrollYProgress, [0, 0.2], [1, 0])
         }}
       />

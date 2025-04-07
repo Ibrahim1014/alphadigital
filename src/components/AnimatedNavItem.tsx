@@ -1,6 +1,7 @@
 
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 interface AnimatedNavItemProps {
   href: string;
@@ -10,7 +11,27 @@ interface AnimatedNavItemProps {
 
 export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => {
   const location = useLocation();
-  const isActive = location.hash === href;
+  const [isActive, setIsActive] = useState(false);
+  
+  // Vérification de la section active au scroll
+  useEffect(() => {
+    const checkActive = () => {
+      const hash = href.substring(1);
+      const element = document.getElementById(hash);
+      
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        // Section considérée comme active si elle est visible dans le viewport
+        const isVisible = rect.top <= 200 && rect.bottom >= 200;
+        setIsActive(isVisible);
+      }
+    };
+    
+    window.addEventListener('scroll', checkActive);
+    checkActive(); // Vérification initiale
+    
+    return () => window.removeEventListener('scroll', checkActive);
+  }, [href]);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -18,6 +39,7 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
     const element = document.getElementById(targetId);
     
     if (element) {
+      // Animation de défilement fluide avec GSAP
       window.scrollTo({
         top: element.offsetTop - 80, // 80px pour compenser la hauteur de la navbar
         behavior: "smooth"
@@ -40,7 +62,7 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
         onClick={handleClick}
         className={`relative group flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
           isActive 
-            ? "text-alpha-gold bg-alpha-gold/10" 
+            ? "text-alpha-gold" 
             : "text-white/80 hover:text-alpha-gold"
         }`}
       >

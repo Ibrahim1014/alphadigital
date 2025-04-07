@@ -2,11 +2,11 @@
 import React from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 
-// Composant de fallback pour les erreurs 3D spécifiquement
+// Composant de fallback pour les erreurs 3D amélioré
 const ThreeDErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   return (
-    <div className="absolute inset-0 bg-alpha-black/90 text-alpha-white flex items-center justify-center z-10">
-      <div className="glass p-6 rounded-lg max-w-md text-center">
+    <div className="absolute inset-0 bg-alpha-black/80 text-alpha-white flex items-center justify-center z-10">
+      <div className="glass-gold p-6 rounded-lg max-w-md text-center">
         <h3 className="text-xl font-bold mb-3 text-alpha-gold">Erreur de rendu 3D</h3>
         <p className="text-alpha-gray mb-4">
           Un problème est survenu lors du chargement des éléments 3D.
@@ -37,17 +37,22 @@ export const ThreeDErrorBoundary = ({
   fallback = ThreeDErrorFallback 
 }: ThreeDErrorBoundaryProps) => {
   const handleReset = () => {
-    // Si nécessaire, on pourrait ajouter une logique de réinitialisation spécifique ici
     console.log("Tentative de récupération du rendu 3D");
+    // Force un rafraîchissement du contexte WebGL
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      const gl = canvas.getContext('webgl') || canvas.getContext('webgl2');
+      if (gl) {
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+      }
+    }
   };
 
   return (
     <ErrorBoundary
       FallbackComponent={fallback}
       onReset={handleReset}
-      // Nous pouvons filtrer les erreurs liées au contexte WebGL ou Three.js
       onError={(error) => {
-        // Log seulement les erreurs 3D pour analyse
         console.error("Erreur de rendu 3D détectée:", error);
       }}
     >

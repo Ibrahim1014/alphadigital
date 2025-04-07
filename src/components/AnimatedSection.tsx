@@ -16,7 +16,8 @@ export const AnimatedSection = ({
   direction = 'up' 
 }: AnimatedSectionProps) => {
   const { ref, isInView } = useAnimatedView({
-    once: true
+    once: true,
+    amount: 0.15
   });
 
   const variants = {
@@ -43,7 +44,7 @@ export const AnimatedSection = ({
       variants={variants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className={`relative ${className}`} // Ajout de la classe relative pour résoudre l'avertissement
+      className={`relative ${className}`}
     >
       {children}
     </motion.div>

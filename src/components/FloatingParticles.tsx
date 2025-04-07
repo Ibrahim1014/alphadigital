@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface FloatingParticleProps {
   count?: number;
@@ -38,6 +38,7 @@ export const FloatingParticles = ({
   
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Création des particules
   useEffect(() => {
@@ -61,14 +62,17 @@ export const FloatingParticles = ({
     }
   }, [count, maxSize, minSize, speed]);
   
-  // Gestion de l'interactivité à la souris
+  // Gestion de l'interactivité à la souris avec des performances améliorées
   useEffect(() => {
-    if (!interactive) return;
+    if (!interactive || !containerRef.current) return;
+    
+    const container = containerRef.current;
+    const containerRect = container.getBoundingClientRect();
     
     const handleMouseMove = (e: MouseEvent) => {
       try {
-        const x = (e.clientX / window.innerWidth) * 100;
-        const y = (e.clientY / window.innerHeight) * 100;
+        const x = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+        const y = ((e.clientY - containerRect.top) / containerRect.height) * 100;
         setMousePosition({ x, y });
         setIsHovering(true);
       } catch (error) {
@@ -80,21 +84,33 @@ export const FloatingParticles = ({
       setIsHovering(false);
     };
     
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseleave", handleMouseLeave);
+    // Utilisation de throttle pour limiter les appels
+    let ticking = false;
+    const optimizedMouseMove = (e: MouseEvent) => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleMouseMove(e);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    container.addEventListener("mousemove", optimizedMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
     
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
+      container.removeEventListener("mousemove", optimizedMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [interactive]);
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
+    <div ref={containerRef} className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
       {particles.map((particle) => {
         // Calcul de la distance entre la particule et la souris (pour l'interactivité)
-        const dx = interactive && isHovering ? (particle.x - mousePosition.x) / 10 : 0;
-        const dy = interactive && isHovering ? (particle.y - mousePosition.y) / 10 : 0;
+        const dx = interactive && isHovering ? (particle.x - mousePosition.x) / 8 : 0;
+        const dy = interactive && isHovering ? (particle.y - mousePosition.y) / 8 : 0;
         
         return (
           <motion.div
