@@ -213,7 +213,7 @@ const LightOrbs = () => {
           r * Math.sin(theta) * Math.cos(phi),
           r * Math.cos(theta),
           r * Math.sin(theta) * Math.sin(phi),
-        ],
+        ] as [number, number, number],
         scale: 0.5 + Math.random() * 1.2,
         color: i % 3 === 0 ? '#FFD700' : i % 3 === 1 ? '#FFA500' : '#FFDF00',
         intensity: 0.4 + Math.random() * 0.6,
@@ -226,7 +226,7 @@ const LightOrbs = () => {
       {orbsData.map((orb, i) => (
         <mesh
           key={i}
-          position={[orb.position[0], orb.position[1], orb.position[2]]}
+          position={orb.position}
           ref={(el) => {
             if (el) orbs.current[i] = el;
           }}
@@ -294,7 +294,7 @@ export const GalaxyBackground = () => {
               )}
               {PERF.effectsEnabled && (
                 <ChromaticAberration
-                  offset={[0.0005, 0.0005]}
+                  offset={new THREE.Vector2(0.0005, 0.0005)}
                 />
               )}
             </EffectComposer>
@@ -304,3 +304,5 @@ export const GalaxyBackground = () => {
     </div>
   );
 };
+
+export default GalaxyBackground;

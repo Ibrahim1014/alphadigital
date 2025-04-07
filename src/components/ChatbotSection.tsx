@@ -38,6 +38,43 @@ export const ChatbotSection = () => {
     variant: "solid" as const,
     themeMode: "dark" as const, // Dark mode for premium feel
     fontFamily: "inter" as const,
+    fontSize: "medium" as const, // Ajout d'une taille de police lisible
+    showConversationButton: true,
+    showCloseButton: true,
+    hideWidget: false,
+    disableAnimations: false,
+    enableConversationDeletion: true,
+    enableTranscriptDownload: true,
+    stylesheet: `
+      .bpw-chat-bubble-content {
+        background-color: rgba(50, 50, 50, 0.8) !important;
+        border: 1px solid rgba(255, 215, 0, 0.2) !important;
+        backdrop-filter: blur(10px) !important;
+      }
+      .bpw-from-bot .bpw-chat-bubble .bpw-chat-bubble-content {
+        background-color: rgba(30, 30, 30, 0.8) !important;
+      }
+      .bpw-from-user .bpw-chat-bubble .bpw-chat-bubble-content {
+        background-color: rgba(50, 50, 50, 0.8) !important;
+      }
+      .bpw-composer {
+        background-color: rgba(30, 30, 30, 0.6) !important;
+        backdrop-filter: blur(10px) !important;
+        border-top: 1px solid rgba(255, 215, 0, 0.2) !important;
+      }
+      .bpw-composer textarea {
+        color: white !important;
+      }
+      .bpw-header-container {
+        background-color: rgba(30, 30, 30, 0.8) !important;
+        backdrop-filter: blur(10px) !important;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3) !important;
+      }
+      .bpw-widget-container {
+        border: 1px solid rgba(255, 215, 0, 0.3) !important;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.2) !important;
+      }
+    `,
     radius: 1
   };
 
