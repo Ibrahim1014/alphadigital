@@ -1,61 +1,148 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>alpha-fact-guardian</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+    <title>Alpha Digital - Marketing, Design & Développement Premium</title>
+    <meta name="description" content="Alpha Digital - Agence de marketing digital, création de contenu et développement web premium. Services de détection d'images IA et production musicale." />
+    <meta name="author" content="Ibrahim Lawali" />
     <meta property="og:image" content="/og-image.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Précharger les polices pour améliorer les performances -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" as="style">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap">
+    
+    <!-- Optimisations de performances -->
+    <link rel="dns-prefetch" href="https://cdn.botpress.cloud">
+    <link rel="dns-prefetch" href="https://cdn.gpteng.co">
+    <meta name="theme-color" content="#0A0A0A">
+    
     <style>
-      /* Custom styles for the Botpress webchat */
+      /* Styles de préchargement pour éviter les FOUC (Flash of Unstyled Content) */
+      body {
+        background-color: #0A0A0A;
+        color: #F5F5F5;
+        font-family: 'Open Sans', sans-serif;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      body.loaded {
+        opacity: 1;
+      }
+      
+      /* Amélioration des styles pour le webchat Botpress */
       .bp-widget-web {
         width: 100% !important;
         height: 100% !important;
-        border-radius: 8px !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        background-color: rgba(0, 0, 0, 0.7) !important;
       }
       
       #webchat .bpw-typing-bubble {
-        background-color: #FFD700;
+        background-color: #FFD700 !important;
       }
       
       #webchat .bpw-header-container {
-        background: linear-gradient(45deg, #000000, #1a1a1a);
-        border-bottom: 1px solid #FFD700;
+        background: linear-gradient(45deg, #000000, #1a1a1a) !important;
+        border-bottom: 1px solid #FFD700 !important;
       }
       
       #webchat .bpw-header-name {
-        color: #FFD700;
+        color: #FFD700 !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 600 !important;
+      }
+      
+      #webchat .bpw-header-icon,
+      #webchat .bpw-header-icon svg {
+        fill: #FFD700 !important;
+        color: #FFD700 !important;
+      }
+      
+      #webchat .bpw-composer {
+        background-color: rgba(20, 20, 20, 0.9) !important;
+        border-top: 1px solid rgba(255, 215, 0, 0.2) !important;
+      }
+      
+      #webchat .bpw-composer textarea {
+        background-color: rgba(30, 30, 30, 0.8) !important;
+        color: #F5F5F5 !important;
+        border: 1px solid rgba(255, 215, 0, 0.3) !important;
+        border-radius: 8px !important;
+      }
+      
+      #webchat .bpw-composer textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5) !important;
       }
       
       #webchat .bpw-send-button {
-        background-color: #FFD700;
-        filter: brightness(1);
+        background-color: #FFD700 !important;
+        filter: brightness(1) !important;
+        border-radius: 50% !important;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.3) !important;
       }
       
       #webchat .bpw-send-button:hover {
-        filter: brightness(1.2);
+        filter: brightness(1.2) !important;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5) !important;
+      }
+      
+      #webchat .bpw-send-button svg {
+        fill: #000 !important;
       }
       
       #webchat .bpw-from-bot .bpw-chat-bubble {
-        background-color: #1a1a1a;
-        border: 1px solid #FFD700;
+        background-color: rgba(35, 35, 35, 0.95) !important;
+        border: 1px solid rgba(255, 215, 0, 0.3) !important;
+        color: #F5F5F5 !important;
+      }
+      
+      #webchat .bpw-from-user .bpw-chat-bubble {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.2) 100%) !important;
+        border: 1px solid rgba(255, 215, 0, 0.3) !important;
+        color: #F5F5F5 !important;
       }
       
       #webchat .bpw-chat-bubble:last-child {
-        border-bottom-right-radius: 20px;
-        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 18px !important;
+        border-bottom-left-radius: 18px !important;
       }
       
       #webchat .bpw-chat-bubble:first-child {
-        border-top-right-radius: 20px;
-        border-top-left-radius: 20px;
+        border-top-right-radius: 18px !important;
+        border-top-left-radius: 18px !important;
       }
       
       #webchat .bpw-chat-bubble {
-        border-radius: 20px;
-        margin: 5px 0;
+        border-radius: 18px !important;
+        margin: 5px 0 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+      }
+      
+      #webchat .bpw-chat-container {
+        background-color: rgba(15, 15, 15, 0.9) !important;
+      }
+      
+      /* Animation pour les messages du chatbot */
+      #webchat .bpw-chat-bubble-content {
+        animation: fadeIn 0.3s ease-out !important;
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       
       /* Fix chat container to fill the parent */
@@ -65,11 +152,76 @@
         width: 100% !important;
         height: 100% !important;
       }
+      
+      /* Spinner de chargement élégant */
+      .premium-loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #0A0A0A;
+        z-index: 9999;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      
+      .premium-loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      
+      .premium-loader-inner {
+        width: 60px;
+        height: 60px;
+        border: 3px solid transparent;
+        border-top-color: #FFD700;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
     </style>
   </head>
 
   <body>
+    <!-- Spinner de chargement premium -->
+    <div class="premium-loader" id="premiumLoader">
+      <div class="premium-loader-inner"></div>
+    </div>
+    
     <div id="root"></div>
+    
+    <!-- Optimisations de chargement -->
+    <script>
+      // Optimisation du chargement initial
+      document.addEventListener('DOMContentLoaded', () => {
+        // Marquer le body comme chargé après le rendu initial
+        setTimeout(() => {
+          document.body.classList.add('loaded');
+        }, 300);
+        
+        // Cacher le loader après le chargement complet
+        window.addEventListener('load', () => {
+          setTimeout(() => {
+            const loader = document.getElementById('premiumLoader');
+            if (loader) {
+              loader.classList.add('hidden');
+              setTimeout(() => {
+                loader.style.display = 'none';
+              }, 500);
+            }
+          }, 800);
+        });
+      });
+    </script>
+    
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
