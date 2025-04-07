@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Webchat,
   WebchatProvider,
@@ -11,13 +11,14 @@ import { FloatingParticles } from "./FloatingParticles";
 export const ChatbotSection = () => {
   const clientId = "ca828dc5-427b-4fd9-8106-d244cfe7c85a";
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isWebchatInitialized, setIsWebchatInitialized] = useState(false);
   
   // Initialize the Botpress client with just the clientId
   const client = getClient({
     clientId
   });
 
-  // Configuration with properly typed values
+  // Configuration avec des valeurs optimisées pour la performance et l'esthétique
   const configuration = {
     composerPlaceholder: "Que puis-je faire pour vous aujourd'hui ? (Ex: Demander des informations sur nos services)",
     botName: "Alpha Digital IA",
@@ -34,11 +35,11 @@ export const ChatbotSection = () => {
     },
     termsOfService: {},
     privacyPolicy: {},
-    color: "#FFD700", // Gold color for premium look
+    color: "#FFD700", // Couleur or pour un aspect premium
     variant: "solid" as const,
-    themeMode: "dark" as const, // Dark mode for premium feel
+    themeMode: "dark" as const, // Mode sombre pour un rendu premium
     fontFamily: "inter" as const,
-    fontSize: "medium" as const, // Ajout d'une taille de police lisible
+    fontSize: "medium" as const,
     showConversationButton: true,
     showCloseButton: true,
     hideWidget: false,
@@ -46,50 +47,118 @@ export const ChatbotSection = () => {
     enableConversationDeletion: true,
     enableTranscriptDownload: true,
     stylesheet: `
+      /* Style premium pour le chatbot */
       .bpw-chat-bubble-content {
-        background-color: rgba(50, 50, 50, 0.8) !important;
-        border: 1px solid rgba(255, 215, 0, 0.2) !important;
+        background-color: rgba(30, 30, 30, 0.8) !important;
+        border: 1px solid rgba(255, 215, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
+        color: white !important;
       }
       .bpw-from-bot .bpw-chat-bubble .bpw-chat-bubble-content {
-        background-color: rgba(30, 30, 30, 0.8) !important;
+        background-color: rgba(20, 20, 20, 0.8) !important;
       }
       .bpw-from-user .bpw-chat-bubble .bpw-chat-bubble-content {
-        background-color: rgba(50, 50, 50, 0.8) !important;
+        background-color: rgba(40, 40, 40, 0.8) !important;
+      }
+      .bpw-date-container {
+        color: rgba(255, 215, 0, 0.6) !important;
       }
       .bpw-composer {
-        background-color: rgba(30, 30, 30, 0.6) !important;
+        background-color: rgba(30, 30, 30, 0.8) !important;
         backdrop-filter: blur(10px) !important;
-        border-top: 1px solid rgba(255, 215, 0, 0.2) !important;
+        border-top: 1px solid rgba(255, 215, 0, 0.3) !important;
       }
       .bpw-composer textarea {
         color: white !important;
+        background-color: rgba(50, 50, 50, 0.5) !important;
+        border: 1px solid rgba(255, 215, 0, 0.2) !important;
+        padding: 8px !important;
+      }
+      .bpw-composer textarea::placeholder {
+        color: rgba(255, 255, 255, 0.6) !important;
       }
       .bpw-header-container {
-        background-color: rgba(30, 30, 30, 0.8) !important;
+        background-color: rgba(20, 20, 20, 0.9) !important;
         backdrop-filter: blur(10px) !important;
         border-bottom: 1px solid rgba(255, 215, 0, 0.3) !important;
       }
+      .bpw-header-name {
+        color: rgba(255, 215, 0, 0.9) !important;
+        font-weight: bold !important;
+      }
+      .bpw-header-subtitle {
+        color: rgba(255, 255, 255, 0.8) !important;
+      }
       .bpw-widget-container {
         border: 1px solid rgba(255, 215, 0, 0.3) !important;
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.2) !important;
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.2) !important;
+      }
+      .bpw-send-button {
+        background-color: rgba(255, 215, 0, 0.8) !important;
+        color: black !important;
+      }
+      .bpw-send-button:hover {
+        background-color: rgba(255, 215, 0, 1) !important;
+      }
+      .bpw-typing-group {
+        background-color: rgba(255, 215, 0, 0.2) !important;
+      }
+      .bpw-message-read-icon {
+        color: rgba(255, 215, 0, 0.7) !important;
+      }
+      /* Amélioration du défilement */
+      .bpw-chat-container::-webkit-scrollbar {
+        width: 6px;
+      }
+      .bpw-chat-container::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+      }
+      .bpw-chat-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 215, 0, 0.3);
+        border-radius: 3px;
+      }
+      .bpw-chat-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 215, 0, 0.5);
       }
     `,
     radius: 1
   };
 
-  // Scroll chatbot into view when mounted
+  // Force le rechargement du chatbot quand il est visible
   useEffect(() => {
+    const initializeWebchat = () => {
+      // Force re-render for webchat if not already initialized
+      if (!isWebchatInitialized) {
+        setIsWebchatInitialized(true);
+        console.log("Webchat initialized");
+      }
+    };
+
     if (containerRef.current) {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
-              // Force remounting of chatbot when visible
-              const chatElement = containerRef.current?.querySelector(".bp-widget-web");
-              if (chatElement) {
-                chatElement.classList.add("chatbot-visible");
-              }
+              initializeWebchat();
+              
+              // Ajouter un délai pour s'assurer que le chatbot est complètement chargé
+              setTimeout(() => {
+                // Sélectionner tous les éléments de chatbot pour s'assurer qu'ils sont visibles
+                const chatElements = document.querySelectorAll(".bpw-chat-container, .bpw-composer");
+                chatElements.forEach(el => {
+                  (el as HTMLElement).style.display = "flex";
+                  (el as HTMLElement).style.opacity = "1";
+                });
+                
+                // Focus sur le textarea pour s'assurer que le clignotement du curseur est visible
+                const textarea = document.querySelector(".bpw-composer textarea") as HTMLTextAreaElement;
+                if (textarea) {
+                  textarea.style.opacity = "1";
+                  textarea.style.visibility = "visible";
+                }
+                
+                console.log("Chatbot elements enforced visibility");
+              }, 1000);
             }
           });
         },
@@ -103,7 +172,7 @@ export const ChatbotSection = () => {
         }
       };
     }
-  }, []);
+  }, [isWebchatInitialized]);
 
   return (
     <section 
@@ -170,11 +239,22 @@ export const ChatbotSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          <WebchatProvider client={client} configuration={configuration}>
-            <div className="w-full h-full relative">
-              <Webchat />
+          {isWebchatInitialized && (
+            <WebchatProvider client={client} configuration={configuration}>
+              <div className="w-full h-full relative webchat-container">
+                <Webchat />
+              </div>
+            </WebchatProvider>
+          )}
+          
+          {!isWebchatInitialized && (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <div className="w-12 h-12 border-4 border-alpha-gold/50 border-t-alpha-gold rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-alpha-gold font-medium">Chargement de l'assistant IA...</p>
+              </div>
             </div>
-          </WebchatProvider>
+          )}
         </motion.div>
         
         <div className="text-center mt-8 text-alpha-gray/70 text-sm">

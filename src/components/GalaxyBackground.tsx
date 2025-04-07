@@ -1,4 +1,3 @@
-
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
@@ -56,7 +55,6 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
   const particles = useRef<THREE.BufferAttribute>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
-  // Gestion des mouvements de souris pour l'interactivité
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
@@ -100,7 +98,6 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
       positions[i * 3 + 1] = y;
       positions[i * 3 + 2] = z;
       
-      // Plus de chance d'avoir des particules dorées
       const colorIndex = Math.random() < 0.6 
         ? 0 // Gold (60% de chance)
         : Math.floor(Math.random() * colorChoices.length);
@@ -117,10 +114,8 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
   useFrame(({clock}) => {
     if (!PERF.animation || !points.current) return;
     
-    // Rotation de base lente
     points.current.rotation.y = clock.getElapsedTime() * 0.025;
     
-    // Léger mouvement suivant la position de la souris
     points.current.rotation.x = THREE.MathUtils.lerp(
       points.current.rotation.x,
       mousePosition.y * 0.05,
@@ -133,7 +128,6 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
       0.01
     );
     
-    // Animation plus subtile des particules pour effet premium
     if(particles.current && PERF.animation) {
       const positions = particles.current.array as Float32Array;
       for(let i = 0; i < count; i++) {
@@ -144,7 +138,7 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
         const phase = clock.getElapsedTime() * 0.1 + i * 0.01;
         const distance = Math.sqrt(x * x + z * z);
         
-        if (i % 4 === 0) { // Animer seulement certaines particules pour performance
+        if (i % 4 === 0) {
           positions[i3 + 1] += Math.sin(phase + distance * 0.2) * 0.002;
         }
       }
@@ -191,7 +185,6 @@ const LightOrbs = () => {
   useFrame(({ clock }) => {
     if (!group.current || !PERF.animation) return;
     
-    // Rotation plus lente pour un effet plus premium
     group.current.rotation.y = clock.getElapsedTime() * 0.015;
     
     orbs.current.forEach((orb, i) => {
@@ -243,7 +236,6 @@ const LightOrbs = () => {
   );
 };
 
-// Couche de brume dorée pour l'atmosphère
 const GoldenFog = () => {
   return (
     <fog attach="fog" args={['#000000', 8, 50]} />
@@ -254,7 +246,6 @@ export const GalaxyBackground = () => {
   const { ref, isInView } = useAnimatedView({ once: false });
   const [loaded, setLoaded] = useState(false);
   
-  // Marquer comme chargé après le premier rendu
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -265,7 +256,7 @@ export const GalaxyBackground = () => {
         <Canvas
           camera={{ position: [0, 0, 25], fov: 50 }}
           gl={{ 
-            antialias: !isMobile, // Désactiver pour mobile
+            antialias: !isMobile,
             alpha: true,
             powerPreference: 'high-performance',
             failIfMajorPerformanceCaveat: false,
@@ -273,8 +264,8 @@ export const GalaxyBackground = () => {
             stencil: false,
             logarithmicDepthBuffer: true,
           }}
-          dpr={[1, isMobile ? 1.5 : 2]} // DPR adaptatif
-          performance={{ min: 0.5 }} // Permet à R3F de réduire la qualité si nécessaire
+          dpr={[1, isMobile ? 1.5 : 2]}
+          performance={{ min: 0.5 }}
         >
           <GoldenFog />
           <ambientLight intensity={0.4} />
@@ -294,7 +285,9 @@ export const GalaxyBackground = () => {
               )}
               {PERF.effectsEnabled && (
                 <ChromaticAberration
-                  offset={new THREE.Vector2(0.0005, 0.0005)}
+                  offset={[0.0005, 0.0005]}
+                  radialModulation={false}
+                  modulationOffset={0}
                 />
               )}
             </EffectComposer>
