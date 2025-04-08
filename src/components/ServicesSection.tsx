@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { MessageSquare, Paintbrush, Code, Music, BookOpen, Smartphone } from "lucide-react";
 import { AnimatedSection } from "./AnimatedSection";
@@ -124,7 +123,7 @@ export const ServicesSection = () => {
           onValueChange={(value) => setActiveTab(value as any)}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-2 md:grid-cols-3 gap-3 bg-transparent mb-16 max-w-4xl mx-auto">
+          <TabsList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 bg-transparent mb-16 max-w-6xl mx-auto">
             {services.map((service, index) => (
               <motion.div 
                 key={index} 
@@ -136,14 +135,14 @@ export const ServicesSection = () => {
               >
                 <TabsTrigger 
                   value={service.value}
-                  className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300 overflow-hidden relative group h-14 w-full"
+                  className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300 overflow-hidden relative group h-14 w-full text-sm"
                 >
                   {/* Effet lumineux au hover amélioré */}
                   <motion.div 
                     className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-alpha-gold/20 blur-xl transition-transform duration-500 ease-in-out" 
                     transition={{ repeat: Infinity, duration: 1.5 }}
                   />
-                  <service.icon className="mr-2 h-5 w-5" />
+                  <service.icon className="mr-2 h-4 w-4" />
                   <span className="line-clamp-1">{service.title}</span>
                 </TabsTrigger>
               </motion.div>

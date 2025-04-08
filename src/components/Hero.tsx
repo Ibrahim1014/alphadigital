@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -26,7 +25,6 @@ export const Hero = () => {
   const y = useTransform(scrollYProgress, [0, 1], [0, 350]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   
-  // Suivre la position de la souris pour les effets parallax
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
@@ -39,7 +37,6 @@ export const Hero = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Animation principale améliorée
   useEffect(() => {
     if (!titleRef.current || !subtitleRef.current || !ctaRef.current || !badgeRef.current) return;
     
@@ -47,13 +44,11 @@ export const Hero = () => {
       defaults: { ease: "power3.out" }
     });
 
-    // Animation badge - déplacement depuis le haut avec plus d'amplitude
     timeline.fromTo(badgeRef.current,
       { y: -100, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.2 }
     );
 
-    // Animation titre avec effet machine à écrire
     timeline.fromTo(titleRef.current,
       { y: 60, opacity: 0 },
       { y: 0, opacity: 1, duration: 1 }
@@ -63,21 +58,18 @@ export const Hero = () => {
       ease: "none"
     });
 
-    // Animation sous-titre
     timeline.fromTo(subtitleRef.current,
       { y: 40, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.8 },
       "-=0.5"
     );
 
-    // Animation CTA
     timeline.fromTo(ctaRef.current,
       { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.6 },
       "-=0.3"
     );
 
-    // Effet parallax au scroll
     gsap.to(sectionRef.current, {
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -95,21 +87,19 @@ export const Hero = () => {
 
   return (
     <div ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
-      {/* Particules flottantes premium plus subtiles */}
       <FloatingParticles 
         count={30}
-        color="rgba(255, 215, 0, 0.15)"
+        color="rgba(255, 215, 0, 0.08)"
         maxSize={100}
         minSize={30}
         speed={0.5}
       />
       
-      {/* Effet de brume dorée en arrière plan plus subtil et premium */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-alpha-gold/10 blur-[150px]"
+            className="absolute rounded-full bg-alpha-gold/5 blur-[150px]"
             style={{
               width: `${Math.random() * 80 + 60}vw`,
               height: `${Math.random() * 80 + 60}vh`,
@@ -121,7 +111,7 @@ export const Hero = () => {
               x: [0, Math.random() * 100 - 50, 0],
               y: [0, Math.random() * 100 - 50, 0],
               scale: [1, 1.2, 1],
-              opacity: [0.2, 0.4, 0.2],
+              opacity: [0.1, 0.2, 0.1],
             }}
             transition={{
               duration: Math.random() * 35 + 25,
@@ -132,7 +122,6 @@ export const Hero = () => {
         ))}
       </div>
       
-      {/* Effet parallax sur la position de la souris */}
       <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -241,7 +230,6 @@ export const Hero = () => {
         </div>
       </motion.div>
       
-      {/* Effet de halo lumineux qui suit le scroll */}
       <motion.div 
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150%] h-[40vh]"
         style={{

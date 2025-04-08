@@ -1,4 +1,3 @@
-
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
@@ -286,10 +285,10 @@ export const GalaxyBackground = () => {
                 />
               )}
               {PERF.effectsEnabled && (
-                <ChromaticAberration
-                  offset={new Vector2(0.0005, 0.0005)}
-                  radialModulation={false}
-                  modulationOffset={0}
+                <ChromaticAberration 
+                  offset={new THREE.Vector2(0.0, 0.0)} 
+                  radialModulation={false} 
+                  modulationOffset={1.0} 
                 />
               )}
             </EffectComposer>
