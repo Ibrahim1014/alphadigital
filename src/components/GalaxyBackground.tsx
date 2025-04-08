@@ -1,9 +1,11 @@
+
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing';
 import { useAnimatedView } from '@/hooks/useAnimatedView';
 import { ThreeDErrorBoundary } from './ThreeDErrorBoundary';
+import { Vector2 } from 'three';
 
 // Optimisation pour les appareils basse performance
 const isMobile = window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -66,7 +68,7 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
     if (PERF.animation) {
       window.addEventListener('mousemove', handleMouseMove);
       return () => {
-        window.addEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mousemove', handleMouseMove);
       };
     }
   }, []);
@@ -285,7 +287,7 @@ export const GalaxyBackground = () => {
               )}
               {PERF.effectsEnabled && (
                 <ChromaticAberration
-                  offset={[0.0005, 0.0005]}
+                  offset={new Vector2(0.0005, 0.0005)}
                   radialModulation={false}
                   modulationOffset={0}
                 />

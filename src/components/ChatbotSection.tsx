@@ -7,6 +7,7 @@ import {
 } from '@botpress/webchat';
 import { motion } from "framer-motion";
 import { FloatingParticles } from "./FloatingParticles";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export const ChatbotSection = () => {
   const clientId = "ca828dc5-427b-4fd9-8106-d244cfe7c85a";
@@ -73,6 +74,8 @@ export const ChatbotSection = () => {
         background-color: rgba(50, 50, 50, 0.5) !important;
         border: 1px solid rgba(255, 215, 0, 0.2) !important;
         padding: 8px !important;
+        opacity: 1 !important;
+        visibility: visible !important;
       }
       .bpw-composer textarea::placeholder {
         color: rgba(255, 255, 255, 0.6) !important;
@@ -119,6 +122,21 @@ export const ChatbotSection = () => {
       }
       .bpw-chat-container::-webkit-scrollbar-thumb:hover {
         background: rgba(255, 215, 0, 0.5);
+      }
+      /* Styles fixes pour assurer que les éléments du chat sont visibles */
+      .bpw-chat-container {
+        display: flex !important;
+        flex-direction: column !important;
+        opacity: 1 !important;
+      }
+      .bpw-composer {
+        display: flex !important;
+        opacity: 1 !important;
+      }
+      .bpw-composer textarea {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
       }
     `,
     radius: 1
@@ -174,9 +192,64 @@ export const ChatbotSection = () => {
     }
   }, [isWebchatInitialized]);
 
+  // Section contact pour afficher les informations de contact
+  const ContactSection = () => (
+    <div id="contact" className="pt-20 pb-8">
+      <motion.div
+        className="text-center mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <span className="text-gradient-gold">Contact</span>
+        </h2>
+        <p className="text-alpha-gray text-lg max-w-2xl mx-auto mb-8">
+          N'hésitez pas à nous contacter pour toute demande d'information
+        </p>
+      </motion.div>
+
+      <motion.div
+        className="flex flex-col md:flex-row items-center justify-center gap-8 max-w-3xl mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        <div className="flex flex-col items-center bg-alpha-black/30 backdrop-blur-md border border-alpha-gold/10 rounded-xl p-6 w-full md:w-auto min-w-[250px] hover:shadow-[0_0_15px_rgba(255,215,0,0.15)] transition-all duration-300">
+          <Mail className="text-alpha-gold mb-4 h-8 w-8" />
+          <h3 className="text-alpha-white font-medium mb-1">Email</h3>
+          <a 
+            href="mailto:professe84@gmail.com" 
+            className="text-alpha-gray hover:text-alpha-gold transition-colors"
+          >
+            professe84@gmail.com
+          </a>
+        </div>
+
+        <div className="flex flex-col items-center bg-alpha-black/30 backdrop-blur-md border border-alpha-gold/10 rounded-xl p-6 w-full md:w-auto min-w-[250px] hover:shadow-[0_0_15px_rgba(255,215,0,0.15)] transition-all duration-300">
+          <Phone className="text-alpha-gold mb-4 h-8 w-8" />
+          <h3 className="text-alpha-white font-medium mb-1">Téléphone</h3>
+          <a 
+            href="tel:+22790307168" 
+            className="text-alpha-gray hover:text-alpha-gold transition-colors"
+          >
+            +227 90307168
+          </a>
+        </div>
+
+        <div className="flex flex-col items-center bg-alpha-black/30 backdrop-blur-md border border-alpha-gold/10 rounded-xl p-6 w-full md:w-auto min-w-[250px] hover:shadow-[0_0_15px_rgba(255,215,0,0.15)] transition-all duration-300">
+          <MapPin className="text-alpha-gold mb-4 h-8 w-8" />
+          <h3 className="text-alpha-white font-medium mb-1">Adresse</h3>
+          <span className="text-alpha-gray">Niamey, Niger</span>
+        </div>
+      </motion.div>
+    </div>
+  );
+
   return (
     <section 
-      id="chatbot" 
       className="py-20 px-4 relative overflow-hidden bg-gradient-to-b from-alpha-black to-[#0f0f1a]"
       ref={containerRef}
     >
@@ -209,26 +282,6 @@ export const ChatbotSection = () => {
           <p className="text-alpha-gray text-lg max-w-2xl mx-auto mb-4">
             Posez toutes vos questions à notre assistant virtuel pour obtenir des réponses instantanées
           </p>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-sm text-alpha-gold/80">
-            <div className="flex items-center">
-              <span className="mr-2">✉️</span>
-              <a href="mailto:professe84@gmail.com" className="hover:text-alpha-gold transition-colors">
-                professe84@gmail.com
-              </a>
-            </div>
-            <div className="hidden md:block h-4 w-px bg-alpha-gold/30"></div>
-            <div className="flex items-center">
-              <span className="mr-2">📱</span>
-              <a href="tel:+22790307168" className="hover:text-alpha-gold transition-colors">
-                +227 90307168
-              </a>
-            </div>
-            <div className="hidden md:block h-4 w-px bg-alpha-gold/30"></div>
-            <div className="flex items-center">
-              <span className="mr-2">📍</span>
-              <span>Niamey, Niger</span>
-            </div>
-          </div>
         </motion.div>
         
         <motion.div 
@@ -257,9 +310,8 @@ export const ChatbotSection = () => {
           )}
         </motion.div>
         
-        <div className="text-center mt-8 text-alpha-gray/70 text-sm">
-          <p>Alpha Digital, fondé par <span className="text-alpha-gold/90">Ibrahim Lawali</span> à Niamey, Niger</p>
-        </div>
+        {/* Section de contact avec les informations demandées */}
+        <ContactSection />
       </div>
     </section>
   );

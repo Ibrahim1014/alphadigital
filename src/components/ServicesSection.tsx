@@ -30,7 +30,7 @@ export const ServicesSection = () => {
     },
     {
       icon: BookOpen,
-      title: "Rédaction & Création de Livres",
+      title: "Rédaction & Livres",
       description: "Services d'écriture et de publication de haute qualité",
       imagePath: "/lovable-uploads/baffbad0-6e74-4bf2-9f5e-a326a70543b5.png",
       direction: "up" as const,
@@ -38,7 +38,7 @@ export const ServicesSection = () => {
     },
     {
       icon: Code,
-      title: "Site E-Premium",
+      title: "Site Premium",
       description: "Solutions techniques sur mesure et performantes",
       imagePath: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png",
       direction: "down" as const,
@@ -46,7 +46,7 @@ export const ServicesSection = () => {
     },
     {
       icon: Smartphone,
-      title: "Développement d'Applications Mobiles",
+      title: "Apps Mobiles",
       description: "Applications mobiles innovantes et performantes",
       imagePath: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png",
       direction: "down" as const,
@@ -66,10 +66,10 @@ export const ServicesSection = () => {
     <section id="services" className="py-32 px-4 relative overflow-hidden">
       {/* Particules flottantes dorées améliorées */}
       <FloatingParticles 
-        count={32} 
-        color="rgba(255, 215, 0, 0.18)" 
-        maxSize={140} 
-        minSize={50} 
+        count={24} 
+        color="rgba(255, 215, 0, 0.12)" 
+        maxSize={120} 
+        minSize={40} 
         blurAmount="60px" 
         speed={0.6}
         interactive={true}
@@ -77,21 +77,21 @@ export const ServicesSection = () => {
       
       {/* Orbes lumineux animés en arrière plan avec plus d'intensité */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(7)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-alpha-gold/15 blur-3xl"
+            className="absolute rounded-full bg-alpha-gold/10 blur-3xl"
             style={{
-              width: `${Math.random() * 350 + 150}px`,
-              height: `${Math.random() * 350 + 150}px`,
+              width: `${Math.random() * 300 + 150}px`,
+              height: `${Math.random() * 300 + 150}px`,
               left: `${Math.random() * 80}%`,
               top: `${Math.random() * 80}%`,
             }}
             animate={{
-              x: [0, Math.random() * 120 - 60, 0],
-              y: [0, Math.random() * 120 - 60, 0],
-              scale: [1, 1.3, 1],
-              opacity: [0.35, 0.7, 0.35],
+              x: [0, Math.random() * 100 - 50, 0],
+              y: [0, Math.random() * 100 - 50, 0],
+              scale: [1, 1.2, 1],
+              opacity: [0.2, 0.4, 0.2],
             }}
             transition={{
               duration: Math.random() * 15 + 15,
@@ -107,7 +107,7 @@ export const ServicesSection = () => {
           <motion.h2 
             className="text-3xl md:text-5xl font-bold mb-6"
             animate={{ 
-              textShadow: ["0px 0px 15px rgba(255,215,0,0.3)", "0px 0px 30px rgba(255,215,0,0.7)", "0px 0px 15px rgba(255,215,0,0.3)"]
+              textShadow: ["0px 0px 10px rgba(255,215,0,0.2)", "0px 0px 15px rgba(255,215,0,0.3)", "0px 0px 10px rgba(255,215,0,0.2)"]
             }}
             transition={{ duration: 3, repeat: Infinity }}
           >
@@ -124,7 +124,7 @@ export const ServicesSection = () => {
           onValueChange={(value) => setActiveTab(value as any)}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 bg-transparent mb-28">
+          <TabsList className="grid grid-cols-2 md:grid-cols-3 gap-3 bg-transparent mb-16 max-w-4xl mx-auto">
             {services.map((service, index) => (
               <motion.div 
                 key={index} 
@@ -136,7 +136,7 @@ export const ServicesSection = () => {
               >
                 <TabsTrigger 
                   value={service.value}
-                  className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300 overflow-hidden relative group h-14"
+                  className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300 overflow-hidden relative group h-14 w-full"
                 >
                   {/* Effet lumineux au hover amélioré */}
                   <motion.div 
@@ -151,7 +151,6 @@ export const ServicesSection = () => {
           </TabsList>
           
           <div className="mt-8">
-            {/* Espace ajouté pour éviter le chevauchement */}
             <TabsContent value={activeTab} className="m-0">
               <ServiceDetail serviceType={activeTab} />
             </TabsContent>

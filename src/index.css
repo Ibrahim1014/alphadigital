@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap');
 
 @tailwind base;
@@ -46,13 +47,21 @@
   .glass-gold {
     @apply bg-alpha-gold/5 backdrop-blur-xl border border-alpha-gold/10 shadow-[0_8px_32px_rgba(255,215,0,0.12)];
   }
+
+  .glass-premium {
+    @apply bg-black/30 backdrop-blur-lg border border-alpha-gold/20 shadow-[0_10px_30px_rgba(255,215,0,0.15)];
+  }
   
   .text-glow {
     @apply animate-glow;
   }
   
   .text-gradient-gold {
-    @apply bg-gradient-gold bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#ffcf40] via-[#ffdc73] to-[#b8860b] bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-gold {
+    @apply bg-gradient-to-r from-[#ffcf40] via-[#ffdc73] to-[#b8860b];
   }
 
   .animate-fade-in {
@@ -66,6 +75,10 @@
 
   .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
   }
 
   @keyframes fadeIn {
@@ -83,5 +96,14 @@
   @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.8; }
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px rgba(255, 215, 0, 0.3), 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+    to {
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+    }
   }
 }

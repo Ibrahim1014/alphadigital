@@ -95,21 +95,21 @@ export const Hero = () => {
 
   return (
     <div ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
-      {/* Particules flottantes premium améliorées */}
+      {/* Particules flottantes premium plus subtiles */}
       <FloatingParticles 
-        count={40}
-        color="rgba(255, 215, 0, 0.25)"
-        maxSize={120}
-        minSize={40}
-        speed={0.7}
+        count={30}
+        color="rgba(255, 215, 0, 0.15)"
+        maxSize={100}
+        minSize={30}
+        speed={0.5}
       />
       
-      {/* Effet de brume dorée en arrière plan avec plus d'intensité et d'animation */}
+      {/* Effet de brume dorée en arrière plan plus subtil et premium */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(7)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-alpha-gold/20 blur-[150px]"
+            className="absolute rounded-full bg-alpha-gold/10 blur-[150px]"
             style={{
               width: `${Math.random() * 80 + 60}vw`,
               height: `${Math.random() * 80 + 60}vh`,
@@ -118,10 +118,10 @@ export const Hero = () => {
               zIndex: -1
             }}
             animate={{
-              x: [0, Math.random() * 120 - 60, 0],
-              y: [0, Math.random() * 120 - 60, 0],
-              scale: [1, 1.4, 1],
-              opacity: [0.3, 0.7, 0.3],
+              x: [0, Math.random() * 100 - 50, 0],
+              y: [0, Math.random() * 100 - 50, 0],
+              scale: [1, 1.2, 1],
+              opacity: [0.2, 0.4, 0.2],
             }}
             transition={{
               duration: Math.random() * 35 + 25,
@@ -132,16 +132,16 @@ export const Hero = () => {
         ))}
       </div>
       
-      {/* Effet parallax sur la position de la souris avec plus d'amplitude */}
+      {/* Effet parallax sur la position de la souris */}
       <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          x: mousePosition.x * -50,
-          y: mousePosition.y * -50,
+          x: mousePosition.x * -30,
+          y: mousePosition.y * -30,
         }}
       >
-        <div className="absolute top-1/4 right-1/4 w-80 h-80 rounded-full bg-alpha-gold/15 blur-3xl" />
-        <div className="absolute bottom-1/3 left-1/3 w-96 h-96 rounded-full bg-alpha-gold/20 blur-3xl" />
+        <div className="absolute top-1/4 right-1/4 w-80 h-80 rounded-full bg-alpha-gold/10 blur-3xl" />
+        <div className="absolute bottom-1/3 left-1/3 w-96 h-96 rounded-full bg-alpha-gold/10 blur-3xl" />
       </motion.div>
 
       <motion.div 
@@ -162,9 +162,9 @@ export const Hero = () => {
               className="text-alpha-gold text-sm font-medium"
               animate={{
                 textShadow: [
-                  "0px 0px 5px rgba(255, 215, 0, 0.5)",
-                  "0px 0px 15px rgba(255, 215, 0, 0.8)",
-                  "0px 0px 5px rgba(255, 215, 0, 0.5)"
+                  "0px 0px 5px rgba(255, 215, 0, 0.3)",
+                  "0px 0px 10px rgba(255, 215, 0, 0.4)",
+                  "0px 0px 5px rgba(255, 215, 0, 0.3)"
                 ],
               }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -179,9 +179,9 @@ export const Hero = () => {
               className="typing text-gradient-gold block mt-4"
               animate={{
                 textShadow: [
+                  "0px 0px 5px rgba(255, 215, 0, 0.2)",
                   "0px 0px 10px rgba(255, 215, 0, 0.3)",
-                  "0px 0px 20px rgba(255, 215, 0, 0.6)",
-                  "0px 0px 10px rgba(255, 215, 0, 0.3)"
+                  "0px 0px 5px rgba(255, 215, 0, 0.2)"
                 ],
               }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -212,9 +212,9 @@ export const Hero = () => {
                   className="absolute inset-0 bg-alpha-gold"
                   animate={{
                     boxShadow: [
-                      "0 0 15px rgba(255, 215, 0, 0.5)",
-                      "0 0 30px rgba(255, 215, 0, 0.8)",
-                      "0 0 15px rgba(255, 215, 0, 0.5)"
+                      "0 0 10px rgba(255, 215, 0, 0.3)",
+                      "0 0 20px rgba(255, 215, 0, 0.4)",
+                      "0 0 10px rgba(255, 215, 0, 0.3)"
                     ],
                   }}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -245,7 +245,7 @@ export const Hero = () => {
       <motion.div 
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150%] h-[40vh]"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(255,215,0,0.2) 0%, rgba(0,0,0,0) 70%)",
+          background: "radial-gradient(ellipse at center, rgba(255,215,0,0.1) 0%, rgba(0,0,0,0) 70%)",
           opacity: useTransform(scrollYProgress, [0, 0.2], [1, 0])
         }}
       />
