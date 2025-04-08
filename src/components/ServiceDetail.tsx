@@ -9,24 +9,21 @@ interface ServiceDetailProps {
   serviceType: 'marketing' | 'design' | 'development' | 'music' | 'writing' | 'mobile';
 }
 
-// Interface pour les pistes SoundCloud
 interface SoundCloudTrack {
   title: string;
   url: string;
 }
 
-// Interface pour la configuration d'un service
 interface ServiceConfig {
   title: string;
   icon: React.ElementType;
   description: string;
   features: string[];
   imagePath: string;
-  soundCloudTracks?: SoundCloudTrack[]; // Ajout de cette propriété optionnelle
+  soundCloudTracks?: SoundCloudTrack[];
 }
 
 export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => {
-  // Configurations spécifiques pour chaque type de service
   const serviceConfigs: Record<string, ServiceConfig> = {
     marketing: {
       title: "Marketing Digital",
@@ -221,7 +218,6 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
               </motion.div>
             </div>
             
-            {/* Lecteurs SoundCloud pour la section Production Musicale */}
             {serviceType === 'music' && config.soundCloudTracks && (
               <div className="mt-6 space-y-4">
                 <h5 className="text-lg font-semibold text-alpha-white mb-3">
@@ -230,6 +226,7 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
                 {config.soundCloudTracks.map((track, index) => (
                   <SoundCloudPlayer 
                     key={index}
+                    title={track.title}
                     url={track.url} 
                   />
                 ))}
