@@ -1,4 +1,3 @@
-
 import React from "react";
 import { AnimatedSection } from "./AnimatedSection";
 import { Card } from "./ui/card";
@@ -231,7 +230,6 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
                 {config.soundCloudTracks.map((track, index) => (
                   <SoundCloudPlayer 
                     key={index}
-                    title={track.title} 
                     url={track.url} 
                   />
                 ))}

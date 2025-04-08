@@ -1,7 +1,9 @@
+
 import React from 'react';
 
 interface SoundCloudPlayerProps {
   url: string;
+  title?: string; // Ajout de la propriété title comme optionnelle
 }
 
 export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url }) => {
