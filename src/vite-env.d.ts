@@ -2,10 +2,6 @@
 /// <reference types="vite/client" />
 
 // Types pour l'API SoundCloud
-interface SC {
-  Widget: (iframe: HTMLIFrameElement) => SCWidget;
-}
-
 interface SCWidget {
   play: () => void;
   pause: () => void;
@@ -15,5 +11,16 @@ interface SCWidget {
 }
 
 declare global {
-  var SC: SC;
+  interface Window {
+    SC: {
+      Widget: (iframe: HTMLIFrameElement) => SCWidget;
+      Widget: {
+        Events: {
+          PLAY: string;
+          PAUSE: string;
+          FINISH: string;
+        }
+      }
+    }
+  }
 }

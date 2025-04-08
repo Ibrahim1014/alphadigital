@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
 interface SoundCloudPlayerProps {
   url: string;
-  title?: string; // Propriété title optionnelle
+  title?: string;
 }
 
 export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }) => {
@@ -14,49 +14,66 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
   const [isMuted, setIsMuted] = useState(false);
   
   // Référence pour contrôler l'iframe SoundCloud via l'API
-  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const widgetRef = useRef<any>(null);
+  
+  useEffect(() => {
+    // Initialiser le widget SoundCloud après que l'iframe soit chargé
+    const setupWidget = () => {
+      if (iframeRef.current && window.SC) {
+        widgetRef.current = window.SC.Widget(iframeRef.current);
+        
+        // Écouter les événements du lecteur
+        widgetRef.current.bind(window.SC.Widget.Events.PLAY, () => {
+          setIsPlaying(true);
+        });
+        
+        widgetRef.current.bind(window.SC.Widget.Events.PAUSE, () => {
+          setIsPlaying(false);
+        });
+        
+        widgetRef.current.bind(window.SC.Widget.Events.FINISH, () => {
+          setIsPlaying(false);
+        });
+      }
+    };
+    
+    // Attendre que l'API SC soit chargée
+    if (window.SC) {
+      setupWidget();
+    } else {
+      // Si l'API n'est pas encore chargée, attendre qu'elle le soit
+      const checkSC = setInterval(() => {
+        if (window.SC) {
+          clearInterval(checkSC);
+          setupWidget();
+        }
+      }, 100);
+      
+      return () => clearInterval(checkSC);
+    }
+  }, []);
   
   const togglePlay = () => {
-    if (iframeRef.current) {
-      const iframe = iframeRef.current;
-      const widget = SC.Widget(iframe);
-      
+    if (widgetRef.current) {
       if (isPlaying) {
-        widget.pause();
+        widgetRef.current.pause();
       } else {
-        widget.play();
+        widgetRef.current.play();
       }
-      
-      setIsPlaying(!isPlaying);
     }
   };
   
   const toggleMute = () => {
-    if (iframeRef.current) {
-      const iframe = iframeRef.current;
-      const widget = SC.Widget(iframe);
-      
+    if (widgetRef.current) {
       if (isMuted) {
-        widget.setVolume(100);
+        widgetRef.current.setVolume(100);
       } else {
-        widget.setVolume(0);
+        widgetRef.current.setVolume(0);
       }
-      
       setIsMuted(!isMuted);
     }
   };
-  
-  React.useEffect(() => {
-    // Charger l'API SoundCloud
-    const script = document.createElement('script');
-    script.src = 'https://w.soundcloud.com/player/api.js';
-    script.async = true;
-    document.body.appendChild(script);
-    
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   return (
     <motion.div 

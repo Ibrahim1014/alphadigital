@@ -6,6 +6,7 @@ import { PortfolioSection } from "@/components/PortfolioSection";
 import { AIDetectionSection } from "@/components/AIDetectionSection";
 import { GalaxyBackground } from "@/components/GalaxyBackground";
 import { ChatbotSection } from "@/components/ChatbotSection";
+import { AudioPortfolioSection } from "@/components/AudioPortfolioSection";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, Suspense, lazy } from "react";
@@ -109,6 +110,7 @@ const Index = () => {
           <Hero />
           <ServicesSection />
           <PortfolioSection />
+          <AudioPortfolioSection />
           <AIDetectionSection />
           <ChatbotSection />
           
