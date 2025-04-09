@@ -10,20 +10,11 @@ interface SCWidget {
   bind: (event: string, callback: () => void) => void;
 }
 
-interface SoundCloudWidget {
-  Events: {
-    PLAY: string;
-    PAUSE: string;
-    FINISH: string;
-    READY: string;
-  };
-  Widget: (iframe: HTMLIFrameElement) => SCWidget;
-}
-
 // Déclaration globale pour éviter les erreurs TS
 declare global {
   interface Window {
-    SC: {
+    SC?: {
+      Widget: (iframe: HTMLIFrameElement) => SCWidget;
       Widget: {
         Events: {
           READY: string;
@@ -31,7 +22,6 @@ declare global {
           PAUSE: string;
           FINISH: string;
         };
-        (iframe: HTMLIFrameElement): SCWidget;
       }
     }
   }

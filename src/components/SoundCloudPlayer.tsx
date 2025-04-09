@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Music } from 'lucide-react';
@@ -47,58 +48,69 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
     }
   }, [isPlaying, isHovered, glowControls]);
   
+  // Fonction pour s'assurer que le SDK SoundCloud est chargé
+  const ensureSoundCloudAPI = () => {
+    return new Promise<void>((resolve) => {
+      if (window.SC) {
+        resolve();
+        return;
+      }
+      
+      // Créer et charger le script si nécessaire
+      const script = document.createElement('script');
+      script.src = 'https://w.soundcloud.com/player/api.js';
+      script.async = true;
+      script.onload = () => resolve();
+      document.body.appendChild(script);
+      
+      // Vérifier périodiquement si l'API est chargée
+      const checkInterval = setInterval(() => {
+        if (window.SC) {
+          clearInterval(checkInterval);
+          resolve();
+        }
+      }, 100);
+    });
+  };
+  
   useEffect(() => {
     let isMounted = true;
     
     const setupWidget = async () => {
       try {
-        // Vérifier si window.SC existe déjà
         if (!isMounted || !iframeRef.current) return;
         
-        // Attendre que l'API SoundCloud soit chargée
-        const waitForSC = () => {
-          return new Promise<void>((resolve) => {
-            if (window.SC) {
-              resolve();
-              return;
-            }
-            
-            // Attendre 100ms et réessayer
-            const intervalId = setInterval(() => {
-              if (window.SC) {
-                clearInterval(intervalId);
-                resolve();
-              }
-            }, 100);
-          });
-        };
-        
-        await waitForSC();
+        // S'assurer que l'API SoundCloud est chargée
+        await ensureSoundCloudAPI();
         
         if (!isMounted || !iframeRef.current || !window.SC) return;
         
+        // Initialiser le widget
         const widget = window.SC.Widget(iframeRef.current);
         widgetRef.current = widget;
         
-        widget.bind(window.SC.Widget.Events.READY, () => {
+        // Configurer les événements
+        const events = window.SC.Widget.Events;
+        
+        widget.bind(events.READY, () => {
           if (isMounted) {
             setIsLoaded(true);
           }
         });
         
-        widget.bind(window.SC.Widget.Events.PLAY, () => {
+        widget.bind(events.PLAY, () => {
           if (isMounted) {
             setIsPlaying(true);
           }
         });
         
-        widget.bind(window.SC.Widget.Events.PAUSE, () => {
+        widget.bind(events.PAUSE, () => {
           if (isMounted) {
             setIsPlaying(false);
           }
         });
         
-        widget.bind(window.SC.Widget.Events.FINISH, () => {
+        widget.bind(events.FINISH, () => {
           if (isMounted) {
             setIsPlaying(false);
           }

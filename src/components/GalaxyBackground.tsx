@@ -149,12 +149,16 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
       <bufferGeometry>
         <bufferAttribute
           ref={(attr) => { particles.current = attr as THREE.BufferAttribute; }}
-          attachObject={['attributes', 'position']}
-          args={[particlesPosition.positions, 3]}
+          attach="position"
+          count={count}
+          itemSize={3}
+          array={particlesPosition.positions}
         />
         <bufferAttribute
-          attachObject={['attributes', 'color']}
-          args={[particlesPosition.colors, 3]}
+          attach="color"
+          count={count}
+          itemSize={3}
+          array={particlesPosition.colors}
         />
       </bufferGeometry>
       <pointsMaterial
