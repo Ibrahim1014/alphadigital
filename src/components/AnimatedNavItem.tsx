@@ -44,26 +44,6 @@ export const AnimatedNavItem = ({ href, children, onClick, index = 0 }: Animated
     
     if (onClick) {
       onClick();
-      return; // Si un gestionnaire personnalisé est fourni, on s'arrête là
-    }
-    
-    if (href === "#") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-    
-    const targetId = href.substring(1);
-    const element = document.getElementById(targetId);
-    
-    if (element) {
-      // Animation de défilement fluide
-      window.scrollTo({
-        top: element.offsetTop - 80, // 80px pour compenser la hauteur de la navbar
-        behavior: "smooth"
-      });
-      
-      // Mettre à jour l'URL avec le hash sans déclencher de rechargement
-      window.history.pushState(null, "", href);
     }
   };
 

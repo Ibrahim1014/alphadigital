@@ -149,18 +149,15 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
       <bufferGeometry>
         <bufferAttribute
           ref={(attr) => { particles.current = attr as THREE.BufferAttribute; }}
-          attach="attributes-position"
-          array={particlesPosition.positions}
-          itemSize={3}
+          attachObject={['attributes', 'position']}
+          args={[particlesPosition.positions, 3]}
         />
         <bufferAttribute
-          attach="attributes-color"
-          array={particlesPosition.colors}
-          itemSize={3}
+          attachObject={['attributes', 'color']}
+          args={[particlesPosition.colors, 3]}
         />
       </bufferGeometry>
       <pointsMaterial
-        attach="material"
         size={0.06}
         sizeAttenuation={true}
         depthWrite={false}
@@ -223,7 +220,6 @@ const LightOrbs = () => {
         >
           <sphereGeometry args={[orb.scale, 16, 16]} />
           <meshBasicMaterial 
-            attach="material"
             color={orb.color}
             transparent={true}
             opacity={0.4 * orb.intensity}

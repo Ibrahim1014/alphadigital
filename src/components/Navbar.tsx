@@ -17,6 +17,7 @@ export const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Vérifier l'état initial
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -46,12 +47,52 @@ export const Navbar = () => {
     setContactModalOpen(true);
   };
 
+  // Liste des éléments de navigation
   const navItems = [
-    { label: "Accueil", href: "#" },
-    { label: "Services", href: "#services" },
-    { label: "Portfolio", href: "#portfolio" },
-    { label: "Production Audio", href: "#audio-portfolio" },
-    { label: "IA Détection", href: "#ai-detection" },
+    { label: "Accueil", href: "#", action: () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      handleNavItemClick();
+    }},
+    { label: "Services", href: "#services", action: () => {
+      const element = document.getElementById("services");
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop - 80,
+          behavior: "smooth"
+        });
+      }
+      handleNavItemClick();
+    }},
+    { label: "Portfolio", href: "#portfolio", action: () => {
+      const element = document.getElementById("portfolio");
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop - 80,
+          behavior: "smooth"
+        });
+      }
+      handleNavItemClick();
+    }},
+    { label: "Production Audio", href: "#audio-portfolio", action: () => {
+      const element = document.getElementById("audio-portfolio");
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop - 80,
+          behavior: "smooth"
+        });
+      }
+      handleNavItemClick();
+    }},
+    { label: "IA Détection", href: "#ai-detection", action: () => {
+      const element = document.getElementById("ai-detection");
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop - 80,
+          behavior: "smooth"
+        });
+      }
+      handleNavItemClick();
+    }},
     { label: "Contact", href: "#", action: handleContactClick }
   ];
 
@@ -63,7 +104,14 @@ export const Navbar = () => {
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <a href="#" className="flex items-center">
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }} 
+            className="flex items-center"
+          >
             <Logo />
             <span className="ml-2 text-white font-bold text-xl">Alpha Digital</span>
           </a>
@@ -75,7 +123,7 @@ export const Navbar = () => {
                 <AnimatedNavItem 
                   href={item.href} 
                   index={index}
-                  onClick={item.action || handleNavItemClick}
+                  onClick={item.action}
                 >
                   {item.label}
                 </AnimatedNavItem>
@@ -126,7 +174,10 @@ export const Navbar = () => {
                       <a
                         href={item.href}
                         className="block py-3 px-6 text-white hover:text-alpha-gold hover:bg-alpha-gold/10 transition-all"
-                        onClick={item.action || handleNavItemClick}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (item.action) item.action();
+                        }}
                       >
                         {item.label}
                       </a>

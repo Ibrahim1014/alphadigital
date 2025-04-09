@@ -1,9 +1,7 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Music } from 'lucide-react';
 
-// Define the SoundCloud API types
 interface SCWidget {
   bind: (event: string, callback: () => void) => void;
   play: () => void;
@@ -11,35 +9,6 @@ interface SCWidget {
   setVolume: (volume: number) => void;
   getVolume: (callback: (volume: number) => void) => void;
 }
-
-interface SoundCloudAPI {
-  Widget: {
-    Events: {
-      READY: string;
-      PLAY: string;
-      PAUSE: string;
-      FINISH: string;
-    };
-    (iframe: HTMLIFrameElement): SCWidget;
-  };
-}
-
-// Function to dynamically load the SoundCloud API
-const loadSoundCloudAPI = (): Promise<void> => {
-  return new Promise((resolve) => {
-    // Check if window.SC is already defined
-    if (window.SC) {
-      resolve();
-      return;
-    }
-    
-    const script = document.createElement('script');
-    script.src = 'https://w.soundcloud.com/player/api.js';
-    script.async = true;
-    script.onload = () => resolve();
-    document.body.appendChild(script);
-  });
-};
 
 interface SoundCloudPlayerProps {
   url: string;
@@ -83,7 +52,28 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
     
     const setupWidget = async () => {
       try {
-        await loadSoundCloudAPI();
+        // Vérifier si window.SC existe déjà
+        if (!isMounted || !iframeRef.current) return;
+        
+        // Attendre que l'API SoundCloud soit chargée
+        const waitForSC = () => {
+          return new Promise<void>((resolve) => {
+            if (window.SC) {
+              resolve();
+              return;
+            }
+            
+            // Attendre 100ms et réessayer
+            const intervalId = setInterval(() => {
+              if (window.SC) {
+                clearInterval(intervalId);
+                resolve();
+              }
+            }, 100);
+          });
+        };
+        
+        await waitForSC();
         
         if (!isMounted || !iframeRef.current || !window.SC) return;
         
@@ -91,19 +81,27 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         widgetRef.current = widget;
         
         widget.bind(window.SC.Widget.Events.READY, () => {
-          setIsLoaded(true);
+          if (isMounted) {
+            setIsLoaded(true);
+          }
         });
         
         widget.bind(window.SC.Widget.Events.PLAY, () => {
-          setIsPlaying(true);
+          if (isMounted) {
+            setIsPlaying(true);
+          }
         });
         
         widget.bind(window.SC.Widget.Events.PAUSE, () => {
-          setIsPlaying(false);
+          if (isMounted) {
+            setIsPlaying(false);
+          }
         });
         
         widget.bind(window.SC.Widget.Events.FINISH, () => {
-          setIsPlaying(false);
+          if (isMounted) {
+            setIsPlaying(false);
+          }
         });
       } catch (error) {
         console.error("Erreur lors de l'initialisation du lecteur SoundCloud:", error);
