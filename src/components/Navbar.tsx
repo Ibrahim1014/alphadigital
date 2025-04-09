@@ -55,7 +55,7 @@ export const Navbar = () => {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <a href="#" className="flex items-center">
-          <Logo className="h-10 w-auto" />
+          <Logo />
           <span className="ml-2 text-white font-bold text-xl">Alpha Digital</span>
         </a>
 
@@ -63,7 +63,7 @@ export const Navbar = () => {
         <ul className="hidden md:flex gap-8">
           {navItems.map((item, index) => (
             <li key={index}>
-              <AnimatedNavItem href={item.href} onClick={handleNavItemClick}>
+              <AnimatedNavItem href={item.href} onClick={handleNavItemClick} index={index}>
                 {item.label}
               </AnimatedNavItem>
             </li>

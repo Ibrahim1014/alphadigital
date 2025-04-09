@@ -14,13 +14,6 @@ declare global {
   interface Window {
     SC: {
       Widget: (iframe: HTMLIFrameElement) => SCWidget;
-      Widget: {
-        Events: {
-          PLAY: string;
-          PAUSE: string;
-          FINISH: string;
-        }
-      }
     }
   }
 }

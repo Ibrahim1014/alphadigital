@@ -5,17 +5,23 @@ import { useState, useEffect } from "react";
 
 interface AnimatedNavItemProps {
   href: string;
-  name: string;
-  index: number;
+  children: React.ReactNode;
+  onClick?: () => void;
+  index?: number;
 }
 
-export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => {
+export const AnimatedNavItem = ({ href, children, onClick, index = 0 }: AnimatedNavItemProps) => {
   const location = useLocation();
   const [isActive, setIsActive] = useState(false);
   
   // Vérification de la section active au scroll
   useEffect(() => {
     const checkActive = () => {
+      if (href === "#") {
+        setIsActive(window.scrollY < 100);
+        return;
+      }
+      
       const hash = href.substring(1);
       const element = document.getElementById(hash);
       
@@ -35,11 +41,21 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    
+    if (onClick) {
+      onClick();
+    }
+    
+    if (href === "#") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    
     const targetId = href.substring(1);
     const element = document.getElementById(targetId);
     
     if (element) {
-      // Animation de défilement fluide avec GSAP
+      // Animation de défilement fluide
       window.scrollTo({
         top: element.offsetTop - 80, // 80px pour compenser la hauteur de la navbar
         behavior: "smooth"
@@ -80,7 +96,7 @@ export const AnimatedNavItem = ({ href, name, index }: AnimatedNavItemProps) => 
           whileHover={{ scale: 1.1 }}
           transition={{ duration: 0.2 }}
         >
-          {name}
+          {children}
         </motion.span>
         {isActive && (
           <motion.div
