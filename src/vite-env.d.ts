@@ -1,7 +1,7 @@
 
 /// <reference types="vite/client" />
 
-// Types pour l'API SoundCloud
+// Interface pour l'API SoundCloud
 interface SCWidget {
   play: () => void;
   pause: () => void;
@@ -10,10 +10,19 @@ interface SCWidget {
   bind: (event: string, callback: () => void) => void;
 }
 
+interface SoundCloudWidget {
+  Events: {
+    PLAY: string;
+    PAUSE: string;
+    FINISH: string;
+    READY: string;
+  };
+  Widget: (iframe: HTMLIFrameElement) => SCWidget;
+}
+
+// Déclaration globale pour éviter les erreurs TS
 declare global {
   interface Window {
-    SC: {
-      Widget: (iframe: HTMLIFrameElement) => SCWidget;
-    }
+    SC: SoundCloudWidget;
   }
 }

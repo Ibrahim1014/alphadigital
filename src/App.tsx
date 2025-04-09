@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 // Créer une nouvelle instance de QueryClient
+// Version 5 de React Query utilise une syntaxe légèrement différente
 const queryClient = new QueryClient();
 
 const App = () => (

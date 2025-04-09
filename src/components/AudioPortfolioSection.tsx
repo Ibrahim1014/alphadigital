@@ -2,7 +2,7 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { SoundCloudPlayer } from './SoundCloudPlayer';
-import { Music, Headphones, Waveform } from 'lucide-react';
+import { Music, Headphones, WavesIcon } from 'lucide-react';
 import gsap from 'gsap';
 
 export const AudioPortfolioSection = () => {
@@ -141,7 +141,7 @@ export const AudioPortfolioSection = () => {
               transition={{ duration: 2, repeat: Infinity }}
             >
               <Headphones className="h-10 w-10 text-alpha-gold" />
-              <Waveform className="h-8 w-8 text-alpha-gold/70" />
+              <WavesIcon className="h-8 w-8 text-alpha-gold/70" />
             </motion.div>
             
             <h2
@@ -187,17 +187,6 @@ export const AudioPortfolioSection = () => {
                   className="h-10 w-10 rounded-full bg-alpha-black/70 backdrop-blur-sm flex items-center justify-center border border-alpha-gold/30"
                   whileHover={{ scale: 1.1, rotate: [0, 5, -5, 0] }}
                   transition={{ duration: 0.5 }}
-                  animate={{
-                    boxShadow: [
-                      "0 0 0px rgba(255,215,0,0.2)",
-                      "0 0 10px rgba(255,215,0,0.5)",
-                      "0 0 0px rgba(255,215,0,0.2)"
-                    ]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity
-                  }}
                 >
                   <Music className="h-5 w-5 text-alpha-gold" />
                 </motion.div>
@@ -208,7 +197,6 @@ export const AudioPortfolioSection = () => {
               <motion.div
                 className="bg-alpha-black/30 backdrop-blur-sm p-4 rounded-xl -mt-3 border border-alpha-gold/10"
                 whileHover={{ y: -5, boxShadow: "0 4px 20px rgba(255,215,0,0.1)" }}
-                transition={{ duration: 0.3 }}
               >
                 <div className="flex justify-between items-center">
                   <div>
@@ -225,7 +213,7 @@ export const AudioPortfolioSection = () => {
                       repeat: Infinity
                     }}
                   >
-                    <Waveform className="h-4 w-4 text-alpha-gold/80" />
+                    <Music className="h-4 w-4 text-alpha-gold/80" />
                   </motion.div>
                 </div>
               </motion.div>
@@ -256,7 +244,6 @@ export const AudioPortfolioSection = () => {
             <motion.span
               initial={{ x: 0 }}
               whileHover={{ x: 5 }}
-              transition={{ duration: 0.3 }}
             >
               →
             </motion.span>

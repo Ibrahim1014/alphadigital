@@ -1,15 +1,17 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { ExternalLink, Code, BookOpen, Music, Smartphone } from "lucide-react";
 import { motion } from "framer-motion";
 import { FloatingParticles } from "./FloatingParticles";
+import { AudioPortfolioSection } from "./AudioPortfolioSection";
 
 export const PortfolioSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
   useEffect(() => {
     const timeline = gsap.timeline({
@@ -38,30 +40,50 @@ export const PortfolioSection = () => {
 
   const projects = [
     {
-      title: "Site E-Premium",
-      description: "Design moderne et expérience utilisateur optimisée",
+      id: "marketing",
+      title: "Marketing Digital",
+      description: "Stratégies innovantes pour accroître votre visibilité en ligne",
       icon: Code,
-      image: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png",
+      image: "/lovable-uploads/ef069826-012b-44c8-a477-c1c1c9274659.png",
     },
     {
+      id: "mobile",
       title: "Développement d'Applications Mobiles",
       description: "Interface native et performances exceptionnelles",
       icon: Smartphone,
-      image: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png",
+      image: "/lovable-uploads/478e3aaa-5e0e-41c2-a27a-c2826179cf80.png",
     },
     {
+      id: "writing",
       title: "Rédaction & Création de Livres",
       description: "Publications professionnelles et percutantes",
       icon: BookOpen,
-      image: "/lovable-uploads/baffbad0-6e74-4bf2-9f5e-a326a70543b5.png",
+      image: "/lovable-uploads/9ecb88f6-585b-45f6-a29f-745c0ba9d792.png",
     },
     {
+      id: "music",
       title: "Production Audio",
       description: "Sound design et musique originale",
       icon: Music,
       image: "/lovable-uploads/5f324228-39e9-4c4c-ac5d-6a6f8db60f4f.png",
     },
   ];
+
+  // Fonction pour afficher le projet sélectionné
+  const handleViewProject = (projectId: string) => {
+    setSelectedProject(projectId === selectedProject ? null : projectId);
+    
+    // Scroll vers la section des détails du projet après une courte animation
+    setTimeout(() => {
+      const detailsElement = document.getElementById("project-details");
+      if (detailsElement) {
+        window.scrollTo({
+          top: detailsElement.offsetTop - 120,
+          behavior: "smooth"
+        });
+      }
+    }, 100);
+  };
 
   return (
     <section id="portfolio" className="py-24 px-4 relative overflow-hidden">
@@ -139,7 +161,8 @@ export const PortfolioSection = () => {
                 >
                   <Button 
                     variant="outline" 
-                    className="group-hover:bg-alpha-gold group-hover:text-alpha-black transition-all duration-300"
+                    className={`group-hover:bg-alpha-gold group-hover:text-alpha-black transition-all duration-300 ${selectedProject === project.id ? 'bg-alpha-gold/30 text-alpha-gold' : ''}`}
+                    onClick={() => handleViewProject(project.id)}
                   >
                     Voir le projet 
                     <motion.span
@@ -154,6 +177,168 @@ export const PortfolioSection = () => {
             </Card>
           ))}
         </div>
+
+        {/* Section de détails du projet */}
+        <AnimatePresence>
+          {selectedProject && (
+            <motion.div
+              id="project-details"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.6 }}
+              className="mt-16 overflow-hidden"
+            >
+              <motion.div 
+                className="relative glass border border-alpha-gold/20 rounded-xl p-6"
+                initial={{ y: 50 }}
+                animate={{ y: 0 }}
+                transition={{ type: "spring", damping: 15 }}
+              >
+                {/* Ligne décorative */}
+                <div className="absolute left-0 top-0 w-full h-1 bg-gradient-to-r from-transparent via-alpha-gold to-transparent" />
+                
+                {/* Contenu du projet sélectionné */}
+                {selectedProject === "music" && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-alpha-gold mb-8 text-center">
+                      Notre Production Audio
+                    </h3>
+                    <AudioPortfolioSection />
+                  </div>
+                )}
+                
+                {selectedProject === "writing" && (
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="text-2xl font-bold text-alpha-gold mb-4">Rédaction & Création de Livres</h3>
+                      <p className="text-alpha-gray mb-4">
+                        Notre service de rédaction et de création de livres vous offre une expertise complète pour transformer vos idées en œuvres littéraires professionnelles.
+                      </p>
+                      <ul className="space-y-2 mb-6">
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>Rédaction de livres et d'ebooks</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>Édition et publication assistée</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>Création de couvertures professionnelles</span>
+                        </li>
+                      </ul>
+                      <Button variant="outline" className="hover:bg-alpha-gold hover:text-alpha-black">
+                        En savoir plus
+                      </Button>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <motion.img
+                        src="/lovable-uploads/9ecb88f6-585b-45f6-a29f-745c0ba9d792.png"
+                        alt="Rédaction & Création de Livres"
+                        className="max-w-full rounded-lg shadow-lg"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                        whileHover={{ scale: 1.05 }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                {selectedProject === "marketing" && (
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="text-2xl font-bold text-alpha-gold mb-4">Marketing Digital</h3>
+                      <p className="text-alpha-gray mb-4">
+                        Notre agence vous propose des services de marketing digital pour optimiser votre visibilité en ligne et augmenter votre conversion.
+                      </p>
+                      <ul className="space-y-2 mb-6">
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>Stratégie de contenu personnalisée</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>SEO & Référencement</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>Campagnes publicitaires ciblées</span>
+                        </li>
+                      </ul>
+                      <Button variant="outline" className="hover:bg-alpha-gold hover:text-alpha-black">
+                        En savoir plus
+                      </Button>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <motion.img
+                        src="/lovable-uploads/ef069826-012b-44c8-a477-c1c1c9274659.png"
+                        alt="Marketing Digital"
+                        className="max-w-full rounded-lg shadow-lg"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                        whileHover={{ scale: 1.05 }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                {selectedProject === "mobile" && (
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="text-2xl font-bold text-alpha-gold mb-4">Développement d'Applications Mobiles</h3>
+                      <p className="text-alpha-gray mb-4">
+                        Nous développons des applications mobiles performantes et intuitives pour iOS et Android, parfaitement adaptées à vos besoins.
+                      </p>
+                      <ul className="space-y-2 mb-6">
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>Applications natives et multiplateforme</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>Interface utilisateur premium</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <span className="text-alpha-gold">✦</span>
+                          <span>Maintenance et support continu</span>
+                        </li>
+                      </ul>
+                      <Button variant="outline" className="hover:bg-alpha-gold hover:text-alpha-black">
+                        En savoir plus
+                      </Button>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <motion.img
+                        src="/lovable-uploads/478e3aaa-5e0e-41c2-a27a-c2826179cf80.png"
+                        alt="Développement d'Applications Mobiles"
+                        className="max-w-full rounded-lg shadow-lg"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.6 }}
+                        whileHover={{ scale: 1.05 }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                {/* Bouton de fermeture */}
+                <div className="mt-8 text-center">
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => setSelectedProject(null)}
+                    className="text-alpha-gray hover:text-alpha-gold"
+                  >
+                    Fermer les détails
+                  </Button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

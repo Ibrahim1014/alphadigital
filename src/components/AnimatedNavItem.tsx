@@ -44,6 +44,7 @@ export const AnimatedNavItem = ({ href, children, onClick, index = 0 }: Animated
     
     if (onClick) {
       onClick();
+      return; // Si un gestionnaire personnalisé est fourni, on s'arrête là
     }
     
     if (href === "#") {

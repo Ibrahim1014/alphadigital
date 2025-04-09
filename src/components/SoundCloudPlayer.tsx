@@ -49,19 +49,19 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         widgetRef.current = window.SC.Widget(iframeRef.current);
         
         // Écouter les événements du lecteur
-        widgetRef.current.bind(window.SC.Widget.Events.PLAY, () => {
+        widgetRef.current.bind(window.SC.Events.PLAY, () => {
           setIsPlaying(true);
         });
         
-        widgetRef.current.bind(window.SC.Widget.Events.PAUSE, () => {
+        widgetRef.current.bind(window.SC.Events.PAUSE, () => {
           setIsPlaying(false);
         });
         
-        widgetRef.current.bind(window.SC.Widget.Events.FINISH, () => {
+        widgetRef.current.bind(window.SC.Events.FINISH, () => {
           setIsPlaying(false);
         });
         
-        widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
+        widgetRef.current.bind(window.SC.Events.READY, () => {
           setIsLoaded(true);
         });
       }

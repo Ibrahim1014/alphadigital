@@ -6,7 +6,6 @@ import { PortfolioSection } from "@/components/PortfolioSection";
 import { AIDetectionSection } from "@/components/AIDetectionSection";
 import { GalaxyBackground } from "@/components/GalaxyBackground";
 import { ChatbotSection } from "@/components/ChatbotSection";
-import { AudioPortfolioSection } from "@/components/AudioPortfolioSection";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, Suspense, lazy } from "react";
@@ -54,7 +53,9 @@ const Index = () => {
         "/lovable-uploads/5466acc5-b12f-432b-9120-7200f22cb17b.png",
         "/lovable-uploads/5f324228-39e9-4c4c-ac5d-6a6f8db60f4f.png",
         "/lovable-uploads/b2ba0c84-8bcb-4eee-a5f4-8362e102af1d.png",
-        "/lovable-uploads/baffbad0-6e74-4bf2-9f5e-a326a70543b5.png"
+        "/lovable-uploads/baffbad0-6e74-4bf2-9f5e-a326a70543b5.png",
+        "/lovable-uploads/9ecb88f6-585b-45f6-a29f-745c0ba9d792.png",
+        "/lovable-uploads/478e3aaa-5e0e-41c2-a27a-c2826179cf80.png"
       ];
       
       images.forEach(src => {
@@ -110,7 +111,6 @@ const Index = () => {
           <Hero />
           <ServicesSection />
           <PortfolioSection />
-          <AudioPortfolioSection />
           <AIDetectionSection />
           <ChatbotSection />
           
