@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Card } from "./ui/card";
@@ -12,6 +11,7 @@ export const PortfolioSection = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const projectDetailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timeline = gsap.timeline({
@@ -69,17 +69,22 @@ export const PortfolioSection = () => {
     },
   ];
 
-  // Fonction pour afficher le projet sélectionné
   const handleViewProject = (projectId: string) => {
-    setSelectedProject(projectId === selectedProject ? null : projectId);
+    const isDeselecting = projectId === selectedProject;
     
-    // Scroll vers la section des détails du projet après une courte animation
+    if (isDeselecting) {
+      setSelectedProject(null);
+      return;
+    }
+    
+    setSelectedProject(projectId);
+    
     setTimeout(() => {
       const detailsElement = document.getElementById("project-details");
       if (detailsElement) {
-        window.scrollTo({
-          top: detailsElement.offsetTop - 120,
-          behavior: "smooth"
+        detailsElement.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "start" 
         });
       }
     }, 100);
@@ -178,11 +183,11 @@ export const PortfolioSection = () => {
           ))}
         </div>
 
-        {/* Section de détails du projet */}
         <AnimatePresence>
           {selectedProject && (
             <motion.div
               id="project-details"
+              ref={projectDetailsRef}
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
@@ -195,10 +200,8 @@ export const PortfolioSection = () => {
                 animate={{ y: 0 }}
                 transition={{ type: "spring", damping: 15 }}
               >
-                {/* Ligne décorative */}
                 <div className="absolute left-0 top-0 w-full h-1 bg-gradient-to-r from-transparent via-alpha-gold to-transparent" />
                 
-                {/* Contenu du projet sélectionné */}
                 {selectedProject === "music" && (
                   <div>
                     <h3 className="text-2xl font-bold text-alpha-gold mb-8 text-center">
@@ -325,7 +328,6 @@ export const PortfolioSection = () => {
                   </div>
                 )}
                 
-                {/* Bouton de fermeture */}
                 <div className="mt-8 text-center">
                   <Button 
                     variant="ghost" 

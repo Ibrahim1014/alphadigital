@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Music } from 'lucide-react';
@@ -17,6 +18,7 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
   const widgetRef = useRef<SCWidget | null>(null);
   const glowControls = useAnimationControls();
   
+  // Effet pour l'animation du halo pulsatoire
   useEffect(() => {
     const pulseAnimation = async () => {
       while (true) {
@@ -91,9 +93,8 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         const widget = window.SC.Widget(iframeRef.current);
         widgetRef.current = widget;
         
-        const SC = window.SC;
-        if (SC && SC.Widget && SC.Widget.Events) {
-          const events = SC.Widget.Events;
+        if (window.SC && window.SC.Widget && window.SC.Widget.Events) {
+          const events = window.SC.Widget.Events;
           
           widget.bind(events.READY, () => {
             if (isMounted) {

@@ -22,7 +22,7 @@ interface SCWidgetStatic {
 // Déclaration globale pour éviter les erreurs TS
 declare global {
   interface Window {
-    SC?: {
+    SC: {
       Widget: ((iframe: HTMLIFrameElement) => SCWidget) & SCWidgetStatic;
     }
   }

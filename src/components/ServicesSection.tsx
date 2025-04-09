@@ -31,7 +31,7 @@ export const ServicesSection = () => {
       icon: BookOpen,
       title: "Rédaction & Livres",
       description: "Services d'écriture et de publication de haute qualité",
-      imagePath: "/lovable-uploads/baffbad0-6e74-4bf2-9f5e-a326a70543b5.png",
+      imagePath: "/lovable-uploads/9ecb88f6-585b-45f6-a29f-745c0ba9d792.png",
       direction: "up" as const,
       value: "writing"
     },
@@ -47,7 +47,7 @@ export const ServicesSection = () => {
       icon: Smartphone,
       title: "Apps Mobiles",
       description: "Applications mobiles innovantes et performantes",
-      imagePath: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png",
+      imagePath: "/lovable-uploads/478e3aaa-5e0e-41c2-a27a-c2826179cf80.png",
       direction: "down" as const,
       value: "mobile"
     },
@@ -63,7 +63,6 @@ export const ServicesSection = () => {
 
   return (
     <section id="services" className="py-32 px-4 relative overflow-hidden">
-      {/* Particules flottantes dorées améliorées */}
       <FloatingParticles 
         count={24} 
         color="rgba(255, 215, 0, 0.12)" 
@@ -74,7 +73,6 @@ export const ServicesSection = () => {
         interactive={true}
       />
       
-      {/* Orbes lumineux animés en arrière plan avec plus d'intensité */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(5)].map((_, i) => (
           <motion.div
@@ -137,7 +135,6 @@ export const ServicesSection = () => {
                   value={service.value}
                   className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300 overflow-hidden relative group h-14 w-full text-sm"
                 >
-                  {/* Effet lumineux au hover amélioré */}
                   <motion.div 
                     className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-alpha-gold/20 blur-xl transition-transform duration-500 ease-in-out" 
                     transition={{ repeat: Infinity, duration: 1.5 }}
