@@ -6,11 +6,9 @@ import { useAnimatedView } from '@/hooks/useAnimatedView';
 import { ThreeDErrorBoundary } from './ThreeDErrorBoundary';
 import { Vector2 } from 'three';
 
-// Optimisation pour les appareils basse performance
 const isMobile = window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const isLowEnd = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : true;
 
-// Optimisations basées sur les performances
 const PERFORMANCE_LEVEL = {
   HIGH: {
     particleCount: 3800,
@@ -42,7 +40,6 @@ const PERFORMANCE_LEVEL = {
   }
 };
 
-// Déterminer le niveau de performance
 const getPerformanceLevel = () => {
   if (isMobile && isLowEnd) return PERFORMANCE_LEVEL.ULTRA_LOW;
   if (isMobile || isLowEnd) return PERFORMANCE_LEVEL.LOW;
@@ -153,20 +150,16 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
         <bufferAttribute
           ref={particles}
           attach="attributes-position"
-          count={count}
-          itemSize={3}
-          array={particlesPosition.positions}
+          args={[particlesPosition.positions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
-          count={count}
-          itemSize={3}
-          array={particlesPosition.colors}
+          args={[particlesPosition.colors, 3]}
         />
       </bufferGeometry>
       <pointsMaterial
         size={0.06}
-        sizeAttenuation={true}
+        sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending}
         vertexColors
@@ -227,7 +220,7 @@ const LightOrbs = () => {
         >
           <sphereGeometry args={[orb.scale, 16, 16]} />
           <meshBasicMaterial 
-            color={orb.color} 
+            color={orb.color}
             transparent 
             opacity={0.4 * orb.intensity}
           />

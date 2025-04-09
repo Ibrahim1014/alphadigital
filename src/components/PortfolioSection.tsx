@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { ExternalLink, Code, BookOpen, Music, Smartphone } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FloatingParticles } from "./FloatingParticles";
 import { AudioPortfolioSection } from "./AudioPortfolioSection";
 

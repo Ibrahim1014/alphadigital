@@ -1,7 +1,21 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Music } from 'lucide-react';
+
+const loadSoundCloudAPI = (): Promise<void> => {
+  return new Promise((resolve) => {
+    if (window.SC) {
+      resolve();
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.src = 'https://w.soundcloud.com/player/api.js';
+    script.async = true;
+    script.onload = () => resolve();
+    document.body.appendChild(script);
+  });
+};
 
 interface SoundCloudPlayerProps {
   url: string;
@@ -14,12 +28,10 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
   const [isMuted, setIsMuted] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   
-  // Référence pour contrôler l'iframe SoundCloud via l'API
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const widgetRef = useRef<any>(null);
   const glowControls = useAnimationControls();
   
-  // Effet de pulsation pour le contour doré
   useEffect(() => {
     const pulseAnimation = async () => {
       while (true) {
@@ -43,44 +55,42 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
   }, [isPlaying, isHovered, glowControls]);
   
   useEffect(() => {
-    // Fonction pour initialiser le widget SoundCloud
-    const setupWidget = () => {
-      if (iframeRef.current && window.SC) {
-        widgetRef.current = window.SC.Widget(iframeRef.current);
+    let isMounted = true;
+    
+    const setupWidget = async () => {
+      try {
+        await loadSoundCloudAPI();
         
-        // Écouter les événements du lecteur
-        widgetRef.current.bind(window.SC.Events.PLAY, () => {
+        if (!isMounted || !iframeRef.current || !window.SC) return;
+        
+        const widget = window.SC.Widget(iframeRef.current);
+        widgetRef.current = widget;
+        
+        widget.bind(window.SC.Widget.Events.READY, () => {
+          setIsLoaded(true);
+        });
+        
+        widget.bind(window.SC.Widget.Events.PLAY, () => {
           setIsPlaying(true);
         });
         
-        widgetRef.current.bind(window.SC.Events.PAUSE, () => {
+        widget.bind(window.SC.Widget.Events.PAUSE, () => {
           setIsPlaying(false);
         });
         
-        widgetRef.current.bind(window.SC.Events.FINISH, () => {
+        widget.bind(window.SC.Widget.Events.FINISH, () => {
           setIsPlaying(false);
         });
-        
-        widgetRef.current.bind(window.SC.Events.READY, () => {
-          setIsLoaded(true);
-        });
+      } catch (error) {
+        console.error("Erreur lors de l'initialisation du lecteur SoundCloud:", error);
       }
     };
     
-    // Vérifier si l'API SC est disponible
-    if (window.SC) {
-      setupWidget();
-    } else {
-      // Si l'API n'est pas encore chargée, attendre qu'elle le soit
-      const checkSC = setInterval(() => {
-        if (window.SC) {
-          clearInterval(checkSC);
-          setupWidget();
-        }
-      }, 100);
-      
-      return () => clearInterval(checkSC);
-    }
+    setupWidget();
+    
+    return () => {
+      isMounted = false;
+    };
   }, []);
   
   const togglePlay = () => {
@@ -114,7 +124,6 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
       transition={{ duration: 0.5 }}
       whileHover={{ scale: 1.02 }}
     >
-      {/* Overlay de contrôle premium */}
       <motion.div 
         className="absolute inset-0 z-10 flex items-center justify-between px-4 backdrop-blur-sm bg-black/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         initial={{ opacity: 0 }}
@@ -162,13 +171,11 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         </div>
       </motion.div>
       
-      {/* Effet de brillance sur le contour */}
       <motion.div 
         className="absolute inset-0 rounded-xl border border-alpha-gold/30 overflow-hidden"
         animate={glowControls}
       />
       
-      {/* Indicateur de lecture */}
       {isPlaying && (
         <motion.div 
           className="absolute bottom-4 right-4 h-3 w-3 rounded-full bg-alpha-gold z-20"
@@ -184,14 +191,12 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         />
       )}
       
-      {/* Overlay de chargement */}
       {!isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-alpha-black/50 backdrop-blur-sm rounded-xl z-30">
           <div className="w-8 h-8 border-2 border-alpha-gold rounded-full animate-spin border-t-transparent"></div>
         </div>
       )}
       
-      {/* SoundCloud iframe */}
       <div className="w-full h-full bg-alpha-black/50 backdrop-blur-md rounded-xl overflow-hidden border border-alpha-gold/20">
         <iframe
           ref={iframeRef}
