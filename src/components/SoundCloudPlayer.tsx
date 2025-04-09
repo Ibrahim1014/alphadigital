@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Music } from 'lucide-react';
@@ -101,9 +100,8 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         widgetRef.current = widget;
         
         // Configurer les événements
-        if (window.SC.Widget.Events) {
-          const events = window.SC.Widget.Events;
-          
+        const events = window.SC.Widget.Events;
+        if (events) {
           widget.bind(events.READY, () => {
             if (isMounted) {
               setIsLoaded(true);
