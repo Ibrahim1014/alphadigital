@@ -39,7 +39,6 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
     }
   }, [isPlaying, isHovered, glowControls]);
   
-  // Fonction pour s'assurer que le SDK SoundCloud est chargé
   const ensureSoundCloudAPI = () => {
     return new Promise<void>((resolve) => {
       if (typeof window !== 'undefined' && window.SC) {
@@ -47,10 +46,8 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         return;
       }
       
-      // Vérifier si le script est déjà en cours de chargement
       const existingScript = document.querySelector('script[src="https://w.soundcloud.com/player/api.js"]');
       if (existingScript) {
-        // Si le script est déjà en train de charger, attendre qu'il soit prêt
         const checkInterval = setInterval(() => {
           if (typeof window !== 'undefined' && window.SC) {
             clearInterval(checkInterval);
@@ -60,12 +57,10 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         return;
       }
       
-      // Créer et charger le script si nécessaire
       const script = document.createElement('script');
       script.src = 'https://w.soundcloud.com/player/api.js';
       script.async = true;
       script.onload = () => {
-        // Vérifier encore une fois après le chargement
         const loadCheckInterval = setInterval(() => {
           if (typeof window !== 'undefined' && window.SC) {
             clearInterval(loadCheckInterval);
@@ -84,24 +79,22 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
       try {
         if (!isMounted || !iframeRef.current) return;
         
-        // S'assurer que l'API SoundCloud est chargée
         await ensureSoundCloudAPI();
         
         if (!isMounted || !iframeRef.current || typeof window === 'undefined') return;
         
-        // Vérifier si SC existe avant de l'utiliser
         if (!window.SC) {
           console.error("L'API SoundCloud n'est pas disponible");
           return;
         }
         
-        // Initialiser le widget
         const widget = window.SC.Widget(iframeRef.current);
         widgetRef.current = widget;
         
-        // Configurer les événements
-        const events = window.SC.Widget.Events;
-        if (events) {
+        const SC = window.SC;
+        if (SC && SC.Widget && SC.Widget.Events) {
+          const events = SC.Widget.Events;
+          
           widget.bind(events.READY, () => {
             if (isMounted) {
               setIsLoaded(true);
