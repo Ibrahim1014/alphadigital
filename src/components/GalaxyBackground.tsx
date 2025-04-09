@@ -1,10 +1,10 @@
+
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing';
 import { useAnimatedView } from '@/hooks/useAnimatedView';
 import { ThreeDErrorBoundary } from './ThreeDErrorBoundary';
-import { Vector2 } from 'three';
 
 const isMobile = window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const isLowEnd = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : true;
@@ -50,7 +50,7 @@ const PERF = getPerformanceLevel();
 
 const GalaxyParticles = ({ count = PERF.particleCount }) => {
   const points = useRef<THREE.Points>(null);
-  const particles = useRef<THREE.BufferAttribute>(null);
+  const particles = useRef<THREE.BufferAttribute | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   useEffect(() => {
@@ -148,22 +148,25 @@ const GalaxyParticles = ({ count = PERF.particleCount }) => {
     <points ref={points}>
       <bufferGeometry>
         <bufferAttribute
-          ref={particles}
+          ref={(attr) => { particles.current = attr as THREE.BufferAttribute; }}
           attach="attributes-position"
-          args={[particlesPosition.positions, 3]}
+          array={particlesPosition.positions}
+          itemSize={3}
         />
         <bufferAttribute
           attach="attributes-color"
-          args={[particlesPosition.colors, 3]}
+          array={particlesPosition.colors}
+          itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial
+        attach="material"
         size={0.06}
-        sizeAttenuation
+        sizeAttenuation={true}
         depthWrite={false}
         blending={THREE.AdditiveBlending}
-        vertexColors
-        transparent
+        vertexColors={true}
+        transparent={true}
         opacity={0.7}
       />
     </points>
@@ -220,8 +223,9 @@ const LightOrbs = () => {
         >
           <sphereGeometry args={[orb.scale, 16, 16]} />
           <meshBasicMaterial 
+            attach="material"
             color={orb.color}
-            transparent 
+            transparent={true}
             opacity={0.4 * orb.intensity}
           />
         </mesh>

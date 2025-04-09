@@ -1,9 +1,33 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Music } from 'lucide-react';
 
+// Define the SoundCloud API types
+interface SCWidget {
+  bind: (event: string, callback: () => void) => void;
+  play: () => void;
+  pause: () => void;
+  setVolume: (volume: number) => void;
+  getVolume: (callback: (volume: number) => void) => void;
+}
+
+interface SoundCloudAPI {
+  Widget: {
+    Events: {
+      READY: string;
+      PLAY: string;
+      PAUSE: string;
+      FINISH: string;
+    };
+    (iframe: HTMLIFrameElement): SCWidget;
+  };
+}
+
+// Function to dynamically load the SoundCloud API
 const loadSoundCloudAPI = (): Promise<void> => {
   return new Promise((resolve) => {
+    // Check if window.SC is already defined
     if (window.SC) {
       resolve();
       return;
@@ -29,7 +53,7 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
   const [isLoaded, setIsLoaded] = useState(false);
   
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const widgetRef = useRef<any>(null);
+  const widgetRef = useRef<SCWidget | null>(null);
   const glowControls = useAnimationControls();
   
   useEffect(() => {

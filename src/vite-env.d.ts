@@ -23,6 +23,16 @@ interface SoundCloudWidget {
 // Déclaration globale pour éviter les erreurs TS
 declare global {
   interface Window {
-    SC: SoundCloudWidget;
+    SC: {
+      Widget: {
+        Events: {
+          READY: string;
+          PLAY: string;
+          PAUSE: string;
+          FINISH: string;
+        };
+        (iframe: HTMLIFrameElement): SCWidget;
+      }
+    }
   }
 }
