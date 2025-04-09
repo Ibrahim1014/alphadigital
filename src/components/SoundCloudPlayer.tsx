@@ -88,14 +88,20 @@ export const SoundCloudPlayer: React.FC<SoundCloudPlayerProps> = ({ url, title }
         // S'assurer que l'API SoundCloud est chargée
         await ensureSoundCloudAPI();
         
-        if (!isMounted || !iframeRef.current || typeof window === 'undefined' || !window.SC) return;
+        if (!isMounted || !iframeRef.current || typeof window === 'undefined') return;
+        
+        // Vérifier si SC existe avant de l'utiliser
+        if (!window.SC) {
+          console.error("L'API SoundCloud n'est pas disponible");
+          return;
+        }
         
         // Initialiser le widget
         const widget = window.SC.Widget(iframeRef.current);
         widgetRef.current = widget;
         
         // Configurer les événements
-        if (window.SC && window.SC.Widget && window.SC.Widget.Events) {
+        if (window.SC.Widget.Events) {
           const events = window.SC.Widget.Events;
           
           widget.bind(events.READY, () => {
