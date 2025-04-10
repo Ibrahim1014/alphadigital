@@ -1,27 +1,7 @@
 
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 export const VideoSection = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    // S'assurer que la vidéo se lance correctement sur mobile
-    const handleInteraction = () => {
-      if (videoRef.current) {
-        videoRef.current.play().catch(error => {
-          console.log("Erreur de lecture automatique:", error);
-        });
-      }
-    };
-
-    document.addEventListener('touchstart', handleInteraction, { once: true });
-    
-    return () => {
-      document.removeEventListener('touchstart', handleInteraction);
-    };
-  }, []);
-
   return (
     <motion.div 
       className="w-full relative z-10 overflow-hidden"
@@ -29,17 +9,18 @@ export const VideoSection = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <video 
-        ref={videoRef}
-        className="w-full h-auto" 
-        autoPlay 
-        muted 
-        loop 
-        playsInline
-      >
-        <source src="https://drive.google.com/uc?id=1O_CAhpHa29AQa8U6tUmGETNO04_0QHK6" type="video/mp4" />
-        Ton navigateur ne prend pas en charge l'élément vidéo.
-      </video>
+      <div style={{ position: 'relative', width: '100%', height: '0', paddingBottom: '177.778%' }}>
+        <iframe 
+          allow="fullscreen;autoplay" 
+          allowFullScreen 
+          height="100%" 
+          src="https://streamable.com/e/ukzowm?autoplay=1&muted=1&nocontrols=1&loop=1" 
+          width="100%" 
+          style={{ border: 'none', width: '100%', height: '100%', position: 'absolute', left: '0', top: '0', overflow: 'hidden' }}
+          title="Alpha Digital Presentation"
+        >
+        </iframe>
+      </div>
     </motion.div>
   );
 };
