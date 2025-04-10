@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { MessageSquare, Paintbrush, Code, Music, BookOpen, Smartphone } from "lucide-react";
 import { AnimatedSection } from "./AnimatedSection";
@@ -10,6 +11,7 @@ import { FloatingParticles } from "./FloatingParticles";
 export const ServicesSection = () => {
   const [activeTab, setActiveTab] = useState<'marketing' | 'design' | 'development' | 'music' | 'writing' | 'mobile'>('marketing');
   
+  // Optimisation : Définir les services en dehors du rendu pour éviter de les recréer à chaque rendu
   const services = [
     {
       icon: MessageSquare,
@@ -31,7 +33,8 @@ export const ServicesSection = () => {
       icon: BookOpen,
       title: "Rédaction & Livres",
       description: "Services d'écriture et de publication de haute qualité",
-      imagePath: "/lovable-uploads/9ecb88f6-585b-45f6-a29f-745c0ba9d792.png",
+      // Nouvelle image pour Rédaction & Livres
+      imagePath: "/lovable-uploads/9619a51b-2520-437c-a026-211e644a4aab.png",
       direction: "up" as const,
       value: "writing"
     },
@@ -39,7 +42,8 @@ export const ServicesSection = () => {
       icon: Code,
       title: "Site Premium",
       description: "Solutions techniques sur mesure et performantes",
-      imagePath: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png",
+      // Nouvelle image pour Site Premium
+      imagePath: "/lovable-uploads/de58a503-0a9c-4e7b-a01c-dfbc3021fda1.png",
       direction: "down" as const,
       value: "development"
     },
@@ -61,12 +65,13 @@ export const ServicesSection = () => {
     }
   ];
 
+  // Optimisation : Réduire le nombre de particules et d'effets pour améliorer les performances
   return (
-    <section id="services" className="py-32 px-4 relative overflow-hidden">
+    <section id="services" className="py-24 px-4 relative overflow-hidden">
       <FloatingParticles 
-        count={24} 
+        count={12} // Réduction du nombre de particules
         color="rgba(255, 215, 0, 0.12)" 
-        maxSize={120} 
+        maxSize={100} 
         minSize={40} 
         blurAmount="60px" 
         speed={0.6}
@@ -74,13 +79,14 @@ export const ServicesSection = () => {
       />
       
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(5)].map((_, i) => (
+        {/* Réduction du nombre d'effets d'arrière-plan */}
+        {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-alpha-gold/10 blur-3xl"
             style={{
-              width: `${Math.random() * 300 + 150}px`,
-              height: `${Math.random() * 300 + 150}px`,
+              width: `${Math.random() * 250 + 150}px`,
+              height: `${Math.random() * 250 + 150}px`,
               left: `${Math.random() * 80}%`,
               top: `${Math.random() * 80}%`,
             }}
@@ -91,7 +97,7 @@ export const ServicesSection = () => {
               opacity: [0.2, 0.4, 0.2],
             }}
             transition={{
-              duration: Math.random() * 15 + 15,
+              duration: Math.random() * 20 + 20, // Ralentissement des animations
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -100,7 +106,7 @@ export const ServicesSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <AnimatedSection className="text-center mb-16">
+        <AnimatedSection className="text-center mb-12">
           <motion.h2 
             className="text-3xl md:text-5xl font-bold mb-6"
             animate={{ 
@@ -121,7 +127,7 @@ export const ServicesSection = () => {
           onValueChange={(value) => setActiveTab(value as any)}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 bg-transparent mb-16 max-w-6xl mx-auto">
+          <TabsList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 bg-transparent mb-12 max-w-6xl mx-auto">
             {services.map((service, index) => (
               <motion.div 
                 key={index} 
@@ -146,7 +152,7 @@ export const ServicesSection = () => {
             ))}
           </TabsList>
           
-          <div className="mt-8">
+          <div className="mt-6">
             <TabsContent value={activeTab} className="m-0">
               <ServiceDetail serviceType={activeTab} />
             </TabsContent>

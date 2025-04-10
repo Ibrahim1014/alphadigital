@@ -10,8 +10,11 @@
     <meta property="og:description" content="Alpha Digital - Votre partenaire pour l'innovation numérique" />
     <meta property="og:image" content="/og-image.png" />
     <title>Alpha Digital</title>
-    <!-- Script SoundCloud API -->
-    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <!-- Préchargement des ressources critiques pour améliorer les performances -->
+    <link rel="preload" href="/lovable-uploads/de58a503-0a9c-4e7b-a01c-dfbc3021fda1.png" as="image" />
+    <link rel="preload" href="/lovable-uploads/9619a51b-2520-437c-a026-211e644a4aab.png" as="image" />
+    <!-- Script SoundCloud API avec attribut defer pour ne pas bloquer le chargement -->
+    <script src="https://w.soundcloud.com/player/api.js" defer></script>
   </head>
   <body>
     <div id="root"></div>

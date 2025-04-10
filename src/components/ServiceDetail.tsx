@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useMemo } from "react";
 import { AnimatedSection } from "./AnimatedSection";
 import { Card } from "./ui/card";
 import { MessageSquare, Paintbrush, Code, Music, BookOpen, Smartphone } from "lucide-react";
@@ -24,7 +25,8 @@ interface ServiceConfig {
 }
 
 export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => {
-  const serviceConfigs: Record<string, ServiceConfig> = {
+  // Utilisation de useMemo pour éviter de recréer la configuration des services à chaque rendu
+  const serviceConfigs = useMemo<Record<string, ServiceConfig>>(() => ({
     marketing: {
       title: "Marketing Digital",
       icon: MessageSquare,
@@ -62,7 +64,8 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
         "Solution e-commerce avancée",
         "Maintenance et support technique dédié"
       ],
-      imagePath: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png"
+      // Nouvelle image pour Site Premium
+      imagePath: "/lovable-uploads/de58a503-0a9c-4e7b-a01c-dfbc3021fda1.png"
     },
     mobile: {
       title: "Développement d'Applications Mobiles",
@@ -75,7 +78,7 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
         "Intégration des dernières technologies",
         "Maintenance et mises à jour régulières"
       ],
-      imagePath: "/lovable-uploads/540d9550-89b6-4466-ad8e-0ff8d67607bc.png"
+      imagePath: "/lovable-uploads/478e3aaa-5e0e-41c2-a27a-c2826179cf80.png"
     },
     music: {
       title: "Production Musicale",
@@ -115,9 +118,10 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
         "Ghostwriting pour autobiographies",
         "Conseils éditoriaux et mise en page"
       ],
-      imagePath: "/lovable-uploads/baffbad0-6e74-4bf2-9f5e-a326a70543b5.png"
+      // Nouvelle image pour Rédaction & Livres
+      imagePath: "/lovable-uploads/9619a51b-2520-437c-a026-211e644a4aab.png"
     }
-  };
+  }), []);
 
   const config = serviceConfigs[serviceType];
   const Icon = config.icon;
@@ -142,6 +146,7 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({ serviceType }) => 
                 src={config.imagePath}
                 alt={config.title}
                 className="w-full h-full object-cover"
+                loading="lazy" // Ajout de lazy loading pour améliorer les performances
               />
             </motion.div>
             <div className="relative z-10 flex flex-col items-center md:items-start">
