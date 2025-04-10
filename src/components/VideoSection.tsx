@@ -9,18 +9,20 @@ export const VideoSection = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <div style={{ position: 'relative', width: '100%', height: '0', paddingBottom: '177.778%' }}>
-        <iframe 
-          allow="fullscreen;autoplay" 
-          allowFullScreen 
-          height="100%" 
-          src="https://streamable.com/e/ukzowm?autoplay=1&muted=1&nocontrols=1&loop=1" 
-          width="100%" 
-          style={{ border: 'none', width: '100%', height: '100%', position: 'absolute', left: '0', top: '0', overflow: 'hidden' }}
-          title="Alpha Digital Presentation"
-        >
-        </iframe>
-      </div>
+      <video 
+        className="w-full h-auto" 
+        autoPlay 
+        muted 
+        loop 
+        playsInline 
+        preload="auto"
+      >
+        <source 
+          src="https://res.cloudinary.com/dlmb5u7jd/video/upload/v1744253431/0123_2_o3qhju.mp4" 
+          type="video/mp4" 
+        />
+        Votre navigateur ne supporte pas la lecture de vidéos HTML5.
+      </video>
     </motion.div>
   );
 };
