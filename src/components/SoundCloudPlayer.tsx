@@ -3,6 +3,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Music } from 'lucide-react';
 
+// Nous réimportons explicitement le type SCWidget pour résoudre l'erreur
+type SCWidget = {
+  play: () => void;
+  pause: () => void;
+  setVolume: (volume: number) => void;
+  getVolume: (callback: (volume: number) => void) => void;
+  bind: (event: string, callback: () => void) => void;
+};
+
 interface SoundCloudPlayerProps {
   url: string;
   title?: string;

@@ -13,8 +13,9 @@
     <!-- Préchargement des ressources critiques pour améliorer les performances -->
     <link rel="preload" href="/lovable-uploads/de58a503-0a9c-4e7b-a01c-dfbc3021fda1.png" as="image" />
     <link rel="preload" href="/lovable-uploads/9619a51b-2520-437c-a026-211e644a4aab.png" as="image" />
-    <!-- Script SoundCloud API avec attribut defer pour ne pas bloquer le chargement -->
-    <script src="https://w.soundcloud.com/player/api.js" defer></script>
+    <!-- Script SoundCloud API chargé plus tôt et avec preload pour de meilleures performances -->
+    <link rel="preload" href="https://w.soundcloud.com/player/api.js" as="script">
+    <script src="https://w.soundcloud.com/player/api.js"></script>
   </head>
   <body>
     <div id="root"></div>
