@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ImageGenerator } from "./ImageGenerator";
 import { MusicGenerator } from "./MusicGenerator";
-import { Sparkles, Image, Music } from "lucide-react";
+import { Sparkle, Image, Music } from "lucide-react";
 
 export const CreativeAISection = () => {
   const [activeTab, setActiveTab] = useState<"image" | "music">("image");
@@ -26,7 +26,7 @@ export const CreativeAISection = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="inline-flex items-center px-5 py-2 rounded-full glass-gold mb-4">
-            <Sparkles className="w-4 h-4 mr-2 text-alpha-gold" />
+            <Sparkle className="w-4 h-4 mr-2 text-alpha-gold" />
             <span className="text-alpha-gold text-sm font-medium">Création IA</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
