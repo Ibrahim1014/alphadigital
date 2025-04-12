@@ -1,3 +1,4 @@
+
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { VideoSection } from "@/components/VideoSection";
@@ -7,6 +8,7 @@ import { AIDetectionSection } from "@/components/AIDetectionSection";
 import { GalaxyBackground } from "@/components/GalaxyBackground";
 import { ChatbotSection } from "@/components/ChatbotSection";
 import { FloatingParticles } from "@/components/FloatingParticles";
+import { CreativeAISection } from "@/components/CreativeAISection";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, Suspense, lazy } from "react";
 
@@ -90,7 +92,7 @@ const Index = () => {
           )}
         </Suspense>
         
-        {/* Particules flottantes globales pour tout le site - moins nombreuses pour les appareils low-end */}
+        {/* Particules flottantes globales pour tout le site */}
         <FloatingParticles 
           count={isLowPerfMode ? 5 : 10} 
           color="rgba(255, 215, 0, 0.1)" 
@@ -112,6 +114,7 @@ const Index = () => {
           <VideoSection />
           <ServicesSection />
           <PortfolioSection />
+          <CreativeAISection />
           <AIDetectionSection />
           <ChatbotSection />
           
