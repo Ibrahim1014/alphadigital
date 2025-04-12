@@ -1,9 +1,9 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ImageGenerator } from "./ImageGenerator";
 import { MusicGenerator } from "./MusicGenerator";
-import { Icon } from "lucide-react";
-import dynamicIconImports from "lucide-react/dynamicIconImports";
+import { Sparkles, ImageIcon, Music } from "lucide-react";
 
 export const CreativeAISection = () => {
   const [activeTab, setActiveTab] = useState<"image" | "music">("image");
@@ -26,7 +26,7 @@ export const CreativeAISection = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="inline-flex items-center px-5 py-2 rounded-full glass-gold mb-4">
-            <Icon name="sparkle" className="w-4 h-4 mr-2 text-alpha-gold" />
+            <Sparkles className="w-4 h-4 mr-2 text-alpha-gold" />
             <span className="text-alpha-gold text-sm font-medium">Création IA</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -50,7 +50,7 @@ export const CreativeAISection = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Icon name="image" className="w-5 h-5 mr-2" />
+              <ImageIcon className="w-5 h-5 mr-2" />
               Générateur d'Images
             </motion.button>
             
@@ -64,7 +64,7 @@ export const CreativeAISection = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Icon name="music" className="w-5 h-5 mr-2" />
+              <Music className="w-5 h-5 mr-2" />
               Générateur de Musique
             </motion.button>
           </div>
