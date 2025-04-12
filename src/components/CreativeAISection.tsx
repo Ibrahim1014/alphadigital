@@ -1,23 +1,20 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ImageGenerator } from "./ImageGenerator";
 import { MusicGenerator } from "./MusicGenerator";
-import { Sparkles, ImageIcon, Music } from "lucide-react";
+import { Sparkle, Image as ImageIcon, Music } from "lucide-react";
 
 export const CreativeAISection = () => {
   const [activeTab, setActiveTab] = useState<"image" | "music">("image");
 
   return (
     <section id="creative-ai" className="relative py-24 overflow-hidden">
-      {/* Arrière-plan avec effet glassmorphism */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-[40vw] h-[40vh] bg-alpha-gold/5 blur-[120px] rounded-full"></div>
         <div className="absolute bottom-1/4 right-1/4 w-[35vw] h-[35vh] bg-alpha-gold/5 blur-[120px] rounded-full"></div>
       </div>
 
       <div className="container mx-auto px-4">
-        {/* En-tête de la section */}
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -26,7 +23,7 @@ export const CreativeAISection = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="inline-flex items-center px-5 py-2 rounded-full glass-gold mb-4">
-            <Sparkles className="w-4 h-4 mr-2 text-alpha-gold" />
+            <Sparkle className="w-4 h-4 mr-2 text-alpha-gold" />
             <span className="text-alpha-gold text-sm font-medium">Création IA</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -37,7 +34,6 @@ export const CreativeAISection = () => {
           </p>
         </motion.div>
 
-        {/* Onglets stylisés */}
         <div className="max-w-4xl mx-auto mb-10">
           <div className="flex justify-center space-x-4 mb-10">
             <motion.button
@@ -69,7 +65,6 @@ export const CreativeAISection = () => {
             </motion.button>
           </div>
 
-          {/* Conteneur principal avec animation de transition */}
           <motion.div 
             className="glass-premium rounded-2xl overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
@@ -89,3 +84,5 @@ export const CreativeAISection = () => {
     </section>
   );
 };
+
+export default CreativeAISection;
