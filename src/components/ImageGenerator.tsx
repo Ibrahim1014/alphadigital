@@ -1,9 +1,9 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wand2, Loader2, AlertCircle, Download, RefreshCw } from "lucide-react";
+import { Wand2, Loader2, AlertCircle, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
 export const ImageGenerator = () => {
@@ -22,30 +22,24 @@ export const ImageGenerator = () => {
     setError(null);
 
     try {
-      const response = await fetch("https://api.stability.ai/v1/generation/stable-diffusion-v1-5/text-to-image", {
+      const response = await fetch("https://api.deepai.org/api/text2img", {
         method: "POST",
         headers: {
-          "Authorization": "Bearer sk-TtJw70E6JBOVhmEoGU1qUqgknQ6iuF1Gvnc2mAl0MiAVgqRS",
+          "Api-Key": "2c436c43-1aba-4a38-b3ec-23d1669bfb0a",
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          text_prompts: [{ text: prompt }],
-          cfg_scale: 7,
-          height: 512,
-          width: 512,
-          samples: 1,
-          steps: 30
+          text: prompt
         })
       });
 
       const data = await response.json();
       
-      if (!response.ok) {
+      if (!response.ok || !data.output_url) {
         throw new Error(data.message || "Erreur lors de la génération de l'image");
       }
 
-      const base64 = data.artifacts[0].base64;
-      setGeneratedImage(`data:image/png;base64,${base64}`);
+      setGeneratedImage(data.output_url);
       toast.success("Image générée avec succès");
     } catch (err) {
       console.error("Erreur de génération:", err);
@@ -71,17 +65,21 @@ export const ImageGenerator = () => {
 
   return (
     <div className="space-y-6">
+      <div className="text-alpha-gray text-sm mb-4 p-4 glass-premium rounded-lg">
+        <p>La génération d'image peut prendre quelques instants. Soyez patient pendant que notre IA transforme vos idées en œuvres visuelles exceptionnelles.</p>
+      </div>
+      
       <div>
         <label htmlFor="image-prompt" className="block text-alpha-gold text-sm font-medium mb-2">
           Description de l'image
         </label>
         <div className="relative">
-          <Input
+          <Textarea
             id="image-prompt"
-            placeholder="Décrivez l'image que vous souhaitez générer..."
+            placeholder="Décrivez l'image que vous souhaitez générer en détail..."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            className="bg-alpha-black/50 border-alpha-gold/30 focus:border-alpha-gold transition-colors text-white placeholder:text-alpha-gray/60 py-6"
+            className="bg-alpha-black/50 border-alpha-gold/30 focus:border-alpha-gold transition-colors text-white placeholder:text-alpha-gray/60 min-h-[120px]"
             disabled={isGenerating}
           />
           <div className="absolute right-3 top-3 text-alpha-gold/50">
@@ -143,7 +141,8 @@ export const ImageGenerator = () => {
               <img
                 src={generatedImage}
                 alt="Image générée par IA"
-                className="rounded-lg border border-alpha-gold/20 shadow-lg max-w-full"
+                className="rounded-lg border border-alpha-gold/20 shadow-lg max-w-full h-auto"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-alpha-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-end justify-center p-4">
                 <div className="flex space-x-2">
@@ -154,16 +153,6 @@ export const ImageGenerator = () => {
                     onClick={handleDownload}
                   >
                     <Download className="w-4 h-4 mr-1" /> Télécharger
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="glass-gold"
-                    onClick={handleGenerate}
-                    disabled={isGenerating}
-                  >
-                    <RefreshCw className={`w-4 h-4 mr-1 ${isGenerating ? 'animate-spin' : ''}`} /> 
-                    Régénérer
                   </Button>
                 </div>
               </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ImageGenerator } from "./ImageGenerator";
 import { MusicGenerator } from "./MusicGenerator";
+import { HuggingFaceMusicGenerator } from "./HuggingFaceMusicGenerator";
 import { Star, Image as ImageIcon, Music as MusicIcon } from "lucide-react";
 
 export const CreativeAISection = () => {
@@ -76,7 +77,7 @@ export const CreativeAISection = () => {
               {activeTab === "image" ? (
                 <ImageGenerator />
               ) : (
-                <MusicGenerator />
+                <HuggingFaceMusicGenerator />
               )}
             </div>
           </motion.div>
