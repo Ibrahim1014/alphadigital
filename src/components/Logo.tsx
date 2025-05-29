@@ -1,6 +1,5 @@
-
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import { motion } from 'framer-motion';
 
 export const Logo = () => {

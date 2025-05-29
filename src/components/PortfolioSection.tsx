@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { ExternalLink, Code, BookOpen, Music, Smartphone } from "lucide-react";

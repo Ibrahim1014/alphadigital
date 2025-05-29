@@ -1,9 +1,8 @@
-
 import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { SoundCloudPlayer } from './SoundCloudPlayer';
 import { Music, Headphones, WavesIcon } from 'lucide-react';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 
 export const AudioPortfolioSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
