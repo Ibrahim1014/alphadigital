@@ -4,14 +4,14 @@ import { useInView } from 'framer-motion';
 import { gsap } from 'gsap';
 
 interface UseAnimatedSectionOptions {
-  threshold?: number;
+  amount?: number;
   triggerOnce?: boolean;
 }
 
 export const useAnimatedSection = (options: UseAnimatedSectionOptions = {}) => {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, {
-    threshold: options.threshold || 0.1,
+    amount: options.amount || 0.1,
     once: options.triggerOnce !== false
   });
 
