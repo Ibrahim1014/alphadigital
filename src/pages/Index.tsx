@@ -11,6 +11,15 @@ import { CreativeAISection } from "@/components/CreativeAISection";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, Suspense, lazy } from "react";
 
+// Extension du type Navigator pour inclure connection
+declare global {
+  interface Navigator {
+    connection?: {
+      effectiveType?: string;
+    };
+  }
+}
+
 // Lazy load des composants lourds pour améliorer les performances
 const LazyGalaxyBackground = lazy(() => import("@/components/GalaxyBackground").then(module => ({ default: module.GalaxyBackground })));
 
