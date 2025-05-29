@@ -1,13 +1,10 @@
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { TextPlugin } from "gsap/TextPlugin";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FloatingParticles } from "./FloatingParticles";
-
-gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
 export const Hero = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -52,11 +49,7 @@ export const Hero = () => {
     timeline.fromTo(titleRef.current,
       { y: 60, opacity: 0 },
       { y: 0, opacity: 1, duration: 1 }
-    ).to(titleRef.current?.querySelector('.typing'), {
-      duration: 2.5,
-      text: "l'Innovation Numérique",
-      ease: "none"
-    });
+    );
 
     timeline.fromTo(subtitleRef.current,
       { y: 40, opacity: 0 },
@@ -70,18 +63,8 @@ export const Hero = () => {
       "-=0.3"
     );
 
-    gsap.to(sectionRef.current, {
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1,
-      },
-      y: (_, target) => -target.offsetHeight * 0.25,
-    });
-
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      timeline.kill();
     };
   }, []);
 
@@ -165,7 +148,7 @@ export const Hero = () => {
           <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold mb-8 opacity-0">
             Votre Partenaire pour
             <motion.span 
-              className="typing text-gradient-gold block mt-4"
+              className="text-gradient-gold block mt-4"
               animate={{
                 textShadow: [
                   "0px 0px 5px rgba(255, 215, 0, 0.2)",
@@ -174,7 +157,9 @@ export const Hero = () => {
                 ],
               }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            ></motion.span>
+            >
+              l'Innovation Numérique
+            </motion.span>
           </h1>
           
           <p ref={subtitleRef} className="text-alpha-gray text-xl md:text-2xl mb-12 opacity-0 leading-relaxed">

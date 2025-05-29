@@ -2,45 +2,30 @@
 import { useEffect, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+interface UseAnimatedSectionOptions {
+  threshold?: number;
+  triggerOnce?: boolean;
+}
 
-export const useAnimatedSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
+export const useAnimatedSection = (options: UseAnimatedSectionOptions = {}) => {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, {
+    threshold: options.threshold || 0.1,
+    once: options.triggerOnce !== false
+  });
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const elements = sectionRef.current.children;
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse",
-      }
-    });
-
-    tl.fromTo(elements,
-      { 
-        y: 50,
-        opacity: 0
-      },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "power3.out"
-      }
-    );
-
-    return () => {
-      tl.kill();
-    };
+    if (isInView && ref.current) {
+      const timeline = gsap.timeline();
+      
+      timeline.fromTo(
+        ref.current,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+      );
+    }
   }, [isInView]);
 
-  return { sectionRef, isInView };
+  return ref;
 };

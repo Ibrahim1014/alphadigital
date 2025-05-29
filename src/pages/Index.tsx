@@ -12,12 +12,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, Suspense, lazy } from "react";
 
 // Extension du type Navigator pour inclure connection
-declare global {
-  interface Navigator {
-    connection?: {
-      effectiveType?: string;
-    };
-  }
+interface NavigatorConnection {
+  effectiveType?: string;
+}
+
+interface ExtendedNavigator extends Navigator {
+  connection?: NavigatorConnection;
 }
 
 // Lazy load des composants lourds pour améliorer les performances
@@ -44,7 +44,9 @@ const Index = () => {
     const checkPerformance = () => {
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const isLowEndDevice = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : true;
-      const isSlowConnection = navigator.connection ? navigator.connection.effectiveType === '2g' || navigator.connection.effectiveType === 'slow-2g' : false;
+      const extendedNavigator = navigator as ExtendedNavigator;
+      const isSlowConnection = extendedNavigator.connection ? 
+        extendedNavigator.connection.effectiveType === '2g' || extendedNavigator.connection.effectiveType === 'slow-2g' : false;
       
       // Mode faible performance pour mobile ou connexion lente
       setIsLowPerfMode(isMobile || isLowEndDevice || isSlowConnection);

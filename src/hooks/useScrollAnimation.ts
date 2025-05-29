@@ -1,9 +1,6 @@
 
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface ScrollAnimationOptions {
   start?: string;
@@ -19,15 +16,7 @@ export const useScrollAnimation = <T extends HTMLElement>(options: ScrollAnimati
     const element = elementRef.current;
     if (!element) return;
 
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: element,
-        start: options.start || "top 80%",
-        end: options.end || "bottom 20%",
-        scrub: options.scrub ?? 1,
-        toggleActions: "play none none reverse",
-      }
-    });
+    const timeline = gsap.timeline();
 
     timeline.fromTo(
       element,
