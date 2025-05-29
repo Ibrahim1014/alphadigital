@@ -34,9 +34,28 @@ const PremiumLoader = () => (
   </div>
 );
 
+// Composant d'erreur de chargement pour mobile
+const MobileErrorFallback = () => (
+  <div className="min-h-screen bg-alpha-black text-alpha-white flex items-center justify-center p-4">
+    <div className="glass p-6 rounded-lg max-w-md text-center">
+      <h2 className="text-xl font-bold mb-4 text-alpha-gold">Chargement en cours...</h2>
+      <p className="text-alpha-gray mb-4 text-sm">
+        Si cette page persiste, veuillez rafraîchir votre navigateur.
+      </p>
+      <button 
+        onClick={() => window.location.reload()} 
+        className="bg-alpha-gold text-alpha-black px-4 py-2 rounded hover:opacity-90 text-sm"
+      >
+        Rafraîchir
+      </button>
+    </div>
+  </div>
+);
+
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLowPerfMode, setIsLowPerfMode] = useState(false);
+  const [showErrorFallback, setShowErrorFallback] = useState(false);
   
   // Vérification des performances de l'appareil et détection mobile
   useEffect(() => {
@@ -53,14 +72,29 @@ const Index = () => {
     checkPerformance();
   }, []);
   
-  // Animation de chargement optimisée
+  // Animation de chargement optimisée avec fallback d'erreur
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 200); // Temps de chargement réduit
+    }, 200);
     
-    return () => clearTimeout(timer);
-  }, []);
+    // Fallback d'erreur si le chargement prend trop de temps
+    const errorTimer = setTimeout(() => {
+      if (!isLoaded) {
+        setShowErrorFallback(true);
+      }
+    }, 10000); // 10 secondes
+    
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(errorTimer);
+    };
+  }, [isLoaded]);
+  
+  // Si l'erreur de chargement persiste, afficher le fallback
+  if (showErrorFallback) {
+    return <MobileErrorFallback />;
+  }
   
   return (
     <AnimatePresence mode="wait">
