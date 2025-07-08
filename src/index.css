@@ -57,11 +57,11 @@
   }
   
   .text-gradient-gold {
-    @apply bg-gradient-to-r from-[#ffcf40] via-[#ffdc73] to-[#b8860b] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#B8860B] via-[#CD853F] to-[#8B4513] bg-clip-text text-transparent;
   }
 
   .bg-gradient-gold {
-    @apply bg-gradient-to-r from-[#ffcf40] via-[#ffdc73] to-[#b8860b];
+    @apply bg-gradient-to-r from-[#B8860B] via-[#CD853F] to-[#8B4513];
   }
 
   .animate-fade-in {

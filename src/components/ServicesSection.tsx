@@ -116,7 +116,7 @@ export const ServicesSection = () => {
           >
             Nos <span className="text-gradient-gold">Services</span>
           </motion.h2>
-          <p className="text-alpha-gray text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Découvrez notre gamme complète de services digitaux pour transformer votre présence en ligne
           </p>
         </AnimatedSection>
@@ -139,7 +139,7 @@ export const ServicesSection = () => {
               >
                 <TabsTrigger 
                   value={service.value}
-                  className="data-[state=active]:bg-alpha-gold/20 data-[state=active]:text-alpha-gold border border-alpha-gold/30 hover:bg-alpha-gold/10 transition-all duration-300 overflow-hidden relative group h-14 w-full text-sm"
+                  className="data-[state=active]:bg-alpha-gold/30 data-[state=active]:text-white border border-alpha-gold/50 hover:bg-alpha-gold/20 transition-all duration-300 overflow-hidden relative group h-14 w-full text-sm text-gray-900 data-[state=active]:border-alpha-gold"
                 >
                   <motion.div 
                     className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-alpha-gold/20 blur-xl transition-transform duration-500 ease-in-out" 

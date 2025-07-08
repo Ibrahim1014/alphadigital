@@ -121,14 +121,14 @@ export const AIDetectionSection = () => {
       id="detection" 
       className={`py-20 px-4 relative overflow-hidden ${
         isActive 
-          ? "bg-gradient-to-b from-alpha-black to-[#201040] transition-colors duration-1000" 
-          : "bg-gradient-to-b from-alpha-black to-[#101020]"
+          ? "bg-gradient-to-b from-gray-100 to-gray-200 transition-colors duration-1000" 
+          : "bg-gradient-to-b from-white to-gray-50"
       }`}
     >
       <div className={`absolute inset-0 bg-gradient-radial ${
         isActive 
-          ? "from-purple-900/30 via-alpha-gold/10 to-transparent transition-all duration-1000" 
-          : "from-purple-900/10 via-alpha-gold/5 to-transparent"
+          ? "from-alpha-gold/20 via-alpha-gold/10 to-transparent transition-all duration-1000" 
+          : "from-alpha-gold/10 via-alpha-gold/5 to-transparent"
       }`} />
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
@@ -140,7 +140,7 @@ export const AIDetectionSection = () => {
           <h2 ref={titleRef} className="text-3xl md:text-4xl font-bold mb-4">
             Détection <span className={`${isActive ? "text-gradient-gold animate-pulse" : "text-gradient-gold"}`}>IA</span>
           </h2>
-          <p className="text-alpha-gray text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Notre technologie de pointe pour identifier et analyser les contenus générés par l'intelligence artificielle
           </p>
         </motion.div>
@@ -170,8 +170,8 @@ export const AIDetectionSection = () => {
                       <feature.icon className="h-6 w-6 text-alpha-gold" />
                     </div>
                   </motion.div>
-                  <h3 className="text-lg font-semibold mb-2 text-alpha-white">{feature.title}</h3>
-                  <p className="text-alpha-gray">{feature.description}</p>
+                  <h3 className="text-lg font-semibold mb-2 text-gray-900">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
                 </div>
               </Card>
             </motion.div>
@@ -184,14 +184,14 @@ export const AIDetectionSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <Card className="glass border border-purple-500/20 shadow-lg shadow-purple-500/10 p-6">
+          <Card className="glass border border-alpha-gold/30 shadow-lg p-6">
             <Tabs defaultValue="text" className="w-full">
-              <TabsList className="w-full mb-6 bg-alpha-black/20 border border-purple-500/30">
-                <TabsTrigger value="text" className="flex-1 data-[state=active]:bg-purple-500/20">
+              <TabsList className="w-full mb-6 bg-gray-100 border border-alpha-gold/30">
+                <TabsTrigger value="text" className="flex-1 data-[state=active]:bg-alpha-gold/20 text-gray-900">
                   <FileType className="mr-2 h-4 w-4" />
                   Texte
                 </TabsTrigger>
-                <TabsTrigger value="image" className="flex-1 data-[state=active]:bg-purple-500/20">
+                <TabsTrigger value="image" className="flex-1 data-[state=active]:bg-alpha-gold/20 text-gray-900">
                   <FileImage className="mr-2 h-4 w-4" />
                   Image
                 </TabsTrigger>
@@ -206,14 +206,14 @@ export const AIDetectionSection = () => {
                       setSelectedFile(null);
                     }}
                     placeholder="Collez votre texte ici pour l'analyser..."
-                    className="min-h-[150px] glass border-purple-500/30 focus:border-alpha-gold/50"
+                    className="min-h-[150px] glass border-alpha-gold/30 focus:border-alpha-gold text-gray-900"
                     disabled={isAnalyzing}
                   />
                 </TabsContent>
                 
                 <TabsContent value="image">
                   <div 
-                    className="glass hover:glass-gold transition-all duration-300 p-8 text-center cursor-pointer rounded-lg border-2 border-dashed border-purple-500/30 hover:border-alpha-gold/50"
+                    className="glass hover:glass-gold transition-all duration-300 p-8 text-center cursor-pointer rounded-lg border-2 border-dashed border-alpha-gold/30 hover:border-alpha-gold"
                     onClick={openFileDialog}
                     onDrop={handleFileDrop}
                     onDragOver={(e) => e.preventDefault()}
@@ -235,15 +235,15 @@ export const AIDetectionSection = () => {
                             className="w-full h-auto object-cover"
                           />
                         </div>
-                        <p className="text-alpha-white text-sm">{selectedFile.name}</p>
+                        <p className="text-gray-900 text-sm">{selectedFile.name}</p>
                       </div>
                     ) : (
                       <>
                         <Upload className="h-12 w-12 text-alpha-gold mx-auto mb-4 animate-bounce" />
-                        <p className="text-alpha-white font-medium">
+                        <p className="text-gray-900 font-medium">
                           Glissez une image ou cliquez pour la sélectionner
                         </p>
-                        <p className="text-alpha-gray text-sm mt-2">
+                        <p className="text-gray-600 text-sm mt-2">
                           Formats acceptés: JPG, PNG, GIF, WEBP
                         </p>
                       </>
@@ -253,7 +253,7 @@ export const AIDetectionSection = () => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-purple-500 to-alpha-gold text-alpha-black hover:opacity-90 hover:scale-105 transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-alpha-gold to-yellow-600 text-white hover:opacity-90 hover:scale-105 transition-all duration-300"
                   disabled={isAnalyzing || (!text.trim() && !selectedFile)}
                 >
                   {isAnalyzing ? (
@@ -278,12 +278,12 @@ export const AIDetectionSection = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mt-8 space-y-6"
             >
-              <Card className="p-6 glass border border-purple-500/20 shadow-lg shadow-purple-500/10">
+              <Card className="p-6 glass border border-alpha-gold/30 shadow-lg">
                 <h3 className="text-xl font-semibold mb-4 text-gradient-gold">Résultats de l'analyse</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span>Probabilité IA</span>
-                    <div className="relative w-48 h-3 bg-gray-700 rounded-full overflow-hidden">
+                    <span className="text-gray-900">Probabilité IA</span>
+                    <div className="relative w-48 h-3 bg-gray-300 rounded-full overflow-hidden">
                       <div 
                         className="absolute h-full bg-gradient-to-r from-green-500 to-red-500 transition-all duration-1000"
                         style={{ width: `${(result.score * 100)}%` }}
@@ -294,7 +294,7 @@ export const AIDetectionSection = () => {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Niveau de confiance</span>
+                    <span className="text-gray-900">Niveau de confiance</span>
                     <span className={`font-semibold ${
                       result.confidence === "Forte" ? "text-red-500" :
                       result.confidence === "Moyenne" ? "text-yellow-500" :
@@ -303,11 +303,11 @@ export const AIDetectionSection = () => {
                       {result.confidence}
                     </span>
                   </div>
-                  <p className="text-alpha-gray">{result.details}</p>
+                  <p className="text-gray-600">{result.details}</p>
                 </div>
               </Card>
 
-              <Card className="p-6 glass border border-purple-500/20 shadow-lg shadow-purple-500/10">
+              <Card className="p-6 glass border border-alpha-gold/30 shadow-lg">
                 <h3 className="text-xl font-semibold mb-4 text-gradient-gold">Raisonnement</h3>
                 <ul className="space-y-2">
                   {result.reasoning.map((reason, index) => (
@@ -319,7 +319,7 @@ export const AIDetectionSection = () => {
                       className="flex items-center gap-2"
                     >
                       <div className="h-2 w-2 rounded-full bg-alpha-gold" />
-                      <span>{reason}</span>
+                      <span className="text-gray-900">{reason}</span>
                     </motion.li>
                   ))}
                 </ul>

@@ -100,7 +100,7 @@ export const Navbar = () => {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "py-2 backdrop-blur-lg bg-alpha-black/80" : "py-4 bg-transparent"
+          scrolled ? "py-2 backdrop-blur-lg bg-white/90 shadow-md" : "py-4 bg-transparent"
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
@@ -113,7 +113,7 @@ export const Navbar = () => {
             className="flex items-center"
           >
             <Logo />
-            <span className="ml-2 text-white font-bold text-xl">Alpha Digital</span>
+            <span className="ml-2 text-gray-900 font-bold text-xl">Alpha Digital</span>
           </a>
 
           {/* Menu de navigation desktop */}
@@ -161,7 +161,7 @@ export const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="md:hidden fixed top-[60px] left-0 right-0 bg-alpha-black/95 backdrop-blur-lg"
+                className="md:hidden fixed top-[60px] left-0 right-0 bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-200"
               >
                 <ul className="flex flex-col py-4">
                   {navItems.map((item, index) => (
@@ -173,7 +173,7 @@ export const Navbar = () => {
                     >
                       <a
                         href={item.href}
-                        className="block py-3 px-6 text-white hover:text-alpha-gold hover:bg-alpha-gold/10 transition-all"
+                        className="block py-3 px-6 text-gray-900 hover:text-alpha-gold hover:bg-alpha-gold/10 transition-all"
                         onClick={(e) => {
                           e.preventDefault();
                           if (item.action) item.action();

@@ -53,10 +53,10 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         'alpha-black': '#1a1a1a',
-        'alpha-gold': '#FFD700',
+        'alpha-gold': '#B8860B',
         'alpha-yellow': '#FFC107',
         'alpha-white': '#FFFFFF',
-        'alpha-gray': '#6B7280',
+        'alpha-gray': '#4B5563',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
