@@ -24,7 +24,7 @@ const LazyGalaxyBackground = lazy(() => import("@/components/GalaxyBackground").
 
 // Composant de chargement simple pour mobile
 const MobileLoader = () => (
-  <div className="flex items-center justify-center h-screen w-full bg-alpha-black">
+  <div className="flex items-center justify-center h-screen w-full bg-white">
     <div className="text-center">
       <div className="w-12 h-12 border-2 border-alpha-gold rounded-full animate-spin border-t-transparent mx-auto mb-4"></div>
       <span className="text-alpha-gold text-sm font-bold">ALPHA DIGITAL</span>
@@ -63,7 +63,7 @@ const Index = () => {
   }
   
   return (
-    <div className="min-h-screen bg-alpha-black text-alpha-white">
+    <div className="min-h-screen bg-white text-gray-900">
       {/* Arrière-plan optimisé */}
       {!isMobile ? (
         <Suspense fallback={null}>
@@ -72,7 +72,7 @@ const Index = () => {
       ) : (
         // Arrière-plan statique pour mobile
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a1a] via-alpha-black to-[#0a0a1a]">
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-white to-gray-50">
             <div className="absolute top-1/4 left-1/4 w-1/2 h-1/3 bg-alpha-gold/5 blur-[80px] rounded-full"></div>
             <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/3 bg-alpha-gold/3 blur-[100px] rounded-full"></div>
           </div>
@@ -144,22 +144,22 @@ const Index = () => {
         </div>
         
         {/* Footer responsive */}
-        <footer className="bg-alpha-black py-8 sm:py-10 px-4 border-t border-alpha-gold/10 mt-0">
+        <footer className="bg-gray-100 py-8 sm:py-10 px-4 border-t border-alpha-gold/20 mt-0">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               <div className="text-center sm:text-left">
                 <h3 className="text-alpha-gold font-bold text-lg mb-4">Alpha Digital</h3>
-                <p className="text-alpha-gray mb-4 text-sm sm:text-base">
+                <p className="text-gray-600 mb-4 text-sm sm:text-base">
                   Solutions digitales sur mesure et détection avancée des fake news propulsée par l'IA
                 </p>
-                <p className="text-sm text-alpha-gray">
+                <p className="text-sm text-gray-600">
                   Fondé par <span className="text-alpha-gold/90">Ibrahim Lawali</span>
                 </p>
               </div>
               
               <div className="text-center sm:text-left">
                 <h3 className="text-alpha-gold font-bold text-lg mb-4">Contact</h3>
-                <ul className="space-y-2 text-alpha-gray text-sm sm:text-base">
+                <ul className="space-y-2 text-gray-600 text-sm sm:text-base">
                   <li className="flex items-center justify-center sm:justify-start">
                     <span className="mr-2">✉️</span>
                     <a href="mailto:professe84@gmail.com" className="hover:text-alpha-gold transition-colors break-all sm:break-normal">
@@ -181,7 +181,7 @@ const Index = () => {
               
               <div className="text-center sm:text-left lg:col-span-1 sm:col-span-2 lg:col-span-1">
                 <h3 className="text-alpha-gold font-bold text-lg mb-4">Services</h3>
-                <ul className="space-y-2 text-alpha-gray text-sm sm:text-base">
+                <ul className="space-y-2 text-gray-600 text-sm sm:text-base">
                   <li><a href="#services" className="hover:text-alpha-gold transition-colors">Marketing Digital</a></li>
                   <li><a href="#services" className="hover:text-alpha-gold transition-colors">Site E-Premium</a></li>
                   <li><a href="#services" className="hover:text-alpha-gold transition-colors">Rédaction & Création de Livres</a></li>
@@ -191,8 +191,8 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="mt-6 sm:mt-8 pt-4 border-t border-alpha-gold/10 text-center">
-              <p className="text-xs sm:text-sm text-alpha-gray">
+            <div className="mt-6 sm:mt-8 pt-4 border-t border-alpha-gold/20 text-center">
+              <p className="text-xs sm:text-sm text-gray-600">
                 © {new Date().getFullYear()} Alpha Digital. Tous droits réservés.
               </p>
             </div>

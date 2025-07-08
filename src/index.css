@@ -7,30 +7,30 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 96%;
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 96%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 96%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 5%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 5%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 5%;
     --primary: 45 100% 50%;
-    --primary-foreground: 0 0% 4%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 96%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 64%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 5%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
     --accent: 45 100% 50%;
-    --accent-foreground: 0 0% 4%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 96%;
-    --border: 0 0% 12%;
-    --input: 0 0% 12%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 90%;
+    --input: 0 0% 96%;
     --ring: 45 100% 50%;
     --radius: 1rem;
   }
 
   body {
-    @apply bg-alpha-black text-alpha-white antialiased;
+    @apply bg-white text-gray-900 antialiased;
     font-family: 'Open Sans', sans-serif;
   }
 
@@ -41,15 +41,15 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)];
+    @apply bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)];
   }
   
   .glass-gold {
-    @apply bg-alpha-gold/5 backdrop-blur-xl border border-alpha-gold/10 shadow-[0_8px_32px_rgba(255,215,0,0.12)];
+    @apply bg-alpha-gold/10 backdrop-blur-xl border border-alpha-gold/20 shadow-[0_8px_32px_rgba(255,215,0,0.15)];
   }
 
   .glass-premium {
-    @apply bg-black/30 backdrop-blur-lg border border-alpha-gold/20 shadow-[0_10px_30px_rgba(255,215,0,0.15)];
+    @apply bg-white/90 backdrop-blur-lg border border-alpha-gold/30 shadow-[0_10px_30px_rgba(255,215,0,0.20)];
   }
   
   .text-glow {
