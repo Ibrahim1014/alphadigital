@@ -4,7 +4,7 @@ import { Hero } from "@/components/Hero";
 import { ServicesSection } from "@/components/ServicesSection";
 import { PortfolioSection } from "@/components/PortfolioSection";
 import { AIDetectionSection } from "@/components/AIDetectionSection";
-import { GalaxyBackground } from "@/components/GalaxyBackground";
+import { NeuralNetworkBackground } from "@/components/NeuralNetworkBackground";
 import { ChatbotSection } from "@/components/ChatbotSection";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,7 +20,7 @@ declare global {
 }
 
 // Lazy load des composants lourds pour améliorer les performances
-const LazyGalaxyBackground = lazy(() => import("@/components/GalaxyBackground").then(module => ({ default: module.GalaxyBackground })));
+const LazyNeuralNetwork = lazy(() => import("@/components/NeuralNetworkBackground").then(module => ({ default: module.NeuralNetworkBackground })));
 
 // Composant de chargement simple pour mobile
 const MobileLoader = () => (
@@ -67,7 +67,7 @@ const Index = () => {
       {/* Arrière-plan optimisé */}
       {!isMobile ? (
         <Suspense fallback={null}>
-          <LazyGalaxyBackground />
+          <LazyNeuralNetwork />
         </Suspense>
       ) : (
         // Arrière-plan statique pour mobile

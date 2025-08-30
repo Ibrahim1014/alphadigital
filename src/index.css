@@ -106,4 +106,50 @@
       text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
     }
   }
+
+  /* Neural Network Controls */
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(184, 134, 11, 0.3);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(184, 134, 11, 0.8);
+    cursor: pointer;
+    transition: transform 0.1s, background 0.1s;
+  }
+
+  .slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    background: rgba(184, 134, 11, 1);
+  }
+
+  .slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(184, 134, 11, 0.8);
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s, background 0.1s;
+  }
+
+  .slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    background: rgba(184, 134, 11, 1);
+  }
+
+  .glass-surface-white {
+    @apply bg-white/90 backdrop-blur-xl;
+  }
 }
